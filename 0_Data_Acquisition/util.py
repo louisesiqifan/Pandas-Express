@@ -1,12 +1,34 @@
 '''
-Utility functions
+Utility functions.
 
 '''
+
 import json
+import bs4
+
+
+def get_soup(url, pm):
+    '''
+    Get a BeautifulSoup object from url
+
+    Inputs:
+        url: string
+        pm: PoolManager object
+
+    Outputs:
+        a BeautifulSoup object
+    '''
+    try:
+        html = pm.urlopen(url=url, method="GET").data
+    except:
+        return None
+
+    return bs4.BeautifulSoup(html, features='lxml')
+
 
 def read_json(filename):
     '''
-    Read json
+    Read JSON file
 
     Inputs:
         filename: string
@@ -17,3 +39,21 @@ def read_json(filename):
     with open(filename) as file:
         result = json.load(file)
     return result
+
+
+def write_json(dic, filename):
+    '''
+    Write JSON file
+
+    Inputs:
+        dic: dictionary
+        filename: string
+
+    Outputs:
+        JSON file
+    '''
+
+    json_file = json.dumps(dic)
+    file = open(filename, "w")
+    file.write(json_file)
+    file.close()
