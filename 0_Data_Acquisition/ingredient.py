@@ -16,3 +16,14 @@ for recipes in all_recipes.values():
                     if token['pos'] == 'NN':
                         ingredients.add(token['lemma'])
 
+
+all_recipes = util.read_json("foodnetwork.json")
+ingredients = set()
+for recipes in all_recipes.values():
+    for recipe in recipes:
+        if 'ingredients' in recipe:
+            for ing in recipe['ingredients']:
+                ingredients.add(ing)
+
+
+util.write_csv(list(ingredients), "ingredients.csv")

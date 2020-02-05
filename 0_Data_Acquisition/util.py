@@ -4,6 +4,7 @@ Utility functions.
 '''
 
 import json
+import csv
 import bs4
 
 
@@ -57,3 +58,14 @@ def write_json(dic, filename):
     file = open(filename, "w")
     file.write(json_file)
     file.close()
+
+
+
+def write_csv(lst, filename):
+    '''
+    Generate a CSV file with an index.
+    '''
+    with open(filename, "w") as csvfile:
+        writer = csv.writer(csvfile, delimiter="|")
+        for e in lst:
+            writer.writerow([e])
