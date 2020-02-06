@@ -8,6 +8,7 @@ Database Tables:
         level            (text)
         time_active      (int)
         time_total       (int)
+        direction        (text)
 
     TABLE recipe_categories
         id               (int)
@@ -26,6 +27,7 @@ Database Tables:
 
 import json
 import re
+import util
 import sqlite3
 from sqlite3 import Error
 
@@ -44,15 +46,16 @@ def write_to_table(c, tb, cols, vals):
     '''
     To write a new row to table
     '''
-    s = 'INSERT INTO ' + tb + ' ' + str(cols) + ' VALUES ' + str(vals)
-    c.execute(s)
+    l = ['?' for v in vals]
+    s = 'INSERT INTO ' + tb + ' ' + str(cols) + ' VALUES ' +'(' + ', '.join(l) + ')'
+    c.execute(s, vals)
 
 
 def time(dic, item):
     '''
     To convert time to minutes
     '''
-    t = dic.get(item, 0)
+    t = dic.get(item, '')
     final_t = 0
     hr = re.findall(r"\d+ hr", t)
     if hr != []:
@@ -90,7 +93,7 @@ def main():
                          CREATE TABLE IF NOT EXISTS recipes (
                               id integer PRIMARY KEY,
                               name text NOT NULL,
-                              level text NOT NULL,
+                              level text,
                               time_active integer,
                               time_total integer
                               );
@@ -107,7 +110,9 @@ def main():
 
     ### Create tables
     create_table(c, sql_create_recipes)
+    db.commit()
     create_table(c, sql_create_categories)
+    db.commit()
 
     ### Write to Tables
     id_tracker = 0
@@ -115,10 +120,17 @@ def main():
         for course in dish[k]:
             name = course.get('name', None)
             level = course.get('level', None)
-            active, total = clean_time(courses.get('time'), None)
-            cols = ('id', 'name','level', 'time_active', 'time_total')
-            args = (id_tracker, name, level, active, total)
-            write_to_table(c, recipes, cols, args)
+            active, total = clean_time(course.get('time', None))
+            write_to_table(c, 'recipes',
+                           ('id', 'name','level', 'time_active', 'time_total'),
+                           (id_tracker, name, level, active, total))
+            db.commit()
+            categories = course.get('categories', [])
+            for cat in categories:
+                write_to_table(c, 'recipe_categories',
+                               ('id', 'category'),
+                               (id_tracker, cat))
+                db.commit()
             id_tracker += 1
 
     db.close()
