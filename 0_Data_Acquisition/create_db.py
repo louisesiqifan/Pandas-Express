@@ -93,7 +93,7 @@ def main():
                          CREATE TABLE IF NOT EXISTS recipes (
                               id integer PRIMARY KEY,
                               name text NOT NULL,
-                              level text,
+                              level text NOT NULL,
                               time_active integer,
                               time_total integer
                               );
@@ -121,9 +121,12 @@ def main():
             name = course.get('name', None)
             level = course.get('level', None)
             active, total = clean_time(course.get('time', None))
-            write_to_table(c, 'recipes',
+            try:
+                write_to_table(c, 'recipes',
                            ('id', 'name','level', 'time_active', 'time_total'),
                            (id_tracker, name, level, active, total))
+            except:
+                continue
             db.commit()
             categories = course.get('categories', [])
             for cat in categories:
