@@ -30,8 +30,10 @@ def get_info(soup, recipe_dict):
         items = info.find_all('li')
         for item in items:
             try:
-                head = item.find_all('span', class_="o-RecipeInfo__a-Headline")[0].text.strip()
-                desc = item.find_all('span', class_="o-RecipeInfo__a-Description")[0].text.strip()
+                head = item.find_all(
+                    'span', class_="o-RecipeInfo__a-Headline")[0].text.strip()
+                desc = item.find_all(
+                    'span', class_="o-RecipeInfo__a-Description")[0].text.strip()
             except IndexError:
                 continue
             if head == "Level:":
@@ -80,7 +82,8 @@ def get_ingredients(soup, recipe_dict):
     ingredients = []
     ingr_tags = soup.find_all("section", class_="o-Ingredients")
     if ingr_tags:
-        ingr_tags = ingr_tags[0].find_all("p", class_="o-Ingredients__a-Ingredient")
+        ingr_tags = ingr_tags[0].find_all(
+            "p", class_="o-Ingredients__a-Ingredient")
         for tag in ingr_tags:
             ingredients.append(tag.text.strip())
 
@@ -163,6 +166,7 @@ def crawl(pm, filename):
 
 if __name__ == "__main__":
     usage = "python3 foodnetwork.py"
-    pm = urllib3.PoolManager(cert_reqs='CERT_REQUIRED', ca_certs=certifi.where())
+    pm = urllib3.PoolManager(cert_reqs='CERT_REQUIRED',
+                             ca_certs=certifi.where())
     filename = "foodnetwork.json"
     crawl(pm, filename)

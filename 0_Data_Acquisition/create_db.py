@@ -47,7 +47,8 @@ def write_to_table(c, tb, cols, vals):
     To write a new row to table
     '''
     l = ['?' for v in vals]
-    s = 'INSERT INTO ' + tb + ' ' + str(cols) + ' VALUES ' +'(' + ', '.join(l) + ')'
+    s = 'INSERT INTO ' + tb + ' ' + \
+        str(cols) + ' VALUES ' + '(' + ', '.join(l) + ')'
     c.execute(s, vals)
 
 
@@ -81,13 +82,12 @@ def clean_time(dic):
     return active, total
 
 
-
 def main():
-    ### Initialize files and strings
+    # Initialize files and strings
     dish = util.read_json("foodnetwork.json")
     keys = dish.keys()
     file_name = 'food_map.db'
-    table_maps = {'recipes': ('id', 'name','level', 'time_active', 'time_total'),
+    table_maps = {'recipes': ('id', 'name', 'level', 'time_active', 'time_total'),
                   'categories': ('id', 'category')}
     sql_create_recipes = '''
                          CREATE TABLE IF NOT EXISTS recipes (
@@ -104,17 +104,17 @@ def main():
                               category text NOT NULL
                               );
                                                         '''
-    ### Connect to db
+    # Connect to db
     db = sqlite3.connect(file_name)
     c = db.cursor()
 
-    ### Create tables
+    # Create tables
     create_table(c, sql_create_recipes)
     db.commit()
     create_table(c, sql_create_categories)
     db.commit()
 
-    ### Write to Tables
+    # Write to Tables
     id_tracker = 0
     for k in keys:
         for course in dish[k]:
@@ -123,8 +123,8 @@ def main():
             active, total = clean_time(course.get('time', None))
             try:
                 write_to_table(c, 'recipes',
-                           ('id', 'name','level', 'time_active', 'time_total'),
-                           (id_tracker, name, level, active, total))
+                               ('id', 'name', 'level', 'time_active', 'time_total'),
+                               (id_tracker, name, level, active, total))
             except:
                 continue
             db.commit()

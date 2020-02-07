@@ -7,6 +7,7 @@ import requests
 DOMAIN = "https://api.nal.usda.gov/fdc/v1/"
 MY_API_KEY = "A2cUlGaoOsiKAgzawPqcAYLuO2TqktQ1JXO2b6nI"
 
+
 def search_food(food):
     '''
     Lists foods that match desired search criteria.
