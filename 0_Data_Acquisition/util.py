@@ -60,7 +60,6 @@ def write_json(dic, filename):
     file.close()
 
 
-
 def write_csv(lst, filename):
     '''
     Generate a CSV file with an index.

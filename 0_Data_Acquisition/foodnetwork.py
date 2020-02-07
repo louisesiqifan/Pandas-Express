@@ -11,80 +11,100 @@ import util
 INDICES = ["123"] + list(string.ascii_lowercase)[:-3] + ["xyz"]
 
 
-def parse_detail(recipe_dict, pm):
+def get_info(soup, recipe_dict):
     '''
-    Parse the recipe detail and update recipe dictionary
+    Get the level and time of a recipe.
 
     Inputs:
-        recipe_dict with two keys: ['name', 'url']
+        soup: BeautifulSoup Object
+        recipe_dict: dictionary
 
     Outputs:
         None
     '''
-    print(recipe_dict['name'])
-    url = recipe_dict['url']
-    soup = util.get_soup(url, pm)
-    if soup is None:
-        return
-
-    info_tags = soup.find_all("div", class_="recipeInfo")
-    if not info_tags:
-        return
-    info = info_tags[0]
-
-    level_tags = info.find_all('ul', class_="o-RecipeInfo__m-Level")
-    if not level_tags:
-        return
-    level = level_tags[0]
-    level = level.find_all('span', class_="o-RecipeInfo__a-Description")[0].text
-
-    time_tags = info.find_all('ul', class_="o-RecipeInfo__m-Time")
-    if not time_tags:
-        return
-    time_tags = time_tags[0].find_all('span')
-    if not time_tags:
-        return
+    level = None
     time_dict = {}
-    stack = []
-    for tag in time_tags:
-        tag = tag.text
-        if tag[-1] == ":":
-            time_dict[tag[:-1]] = None
-            stack.append(tag[:-1])
-        elif tag[-1] == ")":
-            continue
-        else:
-            key = stack.pop()
-            time_dict[key] = tag.strip()
-
-    ingr_tags = soup.find_all("section", class_="o-Ingredients")
-    if not ingr_tags:
-        return
-    ingr_tags = ingr_tags[0].find_all("p", class_="o-Ingredients__a-Ingredient")
-    ingredients = []
-    for tag in ingr_tags:
-        ingredients.append(tag.text.strip())
-
-    direct_tags = soup.find_all("section", class_="o-Method")
-    if not direct_tags:
-        return
-    direct_tags = direct_tags[0].find_all("li", class_="o-Method__m-Step")
-    directions = []
-    for tag in direct_tags:
-        directions.append(tag.text.strip())
-
-    cat_tags = soup.find_all("section", class_="o-Capsule o-Tags")
-    if not cat_tags:
-        return
-    cat_tags = cat_tags[0].find_all("a")
-    categories = []
-    for tag in cat_tags:
-        categories.append(tag.text.strip())
+    info_tags = soup.find_all("div", class_="recipeInfo")
+    if info_tags:
+        info = info_tags[0]
+        items = info.find_all('li')
+        for item in items:
+            try:
+                head = item.find_all('span', class_="o-RecipeInfo__a-Headline")[0].text.strip()
+                desc = item.find_all('span', class_="o-RecipeInfo__a-Description")[0].text.strip()
+            except IndexError:
+                continue
+            if head == "Level:":
+                level = desc
+            elif head == "Yield:":
+                continue
+            else:
+                time_dict[head[:-1]] = desc
 
     recipe_dict['level'] = level
     recipe_dict['time'] = time_dict
+
+
+def get_categories(soup, recipe_dict):
+    '''
+    Get the categories of a recipe.
+
+    Inputs:
+        soup: BeautifulSoup Object
+        recipe_dict: dictionary
+
+    Outputs:
+        None
+    '''
+    categories = []
+    cat_tags = soup.find_all("section", class_="o-Capsule o-Tags")
+    if cat_tags:
+        cat_tags = cat_tags[0].find_all("a")
+        for tag in cat_tags:
+            categories.append(tag.text.strip())
+
     recipe_dict["categories"] = categories
+
+
+def get_ingredients(soup, recipe_dict):
+    '''
+    Get the ingredients of a recipe.
+
+    Inputs:
+        soup: BeautifulSoup Object
+        recipe_dict: dictionary
+
+    Outputs:
+        None
+    '''
+    ingredients = []
+    ingr_tags = soup.find_all("section", class_="o-Ingredients")
+    if ingr_tags:
+        ingr_tags = ingr_tags[0].find_all("p", class_="o-Ingredients__a-Ingredient")
+        for tag in ingr_tags:
+            ingredients.append(tag.text.strip())
+
     recipe_dict['ingredients'] = ingredients
+
+
+def get_directions(soup, recipe_dict):
+    '''
+    Get the directions of a recipe.
+
+    Inputs:
+        soup: BeautifulSoup Object
+        recipe_dict: dictionary
+
+    Outputs:
+        None
+    '''
+    directions = []
+    direct_tags = soup.find_all("section", class_="o-Method")
+    if direct_tags:
+        direct_tags = direct_tags[0].find_all("li", class_="o-Method__m-Step")
+        for tag in direct_tags:
+            directions.append(tag.text.strip())
+
     recipe_dict['directions'] = directions
 
 
@@ -106,9 +126,16 @@ def get_recipes(index, pm):
     for tag in tags:
         links = tag.find_all("a")
         for link in links:
-            recipe_dict = {'name': link.text, 'url': "https:"+link['href']}
-            parse_detail(recipe_dict, pm)
-            recipes.append(recipe_dict)
+            url = "https:"+link['href']
+            soup = util.get_soup(url, pm)
+            if soup is not None:
+                recipe_dict = {'name': link.text, 'url': url}
+                print(recipe_dict['name'])
+                get_info(soup, recipe_dict)
+                get_categories(soup, recipe_dict)
+                get_ingredients(soup, recipe_dict)
+                get_directions(soup, recipe_dict)
+                recipes.append(recipe_dict)
 
     return recipes
 
