@@ -13,7 +13,7 @@ APP_KEY = '59e2efc1a67da04885a07f8ea16d5114'
 USER_ID = '0'
 HEADERS = {
     "Content-Type": "application/json",
-    "x-app-id": APP_ID, 
+    "x-app-id": APP_ID,
     "x-app-key": APP_KEY,
     "x-remote-user-id": USER_ID
 }
@@ -29,5 +29,5 @@ def get_nutrient(ingredient):
         dictionary
     '''
     data = '{"query": "' + ingredient + '", "locale": "en_US"}'
-    response = requests.post(URL, headers=headers, data=data)
+    response = requests.post(URL, headers=HEADERS, data=data)
     return response.json()
