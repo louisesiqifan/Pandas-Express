@@ -71,10 +71,6 @@ def clean_time(dic):
     '''
     To make time column uniform: active time and total time in minutes
     '''
-    if dic is None:
-        return 0, 0
-
-    keys = ['Active', 'Cook', 'Inactive', 'Prep', 'Total']
     active = time(dic, 'Active') + time(dic, 'Cook') + time(dic, 'Prep')
     total = time(dic, 'Total')
     if total == 0:
@@ -120,10 +116,13 @@ def main():
         for course in dish[k]:
             name = course.get('name', None)
             level = course.get('level', None)
-            active, total = clean_time(course.get('time', None))
+            if level not in ['Easy', 'Intermediate', 'Advanced']:
+                level = 'N/A'
+            active, total = clean_time(course.get('time', {}))
             try:
                 write_to_table(c, 'recipes',
-                               ('id', 'name', 'level', 'time_active', 'time_total'),
+                               ('id', 'name', 'level',
+                                'time_active', 'time_total'),
                                (id_tracker, name, level, active, total))
             except:
                 continue
