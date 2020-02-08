@@ -106,7 +106,7 @@ def lower_term_from_string(string):
     Return:
         words(list)
     '''
-    r = re.findall(r'[a-zA-Z]+', string)
+    r = re.findall(r'[a-zA-Z]{2,}', string)
     return set([x.lower() for x in r if x not in INDEX_IGNORE])
 
 
@@ -115,10 +115,10 @@ def get_term(course):
     To get all terms in the name and descriptions of the course.
     '''
     name = course.get('name')
-    descriptions = course.get('descriptions', [])
+    directions = course.get('directions', [])
     words = lower_term_from_string(name)
-    for description in descriptions:
-        words = words|set(lower_term_from_string(description))
+    for direction in directions:
+        words = words|set(lower_term_from_string(direction))
     return words
 
 
