@@ -1,7 +1,7 @@
 import sqlite3
 import os
 
-DATABASE_FILENAME = '../0_Data/food_map.db'
+DATABASE_FILENAME = '../data/food_map.db'
 
 def search_by_category(category):
     db = sqlite3.connect(DATABASE_FILENAME)
