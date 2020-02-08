@@ -21,7 +21,7 @@ FRONTEND_DIR = os.path.join(BASE_DIR, 'frontend')
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '3bpp#j*j^t7(y4e&gfht1#b9^o7pj1h&-6q0s!(k#wy7%=fpa9'
+SECRET_KEY = '0t(p5c%1n&*r(4+1bvzt931=y2x&d-ivjs8m4g%hrrsjdl_&r@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -53,21 +53,20 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'server.urls'
 
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATES_DIR,],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
+TEMPLATES = [{        
+    'BACKEND': 'django.template.backends.django.DjangoTemplates',        
+    'DIRS': [TEMPLATES_DIR,],        
+    'APP_DIRS': True,        
+    'OPTIONS': {            
+        'context_processors': [
+            'django.template.context_processors.debug',   
+            'django.template.context_processors.request',                
+            'django.contrib.auth.context_processors.auth',                
+            'django.contrib.messages.context_processors.messages', 
+        ],
     },
-]
+},]
+
 
 WSGI_APPLICATION = 'server.wsgi.application'
 
@@ -121,9 +120,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+
 WEBPACK_LOADER = {
     'DEFAULT': {
-        'CACHE': DEBUG,
+        'CACHE': not DEBUG,
         'BUNDLE_DIR_NAME': '/bundles/',  # must end with slash
         'STATS_FILE': os.path.join(FRONTEND_DIR, 'webpack-stats.json'),
     }
