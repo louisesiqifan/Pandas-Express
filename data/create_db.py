@@ -14,7 +14,11 @@ Database Tables:
         id               (int)
         category_name    (text)
 
-    TABLE recipe_Ingredients
+    TABLE recipe_terms
+        id               (int)
+        term             (text)
+
+    TABLE recipe_ingredients
         id               (int)
         ingredient_id    (int)
 
@@ -31,6 +35,19 @@ import util
 import sqlite3
 from sqlite3 import Error
 
+
+INDEX_IGNORE = ['the', 'and', 'to', 'with', 'in', 'of', 'until',
+                'minutes', 'add', 'heat', 'for', 'on', 'into', 'over', 'salt',
+                'medium', 'about', 'cook', 'bowl', 'large', 'pan', 'is', 'top',
+                'oil', 'or', 'from', 'stir', 'each', 'it', 'place', 'oven',
+                'remove', 'mixture', 'skillet', 'water', 'serve', 'minute',
+                'high', 'inch', 'combine', 'remaining', 'then', 'up', 'set',
+                'cup', 'together', 'cut', 'cover', 'preheat', 'mix', 'an',
+                'stirring', 'degrees', 'baking', 'hot', 'side', 'at', 'simmer',
+                'let', 'are', 'sheet', 'cool', 'small', 'teaspoon', 'all',
+                'layer', 'bring', 'boil', 'half', 'transfer', 'by', 'them',
+                'if', 'put', 'tablespoons', 'as', 'out', 'aside', 'through',
+                'spoon', 'be', 'pot', 'more', 'lightly', 'pour']
 
 def create_table(c, s):
     '''
@@ -78,6 +95,13 @@ def clean_time(dic):
     return active, total
 
 
+def get_term(course):
+    '''
+    To get all terms in the name and descriptions of the course.
+    '''
+
+
+
 def main():
     # Initialize files and strings
     dish = util.read_json("foodnetwork.json")
@@ -100,6 +124,12 @@ def main():
                               category text NOT NULL
                               );
                                                         '''
+    sql_create_terms = '''
+                         CREATE TABLE IF NOT EXISTS recipe_terms (
+                              id integer,
+                              term text NOT NULL
+                              );
+                                                        '''
     # Connect to db
     db = sqlite3.connect(file_name)
     c = db.cursor()
@@ -108,6 +138,8 @@ def main():
     create_table(c, sql_create_recipes)
     db.commit()
     create_table(c, sql_create_categories)
+    db.commit()
+    create_table(c, sql_create_terms)
     db.commit()
 
     # Write to Tables
