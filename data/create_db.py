@@ -49,14 +49,16 @@ INDEX_IGNORE = ['the', 'and', 'to', 'with', 'in', 'of', 'until',
                 'if', 'put', 'tablespoons', 'as', 'out', 'aside', 'through',
                 'spoon', 'be', 'pot', 'more', 'lightly', 'pour']
 
-def create_table(c, s):
+def create_table(c, s, name):
     '''
     To create a table from statement s
     '''
     try:
+        drop = 'DROP TABLE ' + name + ';'
+        c.execute(drop)
         c.execute(s)
     except Error as e:
-        print(e)
+        c.execute(s)
 
 
 def write_to_table(c, tb, cols, vals):
@@ -95,11 +97,29 @@ def clean_time(dic):
     return active, total
 
 
+def lower_term_from_string(string):
+    '''
+    To get a list of words from string if words not in INDEX_IGNORE
+
+    Input:
+        string(str)
+    Return:
+        words(list)
+    '''
+    r = re.findall(r'[a-zA-Z]+', string)
+    return set([x.lower() for x in r if x not in INDEX_IGNORE])
+
+
 def get_term(course):
     '''
     To get all terms in the name and descriptions of the course.
     '''
-
+    name = course.get('name')
+    descriptions = course.get('descriptions', [])
+    words = lower_term_from_string(name)
+    for description in descriptions:
+        words = words|set(lower_term_from_string(description))
+    return words
 
 
 def main():
@@ -107,15 +127,14 @@ def main():
     dish = util.read_json("foodnetwork.json")
     keys = dish.keys()
     file_name = 'food_map.db'
-    table_maps = {'recipes': ('id', 'name', 'level', 'time_active', 'time_total'),
-                  'categories': ('id', 'category')}
     sql_create_recipes = '''
                          CREATE TABLE IF NOT EXISTS recipes (
                               id integer PRIMARY KEY,
                               name text NOT NULL,
                               level text NOT NULL,
                               time_active integer,
-                              time_total integer
+                              time_total integer,
+                              directions text
                               );
                                                         '''
     sql_create_categories = '''
@@ -127,7 +146,7 @@ def main():
     sql_create_terms = '''
                          CREATE TABLE IF NOT EXISTS recipe_terms (
                               id integer,
-                              term text NOT NULL
+                              word text NOT NULL
                               );
                                                         '''
     # Connect to db
@@ -135,15 +154,15 @@ def main():
     c = db.cursor()
 
     # Create tables
-    create_table(c, sql_create_recipes)
+    create_table(c, sql_create_recipes, 'recipes')
     db.commit()
-    create_table(c, sql_create_categories)
+    create_table(c, sql_create_categories, 'recipe_categories')
     db.commit()
-    create_table(c, sql_create_terms)
+    create_table(c, sql_create_terms, 'recipe_terms')
     db.commit()
 
     # Write to Tables
-    id_tracker = 0
+    id_tracker = 1
     for k in keys:
         for course in dish[k]:
             name = course.get('name', None)
@@ -151,19 +170,23 @@ def main():
             if level not in ['Easy', 'Intermediate', 'Advanced']:
                 level = 'N/A'
             active, total = clean_time(course.get('time', {}))
-            try:
-                write_to_table(c, 'recipes',
+            directions = '\n'.join(course.get('directions'))
+            write_to_table(c, 'recipes',
                                ('id', 'name', 'level',
-                                'time_active', 'time_total'),
-                               (id_tracker, name, level, active, total))
-            except:
-                continue
+                                'time_active', 'time_total', 'directions'),
+                               (id_tracker, name, level,
+                                active, total, directions))
             db.commit()
             categories = course.get('categories', [])
             for cat in categories:
                 write_to_table(c, 'recipe_categories',
                                ('id', 'category'),
                                (id_tracker, cat))
+                db.commit()
+            words = get_term(course)
+            for word in words:
+                write_to_table(c, 'recipe_terms', ('id', 'word'),
+                               (id_tracker, word))
                 db.commit()
             id_tracker += 1
 
