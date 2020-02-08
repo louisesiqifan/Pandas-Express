@@ -107,7 +107,7 @@ def lower_term_from_string(string):
         words(list)
     '''
     r = re.findall(r'[a-zA-Z]{2,}', string)
-    return set([x.lower() for x in r if x not in INDEX_IGNORE])
+    return set([x.lower() for x in r if x.lower() not in INDEX_IGNORE])
 
 
 def get_term(course):
