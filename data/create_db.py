@@ -38,6 +38,7 @@ import re
 import util
 import sqlite3
 import numpy as np
+from statistics import mean
 from sqlite3 import Error
 import configparser
 import nutritionix
@@ -125,6 +126,22 @@ def get_term(course):
     return title, words
 
 
+def get_serving(course):
+    '''
+    From course get avg of servings
+    '''
+    def get_mean(ls):
+        if ls == []:
+            return 1
+        else:
+            return mean(list(map(int, a)))
+    s = course.get('yield', 'no result')
+    if s is None:
+        s = 'no result'
+    a = re.findall(r'\d+', s)
+    return get_mean(a)
+
+
 #def get_nutrient(ingredients, serving_size=1):
 #    '''
 #    From ingredients, get ingredients
@@ -180,6 +197,7 @@ def main():
     for k in keys:
         for course in dish[k]:
             name = course.get('name', None)
+            serving = get_serving(course)
             level = course.get('level', None)
             if level not in ['Easy', 'Intermediate', 'Advanced']:
                 level = 'N/A'
@@ -199,10 +217,10 @@ def main():
 #                                directions))
             write_to_table(c, 'recipes',
                                ('id', 'name', 'level',
-                                'time_active', 'time_total',
+                                'time_active', 'time_total', 'serving_size',
                                  'directions'),
                                (id_tracker, name, level, active,
-                                total, directions))
+                                total, serving, directions))
             db.commit()
 #            for item in ing:
 #                write_to_table(c, 'recipe_ingredients',
