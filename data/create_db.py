@@ -132,10 +132,11 @@ def get_nutrient(ingredients, serving_size=1):
     item_list = []
     nutrient = np.array([0]*10)
     for item in ingredients:
-        d = nutritionix.get_nutrient(item)['foods'][0]
-        name = d.get('food_name', None)
-        if name is None:
+        try:
+            d = nutritionix.get_nutrient(item)['foods'][0]
+        except:
             continue
+        name = d.get('food_name', None)
         item_list.append(name)
         for i, key in enumerate(INGREDIENTS):
             k = 'nf_' + key
