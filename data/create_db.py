@@ -203,7 +203,7 @@ def main():
                 level = 'N/A'
             active, total = clean_time(course.get('time', {}))
             directions = '\n'.join(course.get('directions'))
-#            ing, nut = get_nutrient(course.get('ingredients'), serving_size=1)
+#            ing, nut = get_nutrient(course.get('ingredients'), serving)
 #            write_to_table(c, 'recipes',
 #                               ('id', 'name', 'level',
 #                                'time_active', 'time_total', 'calories',
