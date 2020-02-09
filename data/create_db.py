@@ -18,6 +18,10 @@ Database Tables:
         id               (int)
         term             (text)
 
+    TABLE recipe_title
+        id               (int)
+        word             (text)
+
     TABLE recipe_ingredients
         id               (int)
         ingredient_id    (int)
@@ -104,10 +108,11 @@ def get_term(course):
     '''
     name = course.get('name')
     directions = course.get('directions', [])
-    words = lower_term_from_string(name)
+    title = lower_term_from_string(name)
+    words = title.copy()
     for direction in directions:
         words = words|set(lower_term_from_string(direction))
-    return words
+    return title, words
 
 
 def main():
@@ -123,6 +128,7 @@ def main():
     sql_create_recipes = config['DATA']['SQL_CREATE_RECIPES']
     sql_create_categories = config['DATA']['SQL_CREATE_CATEGORIES']
     sql_create_terms = config['DATA']['SQL_CREATE_TERMS']
+    sql_create_title = config['DATA']['SQL_CREATE_TITLE']
 
     # Connect to db
     db = sqlite3.connect(name_db)
@@ -134,6 +140,8 @@ def main():
     create_table(c, sql_create_categories, 'recipe_categories')
     db.commit()
     create_table(c, sql_create_terms, 'recipe_terms')
+    db.commit()
+    create_table(c, sql_create_terms, 'recipe_title')
     db.commit()
 
     # Write to Tables
@@ -158,7 +166,11 @@ def main():
                                ('id', 'category'),
                                (id_tracker, cat))
                 db.commit()
-            words = get_term(course)
+            title, words = get_term(course)
+            for word in title:
+                write_to_table(c, 'recipe_title', ('id', 'word'),
+                               (id_tracker, word))
+                db.commit()
             for word in words:
                 write_to_table(c, 'recipe_terms', ('id', 'word'),
                                (id_tracker, word))

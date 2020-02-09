@@ -23,7 +23,6 @@ def score(ui_input, lim):
     score  = {}
     ui_input = input_verification(ui_input)
     category = ui_input.get('categories', False)
-    print(category)
     level = ui_input.get('level', False)
     time_params = ui_input.get('time', False)
     term = ui_input.get('term', False)
