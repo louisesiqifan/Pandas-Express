@@ -2,7 +2,6 @@ import sqlite3
 import os
 import re
 import configparser
-from collections import OrderedDict
 
 
 config = configparser.ConfigParser()
@@ -38,13 +37,14 @@ def score(ui_input, lim):
     if time_params:
         result = search_by_time(time_params)
         for i, val in result:
-            score[i] = score.get(i, 0) + val
+            if val:
+                score[i] = score.get(i, 0) + val
     if term:
         result = search_by_term(time_params)
         for i, val in result:
             score[i] = score.get(i, 0) + val
-    final_score = OrderedDict({k: v for k, v in sorted(x.items(), key=lambda item: item[1])})
-    return
+    final_score = sorted(score.items(), key=lambda item: item[1], reverse=True)
+    return final_score[:lim]
 
 
 def input_verification(ui_input):
