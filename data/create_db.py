@@ -40,6 +40,11 @@ import sqlite3
 from sqlite3 import Error
 import configparser
 
+config = configparser.ConfigParser()
+config.read('../wrapper/constants.ini')
+name_db = config['DATA']['NAME_DB']
+name_json = config['DATA']['NAME_JSON']
+index_ignore = config['DATA']['INDEX_IGNORE']
 
 def create_table(c, s, name):
     '''
@@ -117,11 +122,6 @@ def get_term(course):
 
 def main():
     # Initialize files and strings
-    config = configparser.ConfigParser()
-    config.read('../wrapper/constants.ini')
-    name_db = config['DATA']['NAME_DB']
-    name_json = config['DATA']['NAME_JSON']
-    index_ignore = config['DATA']['INDEX_IGNORE']
 
     dish = util.read_json(name_json)
     keys = dish.keys()
@@ -141,7 +141,7 @@ def main():
     db.commit()
     create_table(c, sql_create_terms, 'recipe_terms')
     db.commit()
-    create_table(c, sql_create_terms, 'recipe_title')
+    create_table(c, sql_create_title, 'recipe_title')
     db.commit()
 
     # Write to Tables
