@@ -40,7 +40,7 @@ def score(ui_input, lim):
             if val:
                 score[i] = score.get(i, 0) + val
     if term:
-        result = search_by_term(time_params)
+        result = search_by_term(term)
         for i, val in result:
             score[i] = score.get(i, 0) + val
     final_score = sorted(score.items(), key=lambda item: item[1], reverse=True)
