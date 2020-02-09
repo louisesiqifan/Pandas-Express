@@ -37,14 +37,19 @@ import json
 import re
 import util
 import sqlite3
+import numpy as np
 from sqlite3 import Error
 import configparser
+import nutritionix
 
 config = configparser.ConfigParser()
 config.read('../wrapper/constants.ini')
 name_db = config['DATA']['NAME_DB']
 name_json = config['DATA']['NAME_JSON']
 index_ignore = config['DATA']['INDEX_IGNORE']
+INGREDIENTS = ['calories', 'total_fat', 'saturated_fat', 'cholesterol',
+               'sodium', 'total_carbohydrate', 'dietary_fiber', 'sugars',
+               'protein', 'potassium']
 
 def create_table(c, s, name):
     '''
@@ -120,6 +125,28 @@ def get_term(course):
     return title, words
 
 
+def get_nutrient(ingredients, serving_size=1):
+    '''
+    From ingredients, get ingredients
+    '''
+    item_list = []
+    nutrient = np.array([0]*10)
+    for item in ingredients:
+        d = nutritionix.get_nutrient(item)['foods'][0]
+        name = d.get('food_name', None)
+        if name is None:
+            continue
+        item_list.append(name)
+        for i, key in enumerate(INGREDIENTS):
+            k = 'nf_' + key
+            val = d.get(k, 0)
+            try:
+                nutrient[i] += val
+            except:
+                pass
+    nutrient[0] = nutrient[0]/4.184
+    return item_list, list(nutrient/serving_size)
+
 def main():
     # Initialize files and strings
 
@@ -129,6 +156,7 @@ def main():
     sql_create_categories = config['DATA']['SQL_CREATE_CATEGORIES']
     sql_create_terms = config['DATA']['SQL_CREATE_TERMS']
     sql_create_title = config['DATA']['SQL_CREATE_TITLE']
+    sql_create_ingredients = config['DATA']['SQL_CREATE_INGREDIENTS']
 
     # Connect to db
     db = sqlite3.connect(name_db)
@@ -143,6 +171,8 @@ def main():
     db.commit()
     create_table(c, sql_create_title, 'recipe_title')
     db.commit()
+    create_table(c, sql_create_ingredients, 'recipe_ingredients')
+    db.commit()
 
     # Write to Tables
     id_tracker = 1
@@ -154,12 +184,23 @@ def main():
                 level = 'N/A'
             active, total = clean_time(course.get('time', {}))
             directions = '\n'.join(course.get('directions'))
+            ing, nut = get_nutrient(course.get('ingredients'), serving_size=1)
             write_to_table(c, 'recipes',
                                ('id', 'name', 'level',
-                                'time_active', 'time_total', 'directions'),
+                                'time_active', 'time_total', 'calories',
+                                 'total_fat', 'saturated_fat', 'cholesterol',
+                                 'sodium', 'total_carbohydrate',
+                                 'dietary_fiber', 'sugars',
+                                 'protein', 'potassium' 'directions'),
                                (id_tracker, name, level,
-                                active, total, directions))
+                                active, total, nut[0], nut[1], nut[2], nut[3],
+                                nut[4], nut[5], nut[6], nut[7], nut[8], nut[9],
+                                directions))
             db.commit()
+            for item in ing:
+                write_to_table(c, 'recipe_ingredients',
+                               ('id', 'ingredient'),
+                               (id_tracker, item))
             categories = course.get('categories', [])
             for cat in categories:
                 write_to_table(c, 'recipe_categories',
