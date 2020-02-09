@@ -17,6 +17,7 @@ INDEX_IGNORE = ['the', 'and', 'to', 'with', 'in', 'of', 'until',
                 'if', 'put', 'tablespoons', 'as', 'out', 'aside', 'through',
                 'spoon', 'be', 'pot', 'more', 'lightly', 'pour']
 
+
 def search_by_category(category):
     category = category.capitalize()
     db = sqlite3.connect(DATABASE_FILENAME)
@@ -33,18 +34,44 @@ def search_by_category(category):
     return results
 
 
+def search_by_level(level):
+    level = level.capitalize()
+    levels = ['Easy', 'Intermediate', 'Advanced']
+    assert level in levels, 'incorrect level'
+    ind = levels.index(level)
+    val = [int(i<=ind) for i,_ in enumerate(levels)]
+
+    db = sqlite3.connect(DATABASE_FILENAME)
+    c = db.cursor()
+    query = f'''
+    SELECT id,
+           CASE
+               WHEN level = 'Easy' THEN {val[0]}
+               WHEN level = 'Intermediate' THEN {val[1]}
+               WHEN level = 'Advanced' THEN {val[2]}
+           END AS score
+    FROM recipes
+    WHERE score IS NOT NULL;
+    '''
+    c.execute(query)
+    results = c.fetchall()
+    db.close()
+    return results
+
+
 def search_by_time(upper_bound, mode='total'):
     assert mode in ['total', 'active'], 'incorrect mode'
+    assert upper_bound > 0, 'incorret time constraint'
+    upper_bound = str(upper_bound)
     db = sqlite3.connect(DATABASE_FILENAME)
     mode = 'time_' + mode
     c = db.cursor()
     query = f'''
-    SELECT id, ?-{mode} AS score
+    SELECT id, (?-{mode}+1.0)/? AS score
     FROM recipes
-    WHERE {mode} > 0
-    ORDER BY score desc;
+    WHERE {mode} > 0;
     '''
-    c.execute(query, (upper_bound,))
+    c.execute(query, (upper_bound, upper_bound))
     results = c.fetchall()
     db.close()
     return results
