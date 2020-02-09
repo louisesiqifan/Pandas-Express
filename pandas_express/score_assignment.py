@@ -2,12 +2,14 @@ import sqlite3
 import os
 import re
 import configparser
+from collections import OrderedDict
 
 
 config = configparser.ConfigParser()
 config.read('../wrapper/constants.ini')
 DATABASE_FILENAME = config['DEFAULT']['DATABASE_FILENAME']
 INDEX_IGNORE = config['DATA']['INDEX_IGNORE']
+INPUT = ['categories', 'level', 'time', 'term']
 
 
 def score(ui_input, lim):
@@ -19,7 +21,29 @@ def score(ui_input, lim):
     Return:
         top(list)
     '''
+    score  = {}
     ui_input = input_verification(ui_input)
+    category = ui_input.get('category', False)
+    level = ui_input.get('level', False)
+    time_params = ui_input.get('time', False)
+    term = ui_input.get('term', False)
+    if category:
+        result = search_by_categories(category)
+        for i, val in result:
+            score[i] = score.get(i, 0) + val
+    if level:
+        result = search_by_level(level)
+        for i, val in result:
+            score[i] = score.get(i, 0) + val
+    if time_params:
+        result = search_by_time(time_params)
+        for i, val in result:
+            score[i] = score.get(i, 0) + val
+    if term:
+        result = search_by_term(time_params)
+        for i, val in result:
+            score[i] = score.get(i, 0) + val
+    final_score = OrderedDict({k: v for k, v in sorted(x.items(), key=lambda item: item[1])})
     return
 
 
@@ -70,7 +94,7 @@ def search_by_categories(args):
     c = db.cursor()
     sub_q = ','.join(['?']*len(args))
     query = f'''
-    SELECT r.id, ROUND(k.count*1.0/{len(args)},2) AS score
+    SELECT r.id AS id, ROUND(k.count*1.0/{len(args)},2) AS score
     FROM recipes AS r
     JOIN (SELECT id, COUNT(id) AS count
           FROM recipe_categories
