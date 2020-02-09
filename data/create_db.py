@@ -191,7 +191,7 @@ def main():
                                  'total_fat', 'saturated_fat', 'cholesterol',
                                  'sodium', 'total_carbohydrate',
                                  'dietary_fiber', 'sugars',
-                                 'protein', 'potassium' 'directions'),
+                                 'protein', 'potassium', 'directions'),
                                (id_tracker, name, level,
                                 active, total, nut[0], nut[1], nut[2], nut[3],
                                 nut[4], nut[5], nut[6], nut[7], nut[8], nut[9],
