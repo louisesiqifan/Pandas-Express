@@ -22,7 +22,8 @@ def score(ui_input, lim):
     '''
     score  = {}
     ui_input = input_verification(ui_input)
-    category = ui_input.get('category', False)
+    category = ui_input.get('categories', False)
+    print(category)
     level = ui_input.get('level', False)
     time_params = ui_input.get('time', False)
     term = ui_input.get('term', False)
@@ -59,7 +60,7 @@ def input_verification(ui_input):
             if type(val) != typ:
                 raise ValueError(f"input type for {key} should be {typ}")
             if key == 'categories':
-                args = tuple([x.capitalize() for x in val])
+                args = [x.title() for x in val]
                 ui_input['categories'] = args
             if key == 'level':
                 val = val.capitalize()
@@ -86,7 +87,7 @@ def search_by_categories(args):
     To search by categories
 
     Input:
-        args(tuple)
+        args(list)
     Return:
         results(list)
     '''
