@@ -1,8 +1,11 @@
 import sqlite3
 import os
 import re
+import configparser
 
-DATABASE_FILENAME = '../data/food_map.db'
+config = configparser.ConfigParser()
+config.read('../wrapper/constants.ini')
+DATABASE_FILENAME = config['DEFAULT']['DATABASE_FILENAME']
 
 
 def search_by_category(categories):

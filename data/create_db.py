@@ -34,20 +34,8 @@ import re
 import util
 import sqlite3
 from sqlite3 import Error
+import configparser
 
-
-INDEX_IGNORE = ['the', 'and', 'to', 'with', 'in', 'of', 'until',
-                'minutes', 'add', 'heat', 'for', 'on', 'into', 'over', 'salt',
-                'medium', 'about', 'cook', 'bowl', 'large', 'pan', 'is', 'top',
-                'oil', 'or', 'from', 'stir', 'each', 'it', 'place', 'oven',
-                'remove', 'mixture', 'skillet', 'water', 'serve', 'minute',
-                'high', 'inch', 'combine', 'remaining', 'then', 'up', 'set',
-                'cup', 'together', 'cut', 'cover', 'preheat', 'mix', 'an',
-                'stirring', 'degrees', 'baking', 'hot', 'side', 'at', 'simmer',
-                'let', 'are', 'sheet', 'cool', 'small', 'teaspoon', 'all',
-                'layer', 'bring', 'boil', 'half', 'transfer', 'by', 'them',
-                'if', 'put', 'tablespoons', 'as', 'out', 'aside', 'through',
-                'spoon', 'be', 'pot', 'more', 'lightly', 'pour']
 
 def create_table(c, s, name):
     '''
@@ -107,7 +95,7 @@ def lower_term_from_string(string):
         words(list)
     '''
     r = re.findall(r'[a-zA-Z]{2,}', string)
-    return set([x.lower() for x in r if x.lower() not in INDEX_IGNORE])
+    return set([x.lower() for x in r if x.lower() not in index_ignore])
 
 
 def get_term(course):
@@ -124,33 +112,20 @@ def get_term(course):
 
 def main():
     # Initialize files and strings
-    dish = util.read_json("foodnetwork.json")
+    config = configparser.ConfigParser()
+    config.read('../wrapper/constants.ini')
+    name_db = config['DATA']['NAME_DB']
+    name_json = config['DATA']['NAME_JSON']
+    index_ignore = config['DATA']['INDEX_IGNORE']
+
+    dish = util.read_json(name_json)
     keys = dish.keys()
-    file_name = 'food_map.db'
-    sql_create_recipes = '''
-                         CREATE TABLE IF NOT EXISTS recipes (
-                              id integer PRIMARY KEY,
-                              name text NOT NULL,
-                              level text NOT NULL,
-                              time_active integer,
-                              time_total integer,
-                              directions text
-                              );
-                                                        '''
-    sql_create_categories = '''
-                         CREATE TABLE IF NOT EXISTS recipe_categories (
-                              id integer,
-                              category text NOT NULL
-                              );
-                                                        '''
-    sql_create_terms = '''
-                         CREATE TABLE IF NOT EXISTS recipe_terms (
-                              id integer,
-                              word text NOT NULL
-                              );
-                                                        '''
+    sql_create_recipes = config['DATA']['SQL_CREATE_RECIPES']
+    sql_create_categories = config['DATA']['SQL_CREATE_CATEGORIES']
+    sql_create_terms = config['DATA']['SQL_CREATE_TERMS']
+
     # Connect to db
-    db = sqlite3.connect(file_name)
+    db = sqlite3.connect(name_db)
     c = db.cursor()
 
     # Create tables

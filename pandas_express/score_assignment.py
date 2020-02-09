@@ -1,21 +1,13 @@
 import sqlite3
 import os
 import re
+import configparser
 
-DATABASE_FILENAME = '../data/food_map.db'
 
-INDEX_IGNORE = ['the', 'and', 'to', 'with', 'in', 'of', 'until',
-                'minutes', 'add', 'heat', 'for', 'on', 'into', 'over', 'salt',
-                'medium', 'about', 'cook', 'bowl', 'large', 'pan', 'is', 'top',
-                'oil', 'or', 'from', 'stir', 'each', 'it', 'place', 'oven',
-                'remove', 'mixture', 'skillet', 'water', 'serve', 'minute',
-                'high', 'inch', 'combine', 'remaining', 'then', 'up', 'set',
-                'cup', 'together', 'cut', 'cover', 'preheat', 'mix', 'an',
-                'stirring', 'degrees', 'baking', 'hot', 'side', 'at', 'simmer',
-                'let', 'are', 'sheet', 'cool', 'small', 'teaspoon', 'all',
-                'layer', 'bring', 'boil', 'half', 'transfer', 'by', 'them',
-                'if', 'put', 'tablespoons', 'as', 'out', 'aside', 'through',
-                'spoon', 'be', 'pot', 'more', 'lightly', 'pour']
+config = configparser.ConfigParser()
+config.read('../wrapper/constants.ini')
+DATABASE_FILENAME = config['DEFAULT']['DATABASE_FILENAME']
+INDEX_IGNORE = config['DATA']['INDEX_IGNORE']
 
 
 def search_by_categories(categories):
@@ -72,6 +64,15 @@ def search_by_level(level):
 
 
 def search_by_time(upper_bound, mode='total'):
+    '''
+    to match recipe with input time
+
+    Input:
+        upper_bound(int or float)
+        mode(str): 'total' or 'active'
+    Return:
+        results(list): list of tuple with (id, score)
+    '''
     assert mode in ['total', 'active'], 'incorrect mode'
     assert upper_bound > 0, 'incorret time constraint'
     upper_bound = str(upper_bound)
@@ -79,11 +80,15 @@ def search_by_time(upper_bound, mode='total'):
     mode = 'time_' + mode
     c = db.cursor()
     query = f'''
-    SELECT id, (?-{mode}+1.0)/? AS score
+    SELECT id,
+        CASE
+            WHEN {mode} > 0 AND {mode} < ? THEN 1.0
+            WHEN {mode} > 0 AND {mode} >= ? THEN 1.0*(?-{mode})/?
+        END AS score
     FROM recipes
-    WHERE {mode} > 0;
+    ORDER BY score desc;
     '''
-    c.execute(query, (upper_bound, upper_bound))
+    c.execute(query, (upper_bound,)*4)
     results = c.fetchall()
     db.close()
     return results
@@ -96,7 +101,7 @@ def search_by_term(string):
     Input:
         string(str)
     Return:
-        results(list): list of tuple with (id, count)
+        results(list): list of tuple with (id, score)
     '''
     db = sqlite3.connect(DATABASE_FILENAME)
     c = db.cursor()
@@ -104,7 +109,7 @@ def search_by_term(string):
     args = tuple(set([x.lower() for x in r if x.lower() not in INDEX_IGNORE]))
     sub_q = ','.join(['?']*len(args))
     query = f'''
-    SELECT id, COUNT(id) AS score
+    SELECT id, ROUND(COUNT(id)*1.0/{len(args)},2) AS score
     FROM recipe_terms
     WHERE word IN ({sub_q})
     GROUP BY id
