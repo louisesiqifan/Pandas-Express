@@ -24,6 +24,7 @@ def get_info(soup, recipe_dict):
     '''
     level = None
     time_dict = {}
+    yield_ = None
     info_tags = soup.find_all("div", class_="recipeInfo")
     if info_tags:
         info = info_tags[0]
@@ -39,12 +40,13 @@ def get_info(soup, recipe_dict):
             if head == "Level:":
                 level = desc
             elif head == "Yield:":
-                continue
+                yield_ = desc
             else:
                 time_dict[head[:-1]] = desc
 
     recipe_dict['level'] = level
     recipe_dict['time'] = time_dict
+    recipe_dict['yield'] = yield_
 
 
 def get_categories(soup, recipe_dict):
