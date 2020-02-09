@@ -75,7 +75,7 @@ def input_verification(ui_input):
                 ui_input['time'] = (str(upper_bound), mode)
             if key == 'term':
                 r = re.findall(r'[a-zA-Z]{2,}', val)
-                args = tuple(set([x.lower() for x in r if x.lower() not in INDEX_IGNORE]))
+                args = list(set([x.lower() for x in r if x.lower() not in INDEX_IGNORE]))
                 ui_input['term'] = args
     return ui_input
 
@@ -193,4 +193,4 @@ EXAMPLE_0 = {'categories': ['italian', 'main dish'], 'level': 'easy',
              'time': (10, 'total'), 'term': 'italian soup'}
 
 EXAMPLE_1 = {'categories': ['italian', 'main dish'], 'level': 'eAsy',
-             'time': (10, 'total'), 'term': 'italian soup'}
+             'time': (60, 'total'), 'term': 'italian soup'}
