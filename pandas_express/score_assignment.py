@@ -8,7 +8,6 @@ config = configparser.ConfigParser()
 config.read('../wrapper/constants.ini')
 DATABASE_FILENAME = config['DEFAULT']['DATABASE_FILENAME']
 INDEX_IGNORE = config['DATA']['INDEX_IGNORE']
-INPUT = ['categories', 'level', 'time', 'term']
 
 
 def score(ui_input, lim):
@@ -26,6 +25,7 @@ def score(ui_input, lim):
     level = ui_input.get('level', False)
     time_params = ui_input.get('time', False)
     term = ui_input.get('term', False)
+    title = ui_input.get('title', False)
     if category:
         result = search_by_categories(category)
         for i, val in result:
@@ -43,6 +43,10 @@ def score(ui_input, lim):
         result = search_by_term(term)
         for i, val in result:
             score[i] = score.get(i, 0) + val
+    if title:
+        result = search_by_title(title)
+        for i, val in result:
+            score[i] = score.get(i, 0) + val
     final_score = sorted(score.items(), key=lambda item: item[1], reverse=True)
     return final_score[:lim]
 
@@ -51,7 +55,7 @@ def input_verification(ui_input):
     '''
     From ui_input, verify ui_input is correct
     '''
-    ui = {'categories': list, 'level': str,
+    ui = {'categories': list, 'level': str, 'title': str,
           'time': tuple, 'term': str}
     for key, typ in ui.items():
         val = ui_input.get(key, None)
@@ -73,6 +77,10 @@ def input_verification(ui_input):
                 assert mode in ['total', 'active'], 'incorrect mode'
                 assert upper_bound > 0, 'incorret time constraint'
                 ui_input['time'] = (str(upper_bound), mode)
+            if key == 'title':
+                r = re.findall(r'[a-zA-Z]{2,}', val)
+                args = list(set([x.lower() for x in r if x.lower() not in INDEX_IGNORE]))
+                ui_input['title'] = args
             if key == 'term':
                 r = re.findall(r'[a-zA-Z]{2,}', val)
                 args = list(set([x.lower() for x in r if x.lower() not in INDEX_IGNORE]))
@@ -163,12 +171,37 @@ def search_by_time(time_params):
     return results
 
 
+def search_by_title(args):
+    '''
+    to match recipe with input string terms
+
+    Input:
+        string(list)
+    Return:
+        results(list): list of tuple with (id, score)
+    '''
+    db = sqlite3.connect(DATABASE_FILENAME)
+    c = db.cursor()
+    sub_q = ','.join(['?']*len(args))
+    query = f'''
+    SELECT id, ROUND(COUNT(id)*1.0/{len(args)},2) AS score
+    FROM recipe_title
+    WHERE word IN ({sub_q})
+    GROUP BY id
+    ORDER BY score desc;
+    '''
+    c.execute(query, tuple(args))
+    results = c.fetchall()
+    db.close()
+    return results
+
+
 def search_by_term(args):
     '''
     to match recipe with input string terms
 
     Input:
-        string(tuple)
+        string(list)
     Return:
         results(list): list of tuple with (id, score)
     '''
@@ -190,7 +223,7 @@ def search_by_term(args):
 
 ###########
 EXAMPLE_0 = {'categories': ['italian', 'main dish'], 'level': 'easy',
-             'time': (10, 'total'), 'term': 'italian soup'}
+             'time': (10, 'total'), 'term': 'italian soup', 'title': 'soup'}
 
 EXAMPLE_1 = {'categories': ['italian', 'main dish'], 'level': 'eAsy',
              'time': (60, 'total'), 'term': 'italian soup'}
