@@ -199,9 +199,10 @@ def main():
 #                                directions))
             write_to_table(c, 'recipes',
                                ('id', 'name', 'level',
-                                'time_active', 'time_total', 'calories',
+                                'time_active', 'time_total',
                                  'directions'),
-                               (id_tracker, name, level, directions))
+                               (id_tracker, name, level, active,
+                                total, directions))
             db.commit()
 #            for item in ing:
 #                write_to_table(c, 'recipe_ingredients',
@@ -223,6 +224,7 @@ def main():
                 write_to_table(c, 'recipe_terms', ('id', 'word'),
                                (id_tracker, word))
                 db.commit()
+            print(id_tracker)
             id_tracker += 1
 
     db.close()
