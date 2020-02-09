@@ -10,18 +10,64 @@ DATABASE_FILENAME = config['DEFAULT']['DATABASE_FILENAME']
 INDEX_IGNORE = config['DATA']['INDEX_IGNORE']
 
 
-def search_by_categories(categories):
+def score(ui_input, lim):
+    '''
+    From ui_input, update score and show the top records
+
+    Input:
+        ui_input(dict)
+    Return:
+        top(list)
+    '''
+    ui_input = input_verification(ui_input)
+    return
+
+
+def input_verification(ui_input):
+    '''
+    From ui_input, verify ui_input is correct
+    '''
+    ui = {'categories': list, 'level': str,
+          'time': tuple, 'term': str}
+    for key, typ in ui.items():
+        val = ui_input.get(key, None)
+        if val is not None:
+            if type(val) != typ:
+                raise ValueError(f"input type for {key} should be {typ}")
+            if key == 'categories':
+                args = tuple([x.capitalize() for x in val])
+                ui_input['categories'] = args
+            if key == 'level':
+                val = val.capitalize()
+                levels = ['Easy', 'Intermediate', 'Advanced']
+                assert val in levels, 'incorrect level'
+                ind = levels.index(val)
+                val_list = [int(i<=ind) for i,_ in enumerate(levels)]
+                ui_input['level'] = val_list
+            if key == 'time':
+                upper_bound, mode = val
+                assert mode in ['total', 'active'], 'incorrect mode'
+                assert upper_bound > 0, 'incorret time constraint'
+                ui_input['time'] = (str(upper_bound), mode)
+            if key == 'term':
+                r = re.findall(r'[a-zA-Z]{2,}', val)
+                args = tuple(set([x.lower() for x in r if x.lower() not in INDEX_IGNORE]))
+                ui_input['term'] = args
+    return ui_input
+
+
+
+def search_by_categories(args):
     '''
     To search by categories
 
     Input:
-        categories(list)
+        args(tuple)
     Return:
         results(list)
     '''
     db = sqlite3.connect(DATABASE_FILENAME)
     c = db.cursor()
-    args = tuple([x.capitalize() for x in categories])
     sub_q = ','.join(['?']*len(args))
     query = f'''
     SELECT r.id, ROUND(k.count*1.0/{len(args)},2) AS score
@@ -38,13 +84,15 @@ def search_by_categories(categories):
     return results
 
 
-def search_by_level(level):
-    level = level.capitalize()
-    levels = ['Easy', 'Intermediate', 'Advanced']
-    assert level in levels, 'incorrect level'
-    ind = levels.index(level)
-    val = [int(i<=ind) for i,_ in enumerate(levels)]
+def search_by_level(val):
+    '''
+    to match recipe with input level
 
+    Input:
+        val(list):
+    Return:
+        results(list): list of tuple with (id, score)
+    '''
     db = sqlite3.connect(DATABASE_FILENAME)
     c = db.cursor()
     query = f'''
@@ -63,27 +111,24 @@ def search_by_level(level):
     return results
 
 
-def search_by_time(upper_bound, mode='total'):
+def search_by_time(time_params):
     '''
     to match recipe with input time
 
     Input:
-        upper_bound(int or float)
-        mode(str): 'total' or 'active'
+        time_params(tuple): (upper_bound, mode)
     Return:
         results(list): list of tuple with (id, score)
     '''
-    assert mode in ['total', 'active'], 'incorrect mode'
-    assert upper_bound > 0, 'incorret time constraint'
-    upper_bound = str(upper_bound)
     db = sqlite3.connect(DATABASE_FILENAME)
+    upper_bound, mode = time_params
     mode = 'time_' + mode
     c = db.cursor()
     query = f'''
     SELECT id,
         CASE
-            WHEN {mode} > 0 AND {mode} < ? THEN 1.0
-            WHEN {mode} > 0 AND {mode} >= ? THEN 1.0*(?-{mode})/?
+            WHEN {mode} > 0 AND {mode} <= ? THEN 1.0
+            WHEN {mode} > 0 AND {mode} > ? THEN 1.0*(?-{mode})/?
         END AS score
     FROM recipes
     ORDER BY score desc;
@@ -94,19 +139,17 @@ def search_by_time(upper_bound, mode='total'):
     return results
 
 
-def search_by_term(string):
+def search_by_term(args):
     '''
     to match recipe with input string terms
 
     Input:
-        string(str)
+        string(tuple)
     Return:
         results(list): list of tuple with (id, score)
     '''
     db = sqlite3.connect(DATABASE_FILENAME)
     c = db.cursor()
-    r = re.findall(r'[a-zA-Z]{2,}', string)
-    args = tuple(set([x.lower() for x in r if x.lower() not in INDEX_IGNORE]))
     sub_q = ','.join(['?']*len(args))
     query = f'''
     SELECT id, ROUND(COUNT(id)*1.0/{len(args)},2) AS score
@@ -119,3 +162,11 @@ def search_by_term(string):
     results = c.fetchall()
     db.close()
     return results
+
+
+###########
+EXAMPLE_0 = {'categories': ['italian', 'main dish'], 'level': 'easy',
+             'time': (10, 'total'), 'term': 'italian soup'}
+
+EXAMPLE_1 = {'categories': ['italian', 'main dish'], 'level': 'eAsy',
+             'time': (10, 'total'), 'term': 'italian soup'}
