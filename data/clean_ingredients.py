@@ -30,7 +30,9 @@ UNITS = {"cup": ["cups", "cup", "c"], "fluid_ounce": ["fl oz", "fluid ounce", "f
          "milliliter": ["ml", "milliliter", "milliliters"], "pinch": ["pinch", "pinches"],
          "dash": ["dash", "dashes"], "touch": ["touch", "touches"], "handful": ["handful", "handfuls"],
          "stick": ["stick", "sticks"], "clove": ["cloves", "clove"], "can": ["cans", "can"],
-         "slice": ["slice", "slices"], "scoop": ["scoop", "scoops"], "filets": ["filet", "filets"], "sprig": ["sprigs", "sprig"]}
+         "slice": ["slice", "slices"], "scoop": ["scoop", "scoops"],
+         "filets": ["filet", "filets"], "sprig": ["sprigs", "sprig"],
+         "box": ["box", "boxes"]}
 
 
 class String:
@@ -44,7 +46,7 @@ class String:
 
     def rough_clean(self):
         s1 = re.sub(r'\(.*\)', '', self.s_origin.split(',')[0])
-        s2 = re.sub(r'\.', '', s1)
+        s2 = re.sub(r'\.', '', s1).lower()
         s3 = clean_unicode_fractions(s2)
         self.s_clean = s3
 
@@ -123,8 +125,10 @@ def clean_verb(s):
     for word in words:
         doc = NLP(word)
         if len(doc) == 1:
-            p = doc[0].pos_
-            if p == 'VERB' or p == 'ADJ' or p == 'PUNCT' or p == 'NUM' or p == 'ADV':
+            w = doc[0]
+            p = w.pos_
+            if p == 'VERB' or p == 'ADJ' or p == 'PUNCT' \
+            or w.like_num or p == 'ADV' or w.is_stop:
                 continue
         result.append(word)
     return ' '.join(result).strip(' ')
