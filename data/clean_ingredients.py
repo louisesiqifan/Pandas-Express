@@ -89,8 +89,11 @@ class String:
         if self.root is None:
             self.check = true
             return
+        elif len(self.root) > 3:
+            self.check = True
+            return
         elif len(self.root.split()) > 1:
-            if self.root.find('-') >= 0:
+            if self.root.find('-') == 0:
                 self.check = True
                 return
         if self.num is None or self.num == 0:
