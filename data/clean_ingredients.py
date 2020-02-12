@@ -89,7 +89,7 @@ class String:
         if self.root is None:
             self.check = true
             return
-        elif len(self.root) > 3:
+        elif len(self.root.split()) > 3:
             self.check = True
             return
         elif len(self.root.split()) > 1:
