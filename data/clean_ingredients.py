@@ -1,6 +1,7 @@
 import re
 import spacy
 import csv
+import string
 from spacy.matcher import Matcher
 from fractions import Fraction
 from word2number import w2n
@@ -23,7 +24,8 @@ UNITS = {"cup": ["cups", "cup", "c"], "fluid_ounce": ["fl oz", "fluid ounce", "f
 
 IGNORE = ['packages', 'package', 'boxes', 'box','packets', 'packet',
           'pieces', 'piece', 'chunk', 'jars', 'jar', 'bags', 'bag',
-          'containers', 'container', 'bricks', 'brick', 'bottles', 'bottle']
+          'containers', 'container', 'bricks', 'brick', 'bottles', 'bottle',
+          'heads', 'leaf', 'leaves', 'head', 'medium', 'large', 'small']
 
 
 class String:
@@ -36,11 +38,9 @@ class String:
         self.check = False
 
     def rough_clean(self):
-        s1 = re.sub(r'\(.*\)', '', self.s_origin.split(',')[0])
-        s2 = re.sub(r'\.', '', s1).lower()
-        s3 = clean_pack(s2)
-        s4 = clean_unicode_fractions(s3)
-        self.s_clean = s4
+        s1 = re.sub(r'\(.*\)', '', self.s_origin.split(',')[0]).lower()
+        s2 = clean_unicode_fractions(s1)
+        self.s_clean = s2
 
     def find_num(self):
         if self.s_clean.split(' ')[0] == 'one-and-a-half':
@@ -61,9 +61,9 @@ class String:
         words = self.s_clean.split(' ')
         for word in words:
             q = clean_quantifier(word)
-            if q is not None:
+            if q is not None and q != '':
                 self.quantifier = q
-                self.s_clean = re.sub(q, '', self.s_clean)
+                self.s_clean = re.sub(word, '', self.s_clean)
                 return
 
     def find_root(self):
@@ -71,7 +71,7 @@ class String:
         if len(remaining_words) == 1:
             self.root = remaining_words[0]
         else:
-            self.root = unique_words(clean_verb(self.s_clean))
+            self.root = unique_words(clean_pack(clean_verb(self.s_clean)))
 
     def check_status(self):
         if self.root is None:
@@ -91,6 +91,14 @@ class String:
             if self.quantifier is not None:
                 self.check = True
                 return
+
+
+def convert_units():
+    result = {}
+    for key, val in UNITS.items():
+        for word in val:
+            result[word] = key
+    return result
 
 
 def clean_pack(s):
@@ -120,14 +128,20 @@ def clean_unicode_fractions(s):
 
     for f_unicode, f_ascii in fractions.items():
         s = s.replace(f_unicode, f_ascii)
+    remove = string.punctuation
+    remove = remove.replace("-", "")
+    remove = remove.replace("/", "")
+    return s.translate(str.maketrans('', '', remove))
 
-    return s
 
 def clean_quantifier(w):
+    return UNIT_DICT.get(w, None)
+    '''
     for unit, lst in UNITS.items():
         if w in lst:
             return unit
     return None
+    '''
 
 
 def clean_num(s, obj=None):
@@ -194,10 +208,12 @@ tests = ['3 slices bacon', '2 cups shredded monterey jack',
          '25 grams water', 'Four 1/2-inch-thick slices country bread']
 
 if __name__ == "__main__":
+    UNIT_DICT = convert_units()
     with open('ingredients.txt', 'r', encoding='utf-8') as f:
         x = f.read().splitlines()
     with open('cleaned_ingredients.csv', 'w') as csvfile:
         writer = csv.writer(csvfile, delimiter="|")
+        n = 0
         for s in x:
             print(s)
             obj = String(s)
@@ -206,5 +222,6 @@ if __name__ == "__main__":
             obj.find_quantifier()
             obj.find_root()
             obj.check_status()
-            writer.writerow([obj.s_origin, obj.num, obj.quantifier,
+            writer.writerow([n, obj.s_origin, obj.num, obj.quantifier,
                              obj.root, obj.check])
+            n += 1
