@@ -196,7 +196,7 @@ def clean_verb(s):
             if p == 'VERB' or p == 'ADJ' or p == 'PUNCT' \
             or w.like_num or p == 'ADV' or w.is_stop or len(w.text) == 1:
                 continue
-        result.append(word)
+        result.append(''.join([str(token.lemma_) for token in doc]))
     return ' '.join(result).strip(' ')
 
 #######################
