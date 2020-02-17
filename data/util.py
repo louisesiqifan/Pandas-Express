@@ -6,7 +6,10 @@ Utility functions.
 import json
 import csv
 import bs4
+import pandas as pd
 
+CLEANED_ING = "cleaned_ingredients.csv"
+ING_COL = ['original', 'quantity', 'quantifier', 'ingredient']
 
 def get_soup(url, pm):
     '''
@@ -68,3 +71,11 @@ def write_csv(lst, filename):
         writer = csv.writer(csvfile, delimiter="|")
         for e in lst:
             writer.writerow([e])
+
+
+def read_csv(filename, colnames):
+    '''
+    Read data from a csv file.
+    '''
+    df = pd.read_csv(filename, sep='|', names=colnames)
+    return df
