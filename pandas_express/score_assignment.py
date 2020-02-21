@@ -182,15 +182,14 @@ def search_by_title(args):
     '''
     db = sqlite3.connect(DATABASE_FILENAME)
     c = db.cursor()
-    sub_q = ','.join(['?']*len(args))
+    args_dup = [x for x in args for _ in range(2)]
+    plus_string = '+'.join(['INSTR(name, ?)/INSTR(name, ?)']*len(args))
     query = f'''
-    SELECT id, ROUND(COUNT(id)*1.0/{len(args)},2) AS score
-    FROM recipe_title
-    WHERE word IN ({sub_q})
-    GROUP BY id
+    SELECT id, ROUND(({plus_string})*1.0/{len(args)},2) AS score
+    FROM recipes
     ORDER BY score desc;
     '''
-    c.execute(query, tuple(args))
+    c.execute(query, tuple(args_dup))
     results = c.fetchall()
     db.close()
     return results
