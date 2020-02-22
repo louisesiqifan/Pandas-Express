@@ -10,12 +10,14 @@ DATABASE_FILENAME = config['DEFAULT']['DATABASE_FILENAME']
 INDEX_IGNORE = config['DATA']['INDEX_IGNORE']
 
 
-def score(ui_input, lim):
+def score(ui_input, lim, weight={}):
     '''
     From ui_input, update score and show the top records
 
     Input:
         ui_input(dict)
+        lim(int)
+        weight(dictionary)
     Return:
         top(list)
     '''
@@ -27,26 +29,32 @@ def score(ui_input, lim):
     term = ui_input.get('term', False)
     title = ui_input.get('title', False)
     if category:
+        print('Looking for category...')
         result = search_by_categories(category)
         for i, val in result:
-            score[i] = score.get(i, 0) + val
+            score[i] = score.get(i, 0) + val*weight.get('categories',1)
     if level:
+        print('Looking for level...')
         result = search_by_level(level)
         for i, val in result:
-            score[i] = score.get(i, 0) + val
+            score[i] = score.get(i, 0) + val*weight.get('level',1)
     if time_params:
+        print('Looking for time...')
         result = search_by_time(time_params)
         for i, val in result:
             if val:
-                score[i] = score.get(i, 0) + val
+                score[i] = score.get(i, 0) + val*weight.get('level',1)
     if term:
+        print('Looking for term...')
         result = search_by_term(term)
         for i, val in result:
-            score[i] = score.get(i, 0) + val
+            score[i] = score.get(i, 0) + val*weight.get('level',1)
     if title:
+        print('Looking for title...')
         result = search_by_title(title)
         for i, val in result:
-            score[i] = score.get(i, 0) + val
+            s = score.get(i, 0) + val*weight.get('level',10)
+            score[i] = s
     final_score = sorted(score.items(), key=lambda item: item[1], reverse=True)
     return final_score[:lim]
 
@@ -78,8 +86,7 @@ def input_verification(ui_input):
                 assert upper_bound > 0, 'incorret time constraint'
                 ui_input['time'] = (str(upper_bound), mode)
             if key == 'title':
-                r = re.findall(r'[a-zA-Z]{2,}', val)
-                args = list(set([x.lower() for x in r if x.lower() not in INDEX_IGNORE]))
+                args = val.title().split(',')
                 ui_input['title'] = args
             if key == 'term':
                 r = re.findall(r'[a-zA-Z]{2,}', val)
@@ -183,13 +190,19 @@ def search_by_title(args):
     db = sqlite3.connect(DATABASE_FILENAME)
     c = db.cursor()
     args_dup = [x for x in args for _ in range(2)]
-    plus_string = '+'.join(['INSTR(name, ?)/INSTR(name, ?)']*len(args))
+    case = '''
+    CASE
+        WHEN INSTR(name, ?) > 0 THEN 1
+        ELSE 0
+    END
+    '''
+    plus_string = '+'.join([case]*len(args))
     query = f'''
     SELECT id, ROUND(({plus_string})*1.0/{len(args)},2) AS score
     FROM recipes
     ORDER BY score desc;
     '''
-    c.execute(query, tuple(args_dup))
+    c.execute(query, tuple(args))
     results = c.fetchall()
     db.close()
     return results
@@ -222,7 +235,7 @@ def search_by_term(args):
 
 ###########
 EXAMPLE_0 = {'categories': ['italian', 'main dish'], 'level': 'easy',
-             'time': (10, 'total'), 'term': 'italian soup', 'title': 'soup'}
+             'time': (10, 'total'), 'title': 'fried chicken'}
 
 EXAMPLE_1 = {'categories': ['italian', 'main dish'], 'level': 'eAsy',
              'time': (60, 'total'), 'term': 'italian soup'}
