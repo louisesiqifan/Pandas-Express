@@ -47,6 +47,7 @@ config = configparser.ConfigParser()
 config.read('../wrapper/constants.ini')
 name_db = config['DATA']['NAME_DB']
 name_json = config['DATA']['NAME_JSON']
+name_ing = config['DATA']['NAME_ING']
 index_ignore = config['DATA']['INDEX_IGNORE']
 INGREDIENTS = config['DATA']['INGREDIENTS']
 
@@ -229,6 +230,10 @@ def main():
     create_table(c, sql_create_title, 'recipe_title')
     db.commit()
     create_table(c, sql_create_ingredients, 'ingredients')
+    db.commit()
+
+    ig = pd.read_csv('recipe_ing_id.csv')
+    ig.to_sql('recipe_ingredients', conn, if_exists='replace', index=False)
     db.commit()
 
     # Write to Tables
