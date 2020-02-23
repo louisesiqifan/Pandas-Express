@@ -232,16 +232,19 @@ def main():
     db.commit()
     create_table(c, sql_create_title, 'recipe_title')
     db.commit()
-    create_table(c, sql_create_ingredients, 'ingredients')
-    db.commit()
+    #create_table(c, sql_create_ingredients, 'ingredients')
+    #db.commit()
 
-    ig = pd.read_csv('recipe_ing_id.csv', header=None)[['recipe_id', 'ing_id']].astype(int)
-    ig.to_sql('recipe_ingredients', db, if_exists='replace', index=False)
-    db.commit()
+    ig = pd.read_csv('recipe_ing_id.csv')[['recipe_id', 'ing_id']].astype(int)
+    #ig.to_sql('recipe_ingredients', db, if_exists='replace', index=False)
+    #db.commit()
 
     # Write to Tables
-    foo = clean_json.clean_json_files()
+    foo = clean_json.clean_json_files()  #dictionary
+    bar = dict()
     for item in foo.items():
+        bar[item[1].id] = item[1]
+        """
         obj = item[1]
         write_to_table(c, 'ingredients',
                        ('id', 'ingredient', 'serving_unit',
@@ -255,6 +258,7 @@ def main():
                         obj.cholesterol, obj.sodium, obj.total_carbohydrate,
                         obj.dietary_fiber, obj.sugars, obj.protein,
                         obj.potassium))
+        """
 
     id_tracker = 1
     for k in keys:
@@ -266,24 +270,23 @@ def main():
                 level = 'N/A'
             active, total = clean_time(course.get('time', {}))
             directions = '\n'.join(course.get('directions'))
-#            ing, nut = get_nutrient(course.get('ingredients'), serving)
-#            write_to_table(c, 'recipes',
-#                               ('id', 'name', 'level',
-#                                'time_active', 'time_total', 'calories',
-#                                 'total_fat', 'saturated_fat', 'cholesterol',
-#                                 'sodium', 'total_carbohydrate',
-#                                 'dietary_fiber', 'sugars',
-#                                 'protein', 'potassium', 'directions'),
-#                               (id_tracker, name, level,
-#                                active, total, nut[0], nut[1], nut[2], nut[3],
-#                                nut[4], nut[5], nut[6], nut[7], nut[8], nut[9],
-#                                directions))
+            ings = ig[ig['recipe_id']==id_tracker]['ing_id']
+            ing_objs = ings.apply(lambda x: bar[x].get_vals())
+            ing_vals = pd.DataFrame(ing_objs.tolist())
+            ing_sum = ing_vals.sum(axis=0)
             write_to_table(c, 'recipes',
                                ('id', 'name', 'level',
-                                'time_active', 'time_total', 'serving_size',
-                                 'directions'),
+                                'time_active', 'time_total', 'serving_size', 'calories',
+                                'total_fat', 'saturated_fat', 'cholesterol',
+                                'sodium', 'total_carbohydrate',
+                                'dietary_fiber', 'sugars',
+                                'protein', 'potassium', 'directions'),
                                (id_tracker, name, level, active,
-                                total, serving, directions))
+                                total, serving, ing_sum[0], ing_sum[1],
+                                ing_sum[2], ing_sum[3], ing_sum[4],
+                                ing_sum[5], ing_sum[6], ing_sum[7],
+                                ing_sum[8], ing_sum[9], directions))
+
             db.commit()
 #            for item in ing:
 #                write_to_table(c, 'recipe_ingredients',

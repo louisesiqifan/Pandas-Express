@@ -29,6 +29,12 @@ class Ingredient:
         self.potassium = ing_dict.get("nf_potassium", 0)
         self.origin = set()
 
+    def get_vals(self):
+        val = (self.calories, self.total_fat, self.saturated_fat,
+               self.cholesterol, self.sodium, self.total_carbohydrate,
+               self.dietary_fiber, self.sugars, self.protein, self.potassium)
+        return val
+
     def __repr__(self):
         return "<Ingredient {}: {}>".format(self.id, self.name)
 
@@ -36,10 +42,10 @@ class Ingredient:
 def find_json_files():
     '''
     Find all json files
-    
+
     Inputs:
         None
-    
+
     Outputs:
         a list of string
     '''
@@ -53,12 +59,12 @@ def find_json_files():
 def clean_json_files():
     '''
     Clean json files
-    
+
     Inputs:
         None
-    
+
     Outputs:
-        result: dictionary 
+        result: dictionary
     '''
     result = {}
     files = find_json_files()
