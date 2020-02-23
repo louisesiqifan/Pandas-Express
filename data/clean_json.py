@@ -1,16 +1,7 @@
+#%%
 import json
 import glob
-
-
-
-def find_json_files():
-    '''
-    Find all json files
-    '''
-    files = glob.glob('./*.json')
-    files.pop()
-    return [x.strip('.\\') for x in files]
-
+from sys import platform
 
 class Ingredient:
     def __init__(self, ing_id, ing_name, ing_dict):
@@ -38,12 +29,38 @@ class Ingredient:
         self.origin = set()
 
 
+def find_json_files():
+    '''
+    Find all json files
+    
+    Inputs:
+        None
+    
+    Outputs:
+        a list of string
+    '''
+    files = glob.glob('./[0-9]*.json')
+    if platform == "win32":
+        return [x.strip('.\\') for x in files]
+    else:
+        return files
+
+
 def clean_json_files():
+    '''
+    Clean json files
+    
+    Inputs:
+        None
+    
+    Outputs:
+        result: dictionary 
+    '''
     result = {}
     files = find_json_files()
     id_tracker = 1
-    for file in files:
-        with open(file) as f:
+    for json_file in files:
+        with open(json_file) as f:
             ingredients = json.load(f)
         for origin, item in ingredients.items():
             food = item.get('foods', 3)
@@ -55,19 +72,9 @@ def clean_json_files():
                     ing_obj.origin.add(origin)
                 else:
                     ing_obj = Ingredient(id_tracker, name, ing_dict)
-                    # obj = ingredient(id_tracker, name,
-                    #                  ing_dict.get("serving_unit", 0),
-                    #                  ing_dict.get("serving_weight_grams", 0),
-                    #                  ing_dict.get("nf_calories", 0),
-                    #                  ing_dict.get("nf_total_fat", 0),
-                    #                  ing_dict.get("nf_saturated_fat", 0),
-                    #                  ing_dict.get("nf_cholesterol", 0),
-                    #                  ing_dict.get("nf_sodium", 0),
-                    #                  ing_dict.get("nf_total_carbohydrate", 0),
-                    #                  ing_dict.get("nf_dietary_fiber", 0),
-                    #                  ing_dict.get("nf_sugars", 0),
-                    #                  ing_dict.get("nf_protein", 0),
-                    #                  ing_dict.get("nf_potassium", 0))
                     result[name] = ing_obj
                     id_tracker += 1
     return result
+
+
+#%%
