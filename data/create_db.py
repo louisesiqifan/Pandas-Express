@@ -244,7 +244,7 @@ def main():
     for item in foo.items():
         obj = item[1]
         write_to_table(c, 'ingredients',
-                       ('id', 'name', 'serving_unit',
+                       ('id', 'ingredient', 'serving_unit',
                         'grams', 'calories', 'total_fat',
                         'saturated_fat', 'cholesterol',
                         'sodium', 'total_carbohydrate',
