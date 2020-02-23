@@ -4,7 +4,7 @@ config = configparser.ConfigParser()
 config.read('../wrapper/constants.ini')
 DATABASE_FILENAME = config['DEFAULT']['DATABASE_FILENAME']
 UI = {'categories': list, 'level': str, 'title': str,
-      'time': tuple, 'term': str}
+      'time': tuple, 'term': str, 'nutrition' : dict}
 
 
 
@@ -39,4 +39,5 @@ def input_verification(ui_input):
                 r = re.findall(r'[a-zA-Z]{2,}', val)
                 args = list(set([x.lower() for x in r if x.lower() not in INDEX_IGNORE]))
                 ui_input['term'] = args
+            if key == 'nutrition':
     return ui_input
