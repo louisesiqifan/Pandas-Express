@@ -41,6 +41,7 @@ import numpy as np
 import pandas as pd
 from statistics import mean
 from sqlite3 import Error
+import clean_json
 import configparser
 import nutritionix
 
@@ -239,6 +240,22 @@ def main():
     db.commit()
 
     # Write to Tables
+    foo = clean_json.clean_json_files()
+    for item in foo.items():
+        obj = item[1]
+        write_to_table(c, 'ingredients',
+                       ('id', 'name', 'serving_unit',
+                        'grams', 'calories', 'total_fat',
+                        'saturated_fat', 'cholesterol',
+                        'sodium', 'total_carbohydrate',
+                        'dietary_fiber', 'sugars',
+                        'protein', 'potassium'),
+                       (obj.id, obj.name, obj.serving_unit, obj.grams,
+                        obj.calories, obj.total_fat, obj.saturated_fat,
+                        obj.cholesterol, obj.sodium, obj.total_carbohydrate,
+                        obj.dietary_fiber, obj.sugars, obj.protein,
+                        obj.potassium))
+
     id_tracker = 1
     for k in keys:
         for course in dish[k]:
