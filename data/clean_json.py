@@ -54,7 +54,7 @@ def clean_json_files():
                     ing_obj = result[name]
                     ing_obj.origin.add(origin)
                 else:
-                    ing_obj = ingredient(id_tracker, name, ing_dict)
+                    ing_obj = Ingredient(id_tracker, name, ing_dict)
                     # obj = ingredient(id_tracker, name,
                     #                  ing_dict.get("serving_unit", 0),
                     #                  ing_dict.get("serving_weight_grams", 0),
@@ -68,6 +68,6 @@ def clean_json_files():
                     #                  ing_dict.get("nf_sugars", 0),
                     #                  ing_dict.get("nf_protein", 0),
                     #                  ing_dict.get("nf_potassium", 0))
-                    result[name] = obj
+                    result[name] = ing_obj
                     id_tracker += 1
     return result

@@ -1,6 +1,7 @@
 import sqlite3
 import os
 import re
+import numpy as np
 import pandas as pd
 import configparser
 from manage_input import input_verification
@@ -15,7 +16,7 @@ INDEX_IGNORE = config['DATA']['INDEX_IGNORE']
 def get_dishes(ui_input, lim=10, weight={}):
     score_ranking = score(ui_input, lim, weight)
     ids = tuple([item[0] for item in score_ranking])
-    scores = str(tuple([item[1] for item in score_ranking]))
+    scores = [item[1] for item in score_ranking]
     db = sqlite3.connect(DATABASE_FILENAME)
     c = db.cursor()
     sub_q = 'or'.join([' id = ? ']*len(ids))
@@ -30,9 +31,9 @@ def get_dishes(ui_input, lim=10, weight={}):
     columns = ['id', 'name', 'level',
                'time_active', 'time_total', 'serving_size',
                'directions']
-    #df = pd.DataFrame(results, columns=columns)
-    #df['score'] = scores
-    return results
+    df = pd.DataFrame(results, columns=columns)
+    df['score'] = scores
+    return df
 
 
 def score(ui_input, lim, weight):
