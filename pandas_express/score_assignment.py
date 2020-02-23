@@ -29,28 +29,23 @@ def score(ui_input, lim, weight={}):
     term = ui_input.get('term', False)
     title = ui_input.get('title', False)
     if category:
-        print('Looking for category...')
         result = search_by_categories(category)
         for i, val in result:
             score[i] = score.get(i, 0) + val*weight.get('categories',1)
     if level:
-        print('Looking for level...')
         result = search_by_level(level)
         for i, val in result:
             score[i] = score.get(i, 0) + val*weight.get('level',1)
     if time_params:
-        print('Looking for time...')
         result = search_by_time(time_params)
         for i, val in result:
             if val:
                 score[i] = score.get(i, 0) + val*weight.get('level',1)
     if term:
-        print('Looking for term...')
         result = search_by_term(term)
         for i, val in result:
             score[i] = score.get(i, 0) + val*weight.get('level',1)
     if title:
-        print('Looking for title...')
         result = search_by_title(title)
         for i, val in result:
             s = score.get(i, 0) + val*weight.get('level',10)

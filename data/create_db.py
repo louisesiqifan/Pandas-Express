@@ -48,9 +48,7 @@ config.read('../wrapper/constants.ini')
 name_db = config['DATA']['NAME_DB']
 name_json = config['DATA']['NAME_JSON']
 index_ignore = config['DATA']['INDEX_IGNORE']
-INGREDIENTS = ['calories', 'total_fat', 'saturated_fat', 'cholesterol',
-               'sodium', 'total_carbohydrate', 'dietary_fiber', 'sugars',
-               'protein', 'potassium']
+INGREDIENTS = config['DATA']['INGREDIENTS']
 
 def create_table(c, s, name):
     '''
@@ -174,7 +172,7 @@ def main():
     sql_create_categories = config['DATA']['SQL_CREATE_CATEGORIES']
     sql_create_terms = config['DATA']['SQL_CREATE_TERMS']
     sql_create_title = config['DATA']['SQL_CREATE_TITLE']
-#    sql_create_ingredients = config['DATA']['SQL_CREATE_INGREDIENTS']
+    sql_create_ingredients = config['DATA']['SQL_CREATE_INGREDIENTS']
 
     # Connect to db
     db = sqlite3.connect(name_db)
@@ -189,8 +187,8 @@ def main():
     db.commit()
     create_table(c, sql_create_title, 'recipe_title')
     db.commit()
-#    create_table(c, sql_create_ingredients, 'recipe_ingredients')
-#    db.commit()
+    create_table(c, sql_create_ingredients, 'ingredients')
+    db.commit()
 
     # Write to Tables
     id_tracker = 1
