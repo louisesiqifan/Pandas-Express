@@ -26,7 +26,7 @@ def recipe_id_to_ing():
         for course in dish[k]:
             ings = course.get("ingredients", [])
             for ing in ings:
-                ing = ing.replaceAll('�', '')
+                ing = ing.replace('�', '')
                 result = clean[clean['origin'] == ing]
                 if len(result) > 0:
                     ori[result.iloc[0]['cleaned']] = id_tracker
@@ -61,9 +61,9 @@ def get_ing_df():
 def recipe_ing_id():
     df1 = recipe_id_to_ing()
     df2 = get_ing_df()
-    df = df1.merge(df2, on='origin', how='left')
+    df = df2.merge(df1, on='origin', how='left')
     df = df[['recipe_id', 'ing_id']]
-    return df
+    return df[df.recipe_id.notna()]
     
 
 # %%
