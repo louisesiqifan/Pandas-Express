@@ -74,7 +74,14 @@ def write_to_table(c, tb, cols, vals):
 
 def time(dic, item):
     '''
-    To convert time to minutes
+    To convert time to minutes.
+
+    Inputs:
+        dic: dictionary
+        item: "Active"/"Cook"/"Prep"/"Total"
+
+    Outputs:
+        final time in minutes: int
     '''
     t = dic.get(item, '')
     final_t = 0
@@ -89,7 +96,14 @@ def time(dic, item):
 
 def clean_time(dic):
     '''
-    To make time column uniform: active time and total time in minutes
+    To make time column uniform: active time and total time in minutes.
+
+    Inputs:
+        dic: dictionary
+
+    Outputs:
+        Active: int
+        Total time of cooking: int
     '''
     active = time(dic, 'Active') + time(dic, 'Cook') + time(dic, 'Prep')
     total = time(dic, 'Total')
@@ -102,10 +116,11 @@ def lower_term_from_string(string):
     '''
     To get a list of words from string if words not in INDEX_IGNORE
 
-    Input:
-        string(str)
-    Return:
-        words(list)
+    Inputs:
+        string: str
+
+    Outputs:
+        a set of words in string
     '''
     r = re.findall(r'[a-zA-Z]{2,}', string)
     return set([x.lower() for x in r if x.lower() not in index_ignore])
@@ -114,19 +129,32 @@ def lower_term_from_string(string):
 def get_term(course):
     '''
     To get all terms in the name and descriptions of the course.
+
+    Inputs:
+        course: dictionary
+
+    Outputs:
+        title: set of words in recipe title
+        wors: set of words in recipe title and description.
     '''
     name = course.get('name')
     directions = course.get('directions', [])
     title = lower_term_from_string(name)
     words = title.copy()
     for direction in directions:
-        words = words|set(lower_term_from_string(direction))
+        words |= set(lower_term_from_string(direction))
     return title, words
 
 
 def get_serving(course):
     '''
     From course get avg of servings
+
+    Inputs:
+        course: dictionary
+
+    Outputs:
+        average amount of servings: float
     '''
     def get_mean(ls):
         if ls == []:
@@ -138,6 +166,18 @@ def get_serving(course):
         s = 'no result'
     a = re.findall(r'\d+', s)
     return get_mean(a)
+
+
+def get_nutrient (ingredient, serving_size=1.0):
+    '''
+    From ingredients, get nutrient
+
+    Inputs:
+
+    Outputs:
+    '''
+
+    s =
 
 
 #def get_nutrient(ingredients, serving_size=1):
@@ -163,11 +203,12 @@ def get_serving(course):
 #    nutrient[0] = nutrient[0]/4.184
 #    return item_list, list(nutrient/serving_size)
 
+
 def main():
     # Initialize files and strings
 
     dish = util.read_json(name_json)
-    keys = dish.keys()
+    keys = dish.keys()   #123, abc, ..
     sql_create_recipes = config['DATA']['SQL_CREATE_RECIPES']
     sql_create_categories = config['DATA']['SQL_CREATE_CATEGORIES']
     sql_create_terms = config['DATA']['SQL_CREATE_TERMS']
