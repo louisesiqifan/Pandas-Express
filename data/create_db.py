@@ -235,7 +235,7 @@ def main():
     db.commit()
 
     ig = pd.read_csv('recipe_ing_id.csv', header=None)
-    ig.to_sql('recipe_ingredients', conn, if_exists='replace', index=False)
+    ig.to_sql('recipe_ingredients', db, if_exists='replace', index=False)
     db.commit()
 
     # Write to Tables
