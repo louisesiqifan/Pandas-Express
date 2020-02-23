@@ -21,6 +21,7 @@ def rid_to_ing():
         for course in dish[k]:
             ings = course.get("ingredients", [])
             for ing in ings:
+                ing = ing.replaceAll('�', '')
                 result = clean[clean['origin'] == ing]
                 if len(result) > 0:
                     ori[result.iloc[0]['cleaned']] = id_tracker
