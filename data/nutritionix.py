@@ -16,7 +16,10 @@ ID = [['95dfa943', '59e2efc1a67da04885a07f8ea16d5114'],
       ['d4366d31', '77c1490af84be97e73a248a2b7bb61ac'],
       ['8b754284', '6cfc07a8ecd4bc61a04729e80d4170f3'],
       ['c96b185b', '1ef46d0ffd3eb437b3938139995538db'],
-      ['ceb942f3', 'f8611c9451cda2053e7319b3ae5fe198']]
+      ['ceb942f3', 'f8611c9451cda2053e7319b3ae5fe198'],
+      ['e58f31ad', '711c6441d51f798f71743523c4bbd965'],
+      ['c39154dd', 'f5fd3fabbd561e3ee612aa78b453834f'],
+      ['78eaab1d', '4edf5e288aea02ac20b90eae330b1ff3']]
 
 
 def get_nutrient(ingredient, headers):
