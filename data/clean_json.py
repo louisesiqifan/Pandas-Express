@@ -1,6 +1,7 @@
 #%%
 import json
 import glob
+import pandas as pd
 from sys import platform
 
 class Ingredient:
@@ -78,3 +79,18 @@ def clean_json_files():
 
 
 #%%
+def get_ing_df(result):
+    '''
+    Create an ingredient dataframe
+    '''
+    ing_lst = []
+    for ing in result:
+        ing_obj = result[ing]
+        origin = ing_obj.origin
+        for key in origin:
+            ing_lst.append((key, ing_obj.name, ing_obj.id))
+            
+    return pd.DataFrame(ing_lst, columns=["origin", "ing_name", "ing_id"])
+
+
+# %%
