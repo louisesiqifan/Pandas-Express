@@ -29,6 +29,9 @@ class Ingredient:
         self.potassium = ing_dict.get("nf_potassium", 0)
         self.origin = set()
 
+    def __repr__(self):
+        return "<Ingredient {}: {}>".format(self.id, self.name)
+
 
 def find_json_files():
     '''
@@ -65,32 +68,22 @@ def clean_json_files():
             ingredients = json.load(f)
         for origin, item in ingredients.items():
             food = item.get('foods', 3)
-            if food != 3:
-                ing_dict = food[0]
-                name = ing_dict.get('food_name')
-                if name in result:
-                    ing_obj = result[name]
-                    ing_obj.origin.add(origin)
-                else:
-                    ing_obj = Ingredient(id_tracker, name, ing_dict)
-                    result[name] = ing_obj
-                    id_tracker += 1
+            if food == 3:
+                continue
+            ing_dict = food[0]
+            name = ing_dict.get('food_name')
+            if name in result:
+                ing_obj = result[name]
+            else:
+                ing_obj = Ingredient(id_tracker, name, ing_dict)
+                result[name] = ing_obj
+                id_tracker += 1
+            ing_obj.origin.add(origin)
     return result
 
 
 #%%
-def get_ing_df(result):
-    '''
-    Create an ingredient dataframe
-    '''
-    ing_lst = []
-    for ing in result:
-        ing_obj = result[ing]
-        origin = ing_obj.origin
-        for key in origin:
-            ing_lst.append((key, ing_obj.name, ing_obj.id))
-            
-    return pd.DataFrame(ing_lst, columns=["origin", "ing_name", "ing_id"])
+
 
 
 # %%
