@@ -178,7 +178,8 @@ def get_nutrient (ingredient, serving_size=1.0):
     Outputs:
     '''
 
-    s =
+    s = 0
+    return
 
 
 #def get_nutrient(ingredients, serving_size=1):
