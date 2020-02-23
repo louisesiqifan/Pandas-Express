@@ -271,9 +271,12 @@ def main():
             active, total = clean_time(course.get('time', {}))
             directions = '\n'.join(course.get('directions'))
             ings = ig[ig['recipe_id']==id_tracker]['ing_id']
-            ing_objs = ings.apply(lambda x: bar[x].get_vals())
-            ing_vals = pd.DataFrame(ing_objs.tolist())
-            ing_sum = ing_vals.sum(axis=0)
+            if len(ings) == 0:
+                ings_sum = pd.Series([None]*10)
+            else:
+                ing_objs = ings.apply(lambda x: bar[x].get_vals())
+                ing_vals = pd.DataFrame(ing_objs.tolist())
+                ing_sum = ing_vals.sum(axis=0)
             write_to_table(c, 'recipes',
                                ('id', 'name', 'level',
                                 'time_active', 'time_total', 'serving_size', 'calories',
