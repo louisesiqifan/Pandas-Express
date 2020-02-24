@@ -40,4 +40,12 @@ def input_verification(ui_input):
                 args = list(set([x.lower() for x in r if x.lower() not in INDEX_IGNORE]))
                 ui_input['term'] = args
             if key == 'nutrition':
+                for k, v in val.items():
+                    if k not in ['calories', 'total_fat', 'saturated_fat',
+                                 'cholesterol','sodium', 'total_carbohydrate',
+                                 'dietary_fiber', 'sugars', 'protein',
+                                 'potassium']:
+                        raise ValueError("nutrition value not supported")
+                    if v != 1 and v != 0-1:
+                        raise ValueError(f"side for {k} should be 1 or -1")
     return ui_input

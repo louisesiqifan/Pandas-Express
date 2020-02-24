@@ -11,6 +11,7 @@ config = configparser.ConfigParser()
 config.read('../wrapper/constants.ini')
 DATABASE_FILENAME = config['DEFAULT']['DATABASE_FILENAME']
 INDEX_IGNORE = config['DATA']['INDEX_IGNORE']
+NUTRITION_CUT = config['SCORE']['SCORES']
 
 
 def get_dishes(ui_input, lim=10, weight={}):
@@ -54,6 +55,7 @@ def score(ui_input, lim, weight):
     time_params = ui_input.get('time', False)
     term = ui_input.get('term', False)
     title = ui_input.get('title', False)
+    nutrition = ui_input.get('nutrition', False)
     if category:
         result = search_by_categories(category)
         for i, val in result:
@@ -66,15 +68,20 @@ def score(ui_input, lim, weight):
         result = search_by_time(time_params)
         for i, val in result:
             if val:
-                score[i] = score.get(i, 0) + val*weight.get('level',1)
+                score[i] = score.get(i, 0) + val*weight.get('time',1)
     if term:
         result = search_by_term(term)
         for i, val in result:
-            score[i] = score.get(i, 0) + val*weight.get('level',1)
+            score[i] = score.get(i, 0) + val*weight.get('term',1)
     if title:
         result = search_by_title(title)
         for i, val in result:
-            s = score.get(i, 0) + val*weight.get('level',10)
+            s = score.get(i, 0) + val*weight.get('title',10)
+            score[i] = s
+    if nutrition:
+        result = search_by_nutrition(nutrition)
+        for i, val in result:
+            s = score.get(i, 0) + val*weight.get('nutrition',2)
             score[i] = s
     final_score = sorted(score.items(), key=lambda item: item[1], reverse=True)
     return final_score[:lim]
@@ -205,19 +212,53 @@ def search_by_term(args):
     c = db.cursor()
     sub_q = ','.join(['?']*len(args))
     query = f'''
-    SELECT id, ROUND(COUNT(id)*1.0/{len(args)},2) AS score
-    FROM recipe_terms
-    WHERE word IN ({sub_q})
-    GROUP BY id
-    ORDER BY score desc;
-    '''
+        SELECT id, ROUND(COUNT(id)*1.0/{len(args)},2) AS score
+        FROM recipe_terms
+        WHERE word IN ({sub_q})
+        GROUP BY id
+        ORDER BY score desc;
+        '''
     c.execute(query, args)
     results = c.fetchall()
     db.close()
     return results
 
 
-def search_by_nutrition(item, sides):
+def search_by_nutrition(arg_dict):
+    '''
+    to find recipes that satisfy nutrition needs
+
+    Input:
+        args (dict):
+            key: which nutrition item
+            val: sides (-1: want lower; 1: want higher)
+    '''
+    db = sqlite3.connect(DATABASE_FILENAME)
+    c = db.cursor()
+    args = []
+    l = len(arg_dict.keys())
+    for item, side in arg_dict.items():
+        cuts = NUTRITION_CUT[item]
+        args = [item, cuts[2], side, item, cuts[0], 0-side]
+        args = args + arg
+    case = '''
+    CASE
+        WHEN ? > ? THEN ?
+        WHEN ? < ? THEN ?
+        ELSE 0
+    END
+    '''
+    plus_string = '+'.join([case]*l)
+    query = f'''
+            SELECT id, ROUND(({plus_string})*1.0/{l},2) AS score
+            FROM recipes
+            ORDER BY score desc;
+            '''
+    c.execute(query, tuple(args))
+    results = c.fetchall()
+    db.close()
+    return results
+
 
 
 ###########
