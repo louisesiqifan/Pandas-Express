@@ -217,6 +217,9 @@ def search_by_term(args):
     return results
 
 
+def search_by_nutrition(item, sides):
+
+
 ###########
 EXAMPLE_0 = {'categories': ['italian', 'main dish'], 'level': 'easy',
              'time': (10, 'total'), 'title': 'fried chicken'}
