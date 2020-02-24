@@ -276,7 +276,7 @@ def main():
             else:
                 ing_objs = ings.apply(lambda x: bar[x].get_vals())
                 ing_vals = pd.DataFrame(ing_objs.tolist())
-                ing_sum = ing_vals.sum(axis=0)
+                ing_sum = np.log(ing_vals.sum(axis=0).replace(0, np.nan)).replace(np.nan,0)
             write_to_table(c, 'recipes',
                                ('id', 'name', 'level',
                                 'time_active', 'time_total', 'serving_size', 'calories',
@@ -285,7 +285,7 @@ def main():
                                 'dietary_fiber', 'sugars',
                                 'protein', 'potassium', 'directions'),
                                (id_tracker, name, level, active,
-                                total, serving, ing_sum[0], ing_sum[1],
+                                total, serving, ing_sum[0]/4.184, ing_sum[1],
                                 ing_sum[2], ing_sum[3], ing_sum[4],
                                 ing_sum[5], ing_sum[6], ing_sum[7],
                                 ing_sum[8], ing_sum[9], directions))
