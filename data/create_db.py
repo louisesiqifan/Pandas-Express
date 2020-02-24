@@ -276,7 +276,7 @@ def main():
             else:
                 ing_objs = ings.apply(lambda x: bar[x].get_vals())
                 ing_vals = pd.DataFrame(ing_objs.tolist())
-                ing_sum = ing_vals.sum(axis=0)
+                ing_sum = ing_vals.sum(axis=0)/serving
             write_to_table(c, 'recipes',
                                ('id', 'name', 'level',
                                 'time_active', 'time_total', 'serving_size', 'calories',

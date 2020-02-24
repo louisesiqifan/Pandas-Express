@@ -12,7 +12,7 @@ config = configparser.ConfigParser()
 config.read('../wrapper/constants.ini')
 DATABASE_FILENAME = config['DEFAULT']['DATABASE_FILENAME']
 INDEX_IGNORE = config['DATA']['INDEX_IGNORE']
-NUTRITION_CUT = {'calories': [1.10, 1.25, 1.39],
+NUTRITION_CUT = {'calories': [1.10, 45.3, 1.39],
                  'total_fat':[0.89, 5.06, 13.94],
                  'saturated_fat': [0.16, 1.29, 5.02],
                  'cholesterol': [0.1, 2.45, 50.25],
