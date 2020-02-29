@@ -1,4 +1,3 @@
-import json
 import traceback
 import sys
 import csv
@@ -12,7 +11,6 @@ from django import forms
 
 from score_assignment import get_dishes
 
-###########
 # EXAMPLE_0 = {'level': 'easy',
 #              'time': (30, 'total'), 'title': 'fried chicken',
 #              'nutrition': {'calories': -1, 'protein': 1}}
@@ -23,6 +21,23 @@ LEVEL_CHOICES = [("easy", "Easy"),
                  ("intermediate", "Intermediate"),
                  ("hard", "Hard")]
 
+COLUMN_NAMES = {"id": 'ID',
+                'name': "Recipe",
+                'level': "Difficulty Level",
+                'time_active': "Active Time",
+                'time_total': "Total Time",
+                'serving_size': "Serving Size",
+                'calories': "Calories",
+                'total_fat': "Total Fat",
+                'directions': "Directions",
+                'saturated_fat': "Saturated Fat",
+                'cholesterol': "Cholesterol",
+                'sodium': "Sodium",
+                'total_carbohydrate': 'Total Carbohydrate',
+                'dietary_fiber': 'Dietary Fiber',
+                'sugars': 'Sugars',
+                'protein': 'Protein',
+                'potassium': 'Potassium'}
 
 class Cooking_Time(forms.MultiValueField):
     def __init__(self, *args, **kwargs):
@@ -37,7 +52,7 @@ class Cooking_Time(forms.MultiValueField):
         if len(data_list) == 2:
             if data_list[0] is None or not data_list[1]:
                 raise forms.ValidationError(
-                    'Big Brother is watching you bro.')
+                    str(data_list))
             if data_list[0] < 0:
                 raise forms.ValidationError(
                     'Big Brother is watching you bro.')
@@ -57,16 +72,14 @@ class SearchForm(forms.Form):
         widget=forms.widgets.MultiWidget(
             widgets=(forms.widgets.NumberInput,
                      forms.widgets.Select(choices=TIME_CHOICES))))
+
     level = forms.MultipleChoiceField(label='Difficulty Level',
                                       choices=LEVEL_CHOICES,
                                       widget=forms.CheckboxSelectMultiple,
                                       required=False)
 
-
-
-# EXAMPLE_0 = {'level': 'easy',
-#              'time': (30, 'total'), 'title': 'fried chicken',
-#              'nutrition': {'calories': -1, 'protein': 1}}
+    show_args = forms.BooleanField(label='Show args_to_ui',
+                                   required=False)
 
 
 def home(request):
@@ -77,7 +90,6 @@ def home(request):
         form = SearchForm(request.GET)
         # check whether it's valid:
         if form.is_valid():
-
             # Convert form data to an args dictionary for find_courses
             args = {}
             if form.cleaned_data['query']:
@@ -85,11 +97,14 @@ def home(request):
 
             level = form.cleaned_data['level']
             if level:
-                args['day'] = level
+                args['level'] = level[0]
 
             time_and_mode = form.cleaned_data['time_and_mode']
             if time_and_mode:
-                args['time'] = (time_and_mode[0], time_and_mode[1])
+                args['time'] = tuple(time_and_mode)
+
+            if form.cleaned_data['show_args']:
+                context['args'] = 'args_to_ui = ' + str(args)
 
             try:
                 res = get_dishes(args)
@@ -119,15 +134,16 @@ def home(request):
     #                       'Should be a tuple of length 4 with one string and '
     #                       'three lists.')
     # else:
-    #     columns, result = res
-    #
-    #     # Wrap in tuple if result is not already
-    #     if result and isinstance(result[0], str):
-    #         result = [(r,) for r in result]
-    #
-    #     context['result'] = result
-    #     context['num_results'] = len(result)
-    #     context['columns'] = [COLUMN_NAMES.get(col, col) for col in columns]
+    
+    columns, result = res
+
+    # Wrap in tuple if result is not already
+    if result and isinstance(result[0], str):
+        result = [(r,) for r in result]
+
+    context['result'] = result
+    context['num_results'] = len(result)
+    context['columns'] = [COLUMN_NAMES.get(col, col) for col in columns]
 
     context['form'] = form
     return render(request, 'index.html', context)

@@ -18,7 +18,7 @@ div#header h1 {
     padding: 12px;
 }
 
-/* div.frame {
+div.frame {
     margin: 15px;
 }
 
@@ -127,4 +127,4 @@ ul.errorlist li {
 span.helptext {
     font-size: 11px;
     color: gray;
-} */
+}
