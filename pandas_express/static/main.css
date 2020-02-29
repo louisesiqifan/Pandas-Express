@@ -1,8 +1,9 @@
 html, body {
     margin: 0;
     padding: 0;
-    font-family: Helvetica;
+    font-family: 'Quicksand', sans-serif;
     overflow-x: hidden;
+    scroll-behavior: smooth;
 }
 
 div {
@@ -11,7 +12,6 @@ div {
 }
 
 div#header {
-/*    background: rgb(189, 252, 200);*/
     margin: 0;
     padding-right: 66px;
     padding-left: 66px;
@@ -27,10 +27,12 @@ div#header {
 
 div#header h1 {
     font-size: 66px;
+    font-weight: 1500;
     color: #ffffff;
     margin: 0px;
     padding: 0px;
 }
+
 
 div.frame {
     margin: 66px;
@@ -63,17 +65,17 @@ fieldset legend {
 }
 
 input.query {
-    font-size: 22px;
+    font-size: 18px;
 }
 
 label {
-    font-size: 22;
+    font-size: 22px;
+    color: #3f3f3f;
+    margin: 5px;
+    padding: 1px;
 }
 
-p.num_results {
-    margin-left: 5px;
-    font-size: 18px;
-}
+
 
 table.form {
     text-align: left;
@@ -88,33 +90,145 @@ table.form tr th {
     padding-bottom: 22px;
 }
 
-table.form input {
+
+table.form input#id_query{
     margin-right: 10px;
     margin-left: 20px;
-/*    margin-bottom: 10px*/
+    padding: 5px 5px;
     font-size: 18px;
+    color: #545454;
+    width: 50%;
+    box-sizing: border-box;
+    border: 2px solid #D7D7D7;
+    border-radius: 7px;
+    transition: width 0.4s ease-in-out;
+    background-image: url('https://cdn1.iconfinder.com/data/icons/hawcons/32/698627-icon-111-search-128.png');
+    background-size: 24px 24px;
+    background-position: 5px 4px; 
+    background-repeat: no-repeat;
+    padding-left: 40px;
+    display: inline-block;
 }
 
-/*table.form input#id_query {
-    font-size: 32px;
-    margin: 10px;
-    padding: 0px;
+table.form input#id_query:focus{
+    border: 2px solid lightblue;
+    width: 100%;
+    background-color: #F8F8F8;
+    transition: width border background 0.4s ease-in-out;    
 }
-*/
 
+
+table.form input#id_time_and_mode_0{
+    margin-right: 10px;
+    margin-left: 20px;
+    padding: 5px 5px;
+    font-size: 18px;
+    color: #545454;
+    width: 25%;
+    box-sizing: border-box;
+    border: 2px solid #D7D7D7;
+    border-radius: 7px;
+    transition: width 0.4s ease-in-out;
+    background-image: url('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.materialui.co%2FmaterialIcons%2Faction%2Falarm_grey_192x192.png&f=1&nofb=1');
+    background-size: 22px 22px;
+    background-position: 5px 5px; 
+    background-repeat: no-repeat;
+    padding-left: 40px;
+    display: inline-block;
+}
+
+table.form input#id_time_and_mode_0:focus{
+    border: 2px solid lightblue;
+    width: 30%;
+    font-size: 18px;
+    color: #696969;
+    background-color: #F8F8F8;
+    transition: width border background 0.4s ease-in-out;    
+}
+
+table.form select#id_time_and_mode_1{
+    margin-right: 10px;
+    margin-left: 20px;
+    font-size: 16px;
+    color: #545454;
+    border: none;
+    border-radius: 4px;
+    padding: 4px;
+    background-color: #f1f1f1;
+}
 
 table.form ul#id_level {
     list-style-type: none;
-    margin: 0px;
-    padding: 2px;
-    font-size: 20px;
+    margin-left: 12px;
+    padding: 0px;
+    font-size: 0px;
 }
+
+table.form label[for=id_level_0]{
+    font-size: 18px;
+}
+
+table.form label[for=id_level_1]{
+    font-size: 18px;
+}
+
+table.form label[for=id_level_2]{
+    font-size: 18px;
+}
+
+input[type=submit].button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 22px;
+  margin-top: 20px;
+  margin-bottom: 0px;
+  margin-right: 10px;
+  margin-left: 10px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.1s;
+}
+
+input[type=submit]:hover{
+    background-color: #45a049;
+}
+
+input[type=reset].button {
+  background-color: tomato;
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 22px;
+  margin-top: 20px;
+  margin-bottom: 0px;
+  margin-right: 10px;
+  margin-left: 10px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.1s;
+}
+
+input[type=reset]:hover{
+    background-color: #ff4747;
+}
+
 
 
 table.recipes {
     border: 2px solid #ddd;
-    padding: 20px;
-    margin: 0px;
+    padding:10px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-right: 10px;
+    margin-left: 10px;
     border-radius: 25px
 }
 
@@ -126,6 +240,7 @@ table.recipes tr td,
 table.recipes tr th {
     padding: 8px;
     font-size: 18px;
+    color: #3f3f3f;
 }
 
 table.recipes tr:nth-child(even) {
@@ -146,22 +261,55 @@ ul.errorlist li {
 }
 
 span.helptext {
-    font-size: 20px;
+    font-size: 14px;
     color: gray;
     padding-left: 20px;
 }
 
+p.num_results {
+    margin-left: 10px;
+    font-size: 18px;
+    color: #7f8b9c;
+}
 
-input.button {
-  background-color: #4CAF50;
+input[type=back].button {
+  background-color: #b8bfc8;
   border: none;
   color: white;
-  padding: 12px 28px;
+  padding: 12px 0px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 22px;
-  margin: 4px 2px;
+  margin-top: 10px;
+  margin-bottom: 0px;
+  margin-right: 10px;
+  margin-left: 10px;
   cursor: pointer;
-  border-radius: 8px
+  border-radius: 8px;
+  transition: all 0.1s;
+}
+
+input[type=back]:hover{
+    background-color: #7f8b9c;
+}
+
+
+div#footer {
+    background: #7cb57c;
+    margin: 0;
+    padding-right: 66px;
+    padding-left: 66px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    width: 100%;
+    height: 100%;
+}
+
+div#footer h2 {
+    font-size: 18px;
+    font-weight: 500;
+    color: #ffffff;
+    margin: 0px;
+    padding: 0px;
 }

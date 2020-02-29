@@ -19,7 +19,7 @@ TIME_CHOICES = [("total", "Total"), ("active", "Active")]
 
 LEVEL_CHOICES = [("easy", "Easy"),
                  ("intermediate", "Intermediate"),
-                 ("hard", "Hard")]
+                 ("advanced", "Advanced")]
 
 COLUMN_NAMES = {"id": 'ID',
                 'name': "Recipe",
@@ -63,11 +63,11 @@ class Cooking_Time(forms.MultiValueField):
 class SearchForm(forms.Form):
     query = forms.CharField(
         label='Search terms',
-        help_text='e.g. fried chicken',
+        help_text='Try Fried Chicken!',
         required=False)
     time_and_mode = Cooking_Time(
-        label='Cooking time:',
-        help_text='e.g. 30 and total',
+        label='Cooking Time',
+        help_text='30 minutes in total or more?',
         required=False,
         widget=forms.widgets.MultiWidget(
             widgets=(forms.widgets.NumberInput,

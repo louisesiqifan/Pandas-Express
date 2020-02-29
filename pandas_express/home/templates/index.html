@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:300,500" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=0.67">
     <head>
         <title>Pandas Express</title>
@@ -10,13 +11,14 @@
         <div id="header">
             <h1>Pandas Express</h1>
         </div>
-        <div class="frame">
+        <div class="frame" id="section1">
             <form method="get">
                 {% csrf_token %}
                 <table class="form">
                 {{ form }}
                 </table>
-                <input type="submit" class="button" value="Search" />
+                <input type="submit" class="button" value="Search" onclick="location.href='#section2';"/>
+                <input type="reset" class="button" value="Reset" onclick="location.href='#header';" />
             </form>
         </div>
 
@@ -32,7 +34,7 @@
         </div>
         {% endif %}
 
-        <div class="frame">
+        <div class="frame" id="section2">
             {% if result != None %}
             <div class="results">
                 <table class="recipes">
@@ -51,7 +53,11 @@
                 </table>
             </div>
             <p class="num_results">Results: {{ num_results }}</p>
-            {% endif %}
+            <input type="back" class="button" value="Back to top" onclick="location.href='#header';" />
+            {% endif %}    
+        </div>
+        <div id="footer">
+             <h2>Presented by Team AttributeError</h2>
         </div>
     </body>
 </html>
