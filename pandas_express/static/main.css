@@ -2,7 +2,7 @@
 html, body {
     margin: 0;
     padding: 0;
-    font-family: Times;
+    font-family: Verdana;
 }
 
 div#header {
@@ -12,14 +12,14 @@ div#header {
 }
 
 div#header h1 {
-    font-size: 28px;
+    font-size: 64px;
     color: #000000;
     margin: 12px;
     padding: 12px;
 }
 
 div.frame {
-    margin: 15px;
+    margin: 100px;
 }
 
 div.args {
@@ -45,24 +45,25 @@ fieldset {
 
 fieldset legend {
     font-weight: bold;
-    font-size: 12px;
+    font-size: 32px;
 }
 
 input.query {
-    font-size: 18px;
+    font-size: 32px;
 }
 
 label {
-    font-size: 12px;
+    font-size: 32px;
 }
 
 p.num_results {
     margin-left: 5px;
-    font-size: 12px;
+    font-size: 32px;
 }
 
 table.form {
     text-align: left;
+    font-size: 32px;
 }
 
 table.form tr td,
@@ -72,15 +73,17 @@ table.form tr th {
 
 table.form input {
     margin-right: 5px;
+    font-size: 32px;
 }
 
 table.form input#id_query {
-    font-size: 18px;
+    font-size: 32px;
 }
 
 table.form ul#id_days {
     margin: 0px;
     padding: 0px;
+    font-size: 32px;
 }
 
 table.form ul#id_days li {
@@ -88,6 +91,7 @@ table.form ul#id_days li {
     float: left;
     margin: 0px;
     padding: 0px;
+    font-size: 32px;
 }
 
 table.recipes {
@@ -103,7 +107,7 @@ table.courses tr th {
 table.courses tr td,
 table.courses tr th {
     padding: 3px;
-    font-size: 12px;
+    font-size: 32px;
 }
 
 table.courses tr:nth-child(even) {
@@ -118,13 +122,13 @@ ul.errorlist {
 }
 
 ul.errorlist li {
-    font-size: 12px;
+    font-size: 32px;
     color: red;
     margin: 0px;
     padding: 0px;
 }
 
 span.helptext {
-    font-size: 11px;
+    font-size: 32px;
     color: gray;
 }

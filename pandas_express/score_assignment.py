@@ -73,7 +73,7 @@ def search_by_term(c, terms):
     N = len(terms)
     sub_q = ','.join(['?'] * N)
     query = '''
-    SELECT id, ROUND(COUNT(id)*1.0/{},2) AS score
+    SELECT id, ROUND(COUNT(id) * 1.0 / {}, 2) AS score
     FROM recipe_terms
     WHERE word IN ({})
     GROUP BY id
@@ -195,7 +195,7 @@ def search_by_nutrition(c, arg_dict):
     '''
     plus_string = '+'.join([case]*l)
     query = '''
-    SELECT id, ROUND(({})*1.0/{},2) AS score
+    SELECT id, ROUND(({}) * 1.0 / {}, 2) AS score
     FROM recipes
     ORDER BY score desc;
     '''.format(plus_string, l)
@@ -276,8 +276,11 @@ def get_one_dish(c, recipe_id):
     '''
     params = (recipe_id, )
     c.execute(query, params)
-    result = c.fetchall()[0]
-    return result
+    result = list(c.fetchall()[0])
+    for i, e in enumerate(result):
+        if isinstance(e, float):
+            result[i] = round(e, 2)
+    return tuple(result)
 
 
 def get_default_sort(ui_input):
@@ -329,15 +332,19 @@ def get_dishes(args_to_ui, lim=10, weight={}, debug=False):
         dish = get_one_dish(c, recipe_id)
         dishes.append(dish)
         scores.append(score)
-    db.close()
+    db.close()    
 
+    df = pd.DataFrame(dishes, columns=COLUMNS)
+    df['score'] = scores
+    sort_list, order = get_default_sort(args_to_ui)
+    df = df.sort_values(sort_list, ascending=order)[:lim]
     if debug:
-        df = pd.DataFrame(dishes, columns=COLUMNS)
-        df['score'] = scores
-        sort_list, order = get_default_sort(ipt)
-        print(df.sort_values(sort_list, ascending=order)[:lim])
-    else:
-        return [COLUMNS, dishes]
+        print(df)
+
+    cols = ['id', 'name', 'level', 'time_total']
+    df = df[cols]
+    tuples = [tuple(x) for x in df.to_numpy()]
+    return [cols, tuples]
 
 
 ###########

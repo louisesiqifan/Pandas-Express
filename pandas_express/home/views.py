@@ -87,9 +87,7 @@ def home(request):
         # create a form instance and populate it with data from the request:
         form = SearchForm(request.GET)
         # check whether it's valid:
-        print(form.is_valid())
         if form.is_valid():
-            print("valid")
             # Convert form data to an args dictionary for find_courses
             args = {}
             if form.cleaned_data['query']:
@@ -106,7 +104,6 @@ def home(request):
             if form.cleaned_data['show_args']:
                 context['args'] = 'args_to_ui= ' + str(args)
 
-            print(args)
             try:
                 res = get_dishes(args)
             except Exception as e:
