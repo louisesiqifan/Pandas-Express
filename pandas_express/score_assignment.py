@@ -25,11 +25,11 @@ NUTRITION_CUT = {'calories': [1.10, 45.3, 1.39],
 
 
 def get_one_dish(c, id):
-    query = f'''
+    query = '''
             SELECT *
             FROM recipes
-            WHERE id = {id}
-            '''
+            WHERE id = {}
+            '''.format(id)
     c.execute(query)
     result = c.fetchall()[0]
     return result
@@ -51,8 +51,9 @@ def get_default_sort(ui_input):
     return sort_list, order
 
 
-def get_dishes(ui_input, lim=10, weight={}):
-    score_ranking = score(ui_input, lim, weight)
+def get_dishes(ui_input, lim=10, weight={}, debug=False):
+    ipt = ui_input.copy()
+    score_ranking = score(ipt, lim, weight)
     dishes = []
     scores = []
     db = sqlite3.connect(DATABASE_FILENAME)
@@ -66,10 +67,13 @@ def get_dishes(ui_input, lim=10, weight={}):
                'serving_size', 'calories', 'total_fat', 'saturated_fat',
                'cholesterol', 'sodium', 'total_carbohydrate',
                'dietary_fiber', 'sugars', 'protein', 'potassium', 'directions']
-    df = pd.DataFrame(dishes, columns=columns)
-    df['score'] = scores
-    sort_list, order = get_default_sort(ui_input)
-    return df.sort_values(sort_list, ascending=order)[:lim]
+    if debug:
+        df = pd.DataFrame(dishes, columns=columns)
+        df['score'] = scores
+        sort_list, order = get_default_sort(ipt)
+        print(df.sort_values(sort_list, ascending=order)[:lim])
+    else:
+        return [columns, dishes]
 
 
 def score(ui_input, lim, weight):
@@ -137,15 +141,15 @@ def search_by_categories(args):
     db = sqlite3.connect(DATABASE_FILENAME)
     c = db.cursor()
     sub_q = ','.join(['?']*len(args))
-    query = f'''
-    SELECT r.id AS id, ROUND(k.count*1.0/{len(args)},2) AS score
+    query = '''
+    SELECT r.id AS id, ROUND(k.count*1.0/{},2) AS score
     FROM recipes AS r
     JOIN (SELECT id, COUNT(id) AS count
           FROM recipe_categories
-          WHERE category IN ({sub_q})
+          WHERE category IN ({})
           GROUP BY id) AS k
           ON k.id = r.id
-    '''
+    '''.format(len(args), sub_q)
     c.execute(query, args)
     results = c.fetchall()
     db.close()
@@ -163,16 +167,16 @@ def search_by_level(val):
     '''
     db = sqlite3.connect(DATABASE_FILENAME)
     c = db.cursor()
-    query = f'''
+    query = '''
     SELECT id,
            CASE
-               WHEN level = 'Easy' THEN {val[0]}
-               WHEN level = 'Intermediate' THEN {val[1]}
-               WHEN level = 'Advanced' THEN {val[2]}
+               WHEN level = 'Easy' THEN {}
+               WHEN level = 'Intermediate' THEN {}
+               WHEN level = 'Advanced' THEN {}
            END AS score
     FROM recipes
     WHERE score IS NOT NULL;
-    '''
+    '''.format(val[0], val[1], val[2])
     c.execute(query)
     results = c.fetchall()
     db.close()
@@ -192,15 +196,15 @@ def search_by_time(time_params):
     upper_bound, mode = time_params
     mode = 'time_' + mode
     c = db.cursor()
-    query = f'''
+    query = '''
     SELECT id,
         CASE
-            WHEN {mode} > 0 AND {mode} <= ? THEN 1.0
-            WHEN {mode} > 0 AND {mode} > ? THEN 1.0*(?-{mode})/?
+            WHEN {} > 0 AND {} <= ? THEN 1.0
+            WHEN {} > 0 AND {} > ? THEN 1.0*(?-{})/?
         END AS score
     FROM recipes
     ORDER BY score desc;
-    '''
+    '''.format(mode, mode, mode, mode, mode)
     c.execute(query, (upper_bound,)*4)
     results = c.fetchall()
     db.close()
@@ -226,11 +230,11 @@ def search_by_title(args):
     END
     '''
     plus_string = '+'.join([case]*len(args))
-    query = f'''
-    SELECT id, ROUND(({plus_string})*1.0/{len(args)},2) AS score
+    query = '''
+    SELECT id, ROUND(({})*1.0/{},2) AS score
     FROM recipes
     ORDER BY score desc;
-    '''
+    '''.format(plus_string, len(args))
     c.execute(query, tuple(args))
     results = c.fetchall()
     db.close()
@@ -249,13 +253,13 @@ def search_by_term(args):
     db = sqlite3.connect(DATABASE_FILENAME)
     c = db.cursor()
     sub_q = ','.join(['?']*len(args))
-    query = f'''
-        SELECT id, ROUND(COUNT(id)*1.0/{len(args)},2) AS score
+    query = '''
+        SELECT id, ROUND(COUNT(id)*1.0/{},2) AS score
         FROM recipe_terms
-        WHERE word IN ({sub_q})
+        WHERE word IN ({})
         GROUP BY id
         ORDER BY score desc;
-        '''
+        '''.format(len(args), sub_q)
     c.execute(query, args)
     results = c.fetchall()
     db.close()
@@ -287,11 +291,11 @@ def search_by_nutrition(arg_dict):
     END
     '''
     plus_string = '+'.join([case]*l)
-    query = f'''
-            SELECT id, ROUND(({plus_string})*1.0/{l},2) AS score
+    query = '''
+            SELECT id, ROUND(({})*1.0/{},2) AS score
             FROM recipes
             ORDER BY score desc;
-            '''
+            '''.format(plus_string, l)
     c.execute(query, tuple(args))
     results = c.fetchall()
     db.close()
