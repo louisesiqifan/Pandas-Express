@@ -63,8 +63,7 @@ class SearchForm(forms.Form):
     query = forms.CharField(
         label='Search terms',
         help_text='e.g. fried chicken',
-        required=True)
-
+        required=False)
     time_and_mode = Cooking_Time(
         label='Cooking time:',
         help_text='e.g. 30 and total',
@@ -72,12 +71,10 @@ class SearchForm(forms.Form):
         widget=forms.widgets.MultiWidget(
             widgets=(forms.widgets.NumberInput,
                      forms.widgets.Select(choices=TIME_CHOICES))))
-
     level = forms.MultipleChoiceField(label='Difficulty Level',
                                       choices=LEVEL_CHOICES,
                                       widget=forms.CheckboxSelectMultiple,
                                       required=False)
-
     show_args = forms.BooleanField(label='Show args_to_ui',
                                    required=False)
 
@@ -89,7 +86,9 @@ def home(request):
         # create a form instance and populate it with data from the request:
         form = SearchForm(request.GET)
         # check whether it's valid:
+        print(form.is_valid())
         if form.is_valid():
+            print("valid")
             # Convert form data to an args dictionary for find_courses
             args = {}
             if form.cleaned_data['query']:
@@ -106,6 +105,7 @@ def home(request):
             if form.cleaned_data['show_args']:
                 context['args'] = 'args_to_ui = ' + str(args)
 
+            print(args)
             try:
                 res = get_dishes(args)
             except Exception as e:
@@ -134,16 +134,17 @@ def home(request):
     #                       'Should be a tuple of length 4 with one string and '
     #                       'three lists.')
     # else:
-    
-    columns, result = res
+    if res is None:
+        context['result'] = None
+    else:
+        columns, result = res
+        # Wrap in tuple if result is not already
+        if result and isinstance(result[0], str):
+            result = [(r,) for r in result]
 
-    # Wrap in tuple if result is not already
-    if result and isinstance(result[0], str):
-        result = [(r,) for r in result]
+        context['result'] = result
+        context['num_results'] = len(result)
+        context['columns'] = [COLUMN_NAMES.get(col, col) for col in columns]
+        context['form'] = form
 
-    context['result'] = result
-    context['num_results'] = len(result)
-    context['columns'] = [COLUMN_NAMES.get(col, col) for col in columns]
-
-    context['form'] = form
     return render(request, 'index.html', context)

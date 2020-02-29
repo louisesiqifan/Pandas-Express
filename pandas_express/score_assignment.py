@@ -52,6 +52,8 @@ def get_default_sort(ui_input):
 
 
 def get_dishes(ui_input, lim=10, weight={}, debug=False):
+    if not ui_input:
+        return [[],[]]
     ipt = ui_input.copy()
     score_ranking = score(ipt, lim, weight)
     dishes = []
