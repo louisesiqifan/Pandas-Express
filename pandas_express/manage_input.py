@@ -6,12 +6,11 @@ DATABASE_FILENAME = config['DEFAULT']['DATABASE_FILENAME']
 UI = {'categories': list, 'level': str, 'title': str,
       'time': tuple, 'term': str, 'nutrition' : dict}
 
-
-
-def input_verification(ui_input):
+def input_verification(args_to_ui):
     '''
     From ui_input, verify ui_input is correct
     '''
+    ui_input = args_to_ui.copy()
     for key, typ in UI.items():
         val = ui_input.get(key, None)
         if val is not None:

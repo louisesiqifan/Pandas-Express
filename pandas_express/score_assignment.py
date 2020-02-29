@@ -23,262 +23,163 @@ NUTRITION_CUT = {'calories': [1.10, 45.3, 1.39],
                  'protein': [1.68, 6.13, 16.43],
                  'potassium': [85.53, 252.0, 463.24]}
 
-
-def get_one_dish(c, id):
-    query = '''
-            SELECT *
-            FROM recipes
-            WHERE id = {}
-            '''.format(id)
-    c.execute(query)
-    result = c.fetchall()[0]
-    return result
+COLUMNS = ['id', 'name', 'level', 'time_active', 'time_total',
+           'serving_size', 'calories', 'total_fat', 'saturated_fat',
+           'cholesterol', 'sodium', 'total_carbohydrate',
+           'dietary_fiber', 'sugars', 'protein', 'potassium', 'directions']
 
 
-def get_default_sort(ui_input):
-    sort_list = ['score']
-    order = [False]
-    nut = ui_input.get('nutrition', None)
-    if nut is not None:
-        for k, v in nut.items():
-            sort_list.append(k)
-            if v == 1:
-                order.append(False)
-            else:
-                order.append(True)
-    sort_list.append('level')
-    order.append(True)
-    return sort_list, order
-
-
-def get_dishes(ui_input, lim=10, weight={}, debug=False):
-    if not ui_input:
-        return [[],[]]
-    ipt = ui_input.copy()
-    score_ranking = score(ipt, lim, weight)
-    dishes = []
-    scores = []
-    db = sqlite3.connect(DATABASE_FILENAME)
-    c = db.cursor()
-    for id, s in score_ranking:
-        dish = get_one_dish(c, id)
-        dishes.append(dish)
-        scores.append(s)
-    db.close()
-    columns = ['id', 'name', 'level', 'time_active', 'time_total',
-               'serving_size', 'calories', 'total_fat', 'saturated_fat',
-               'cholesterol', 'sodium', 'total_carbohydrate',
-               'dietary_fiber', 'sugars', 'protein', 'potassium', 'directions']
-    if debug:
-        df = pd.DataFrame(dishes, columns=columns)
-        df['score'] = scores
-        sort_list, order = get_default_sort(ipt)
-        print(df.sort_values(sort_list, ascending=order)[:lim])
-    else:
-        return [columns, dishes]
-
-
-def score(ui_input, lim, weight):
+def search_by_title(c, terms):
     '''
-    From ui_input, update score and show the top records
+    Search recipe by input string terms
 
-    Input:
-        ui_input(dict)
-        lim(int)
-        weight(dictionary)
+    Inputs:
+        c: sqlite3.Cursor
+        terms: list of strings
+
     Return:
-        top(list)
+        results: list of (id, score)
     '''
-    score  = {}
-    ui_input = input_verification(ui_input)
-    category = ui_input.get('categories', False)
-    level = ui_input.get('level', False)
-    time_params = ui_input.get('time', False)
-    term = ui_input.get('term', False)
-    title = ui_input.get('title', False)
-    nutrition = ui_input.get('nutrition', False)
-    if category:
-        result = search_by_categories(category)
-        for i, val in result:
-            score[i] = score.get(i, 0) + val*weight.get('categories',1)
-    if level:
-        result = search_by_level(level)
-        for i, val in result:
-            score[i] = score.get(i, 0) + val*weight.get('level',1)
-    if time_params:
-        result = search_by_time(time_params)
-        for i, val in result:
-            if val:
-                score[i] = score.get(i, 0) + val*weight.get('time',1)
-    if term:
-        result = search_by_term(term)
-        for i, val in result:
-            score[i] = score.get(i, 0) + val*weight.get('term',1)
-    if title:
-        result = search_by_title(title)
-        for i, val in result:
-            s = score.get(i, 0) + val*weight.get('title',10)
-            score[i] = s
-    if nutrition:
-        result = search_by_nutrition(nutrition)
-        for i, val in result:
-            s = score.get(i, 0) + val*weight.get('nutrition',1)
-            score[i] = s
-    final_score = sorted(score.items(),
-                         key=lambda item: item[1], reverse=True)
-    last = final_score[lim][1]
-    result = takewhile(lambda x: x[1]>=last, final_score)
-    return result
-
-
-def search_by_categories(args):
-    '''
-    To search by categories
-
-    Input:
-        args(list)
-    Return:
-        results(list)
-    '''
-    db = sqlite3.connect(DATABASE_FILENAME)
-    c = db.cursor()
-    sub_q = ','.join(['?']*len(args))
-    query = '''
-    SELECT r.id AS id, ROUND(k.count*1.0/{},2) AS score
-    FROM recipes AS r
-    JOIN (SELECT id, COUNT(id) AS count
-          FROM recipe_categories
-          WHERE category IN ({})
-          GROUP BY id) AS k
-          ON k.id = r.id
-    '''.format(len(args), sub_q)
-    c.execute(query, args)
-    results = c.fetchall()
-    db.close()
-    return results
-
-
-def search_by_level(val):
-    '''
-    to match recipe with input level
-
-    Input:
-        val(list):
-    Return:
-        results(list): list of tuple with (id, score)
-    '''
-    db = sqlite3.connect(DATABASE_FILENAME)
-    c = db.cursor()
-    query = '''
-    SELECT id,
-           CASE
-               WHEN level = 'Easy' THEN {}
-               WHEN level = 'Intermediate' THEN {}
-               WHEN level = 'Advanced' THEN {}
-           END AS score
-    FROM recipes
-    WHERE score IS NOT NULL;
-    '''.format(val[0], val[1], val[2])
-    c.execute(query)
-    results = c.fetchall()
-    db.close()
-    return results
-
-
-def search_by_time(time_params):
-    '''
-    to match recipe with input time
-
-    Input:
-        time_params(tuple): (upper_bound, mode)
-    Return:
-        results(list): list of tuple with (id, score)
-    '''
-    db = sqlite3.connect(DATABASE_FILENAME)
-    upper_bound, mode = time_params
-    mode = 'time_' + mode
-    c = db.cursor()
-    query = '''
-    SELECT id,
-        CASE
-            WHEN {} > 0 AND {} <= ? THEN 1.0
-            WHEN {} > 0 AND {} > ? THEN 1.0*(?-{})/?
-        END AS score
-    FROM recipes
-    ORDER BY score desc;
-    '''.format(mode, mode, mode, mode, mode)
-    c.execute(query, (upper_bound,)*4)
-    results = c.fetchall()
-    db.close()
-    return results
-
-
-def search_by_title(args):
-    '''
-    to match recipe with input string terms
-
-    Input:
-        args(list)
-    Return:
-        results(list): list of tuple with (id, score)
-    '''
-    db = sqlite3.connect(DATABASE_FILENAME)
-    c = db.cursor()
-    args_dup = [x for x in args for _ in range(2)]
     case = '''
     CASE
         WHEN INSTR(name, ?) > 0 THEN 1
         ELSE 0
     END
     '''
-    plus_string = '+'.join([case]*len(args))
+    N = len(terms)
+    plus_string = '+'.join([case] * N)
     query = '''
-    SELECT id, ROUND(({})*1.0/{},2) AS score
+    SELECT id, ROUND(({}) * 1.0 / {}, 2) AS score
     FROM recipes
     ORDER BY score desc;
-    '''.format(plus_string, len(args))
-    c.execute(query, tuple(args))
+    '''.format(plus_string, N)
+    params = tuple(terms)
+    c.execute(query, params)
     results = c.fetchall()
-    db.close()
     return results
 
 
-def search_by_term(args):
+def search_by_term(c, terms):
     '''
     to match recipe with input string terms
 
-    Input:
-        string(list)
+    Inputs:
+        c: sqlite3.Cursor
+        terms: list of strings
+
     Return:
-        results(list): list of tuple with (id, score)
+        results: list of (id, score)
     '''
-    db = sqlite3.connect(DATABASE_FILENAME)
-    c = db.cursor()
-    sub_q = ','.join(['?']*len(args))
+    N = len(terms)
+    sub_q = ','.join(['?'] * N)
     query = '''
-        SELECT id, ROUND(COUNT(id)*1.0/{},2) AS score
-        FROM recipe_terms
-        WHERE word IN ({})
-        GROUP BY id
-        ORDER BY score desc;
-        '''.format(len(args), sub_q)
-    c.execute(query, args)
+    SELECT id, ROUND(COUNT(id)*1.0/{},2) AS score
+    FROM recipe_terms
+    WHERE word IN ({})
+    GROUP BY id
+    ORDER BY score desc;
+    '''.format(N, sub_q)
+    params = tuple(terms)
+    c.execute(query, params)
     results = c.fetchall()
-    db.close()
     return results
 
 
-def search_by_nutrition(arg_dict):
-    '''
-    to find recipes that satisfy nutrition needs
+# def search_by_categories(args):
+#     '''
+#     Search dishes by categories
 
-    Input:
-        args (dict):
+#     Input:
+#         args: list
+#     Return:
+#         results: list
+#     '''
+#     db = sqlite3.connect(DATABASE_FILENAME)
+#     c = db.cursor()
+#     sub_q = ','.join(['?']*len(args))
+#     query = '''
+#     SELECT r.id AS id, ROUND(k.count*1.0/{},2) AS score
+#     FROM recipes AS r
+#     JOIN (SELECT id, COUNT(id) AS count
+#           FROM recipe_categories
+#           WHERE category IN ({})
+#           GROUP BY id) AS k
+#           ON k.id = r.id
+#     '''.format(len(args), sub_q)
+#     c.execute(query, args)
+#     results = c.fetchall()
+#     db.close()
+#     return results
+
+
+def search_by_level(c, level_val):
+    '''
+    Search recipe by input level
+
+    Inputs:
+        c: sqlite3.Cursor
+        level_val: [1, 0, 0] / [0, 1, 0]/ [0, 0, 1]
+
+    Outputs:
+        results: list of (id, score)
+    '''
+    query = '''
+    SELECT id,
+        CASE
+            WHEN level = 'Easy' THEN ?
+            WHEN level = 'Intermediate' THEN ?
+            WHEN level = 'Advanced' THEN ?
+        END AS score
+    FROM recipes
+    WHERE score IS NOT NULL;
+    '''
+    params = tuple(level_val)
+    c.execute(query, params)
+    results = c.fetchall()
+    return results
+
+
+def search_by_time(c, time_params):
+    '''
+    Search recipe by input time
+
+    Inputs:
+        c: sqlite3.Cursor
+        time_params(tuple): (upper_bound, mode)
+
+    Outputs:
+        results: list of (id, score)
+    '''
+    upper_bound, mode = time_params
+    mode = 'time_' + mode
+    query = '''
+    SELECT id,
+        CASE
+            WHEN {0} > 0 AND {0} <= ? THEN 1.0
+            WHEN {0} > 0 AND {0} > ? THEN 1.0*(?-{0})/?
+        END AS score
+    FROM recipes
+    ORDER BY score desc;
+    '''.format(mode)
+    params = (upper_bound,)*4
+    c.execute(query, params)
+    results = c.fetchall()
+    return results
+
+
+def search_by_nutrition(c, arg_dict):
+    '''
+    Search recipes by nutrition needs
+
+    Inputs:
+        c: sqlite3.Cursor
+        arg_dict:
             key: which nutrition item
             val: sides (-1: want lower; 1: want higher)
+
+    Return:
+        results: list of (id, score)   
     '''
-    db = sqlite3.connect(DATABASE_FILENAME)
-    c = db.cursor()
     args = []
     l = len(arg_dict.keys())
     for item, side in arg_dict.items():
@@ -294,15 +195,149 @@ def search_by_nutrition(arg_dict):
     '''
     plus_string = '+'.join([case]*l)
     query = '''
-            SELECT id, ROUND(({})*1.0/{},2) AS score
-            FROM recipes
-            ORDER BY score desc;
-            '''.format(plus_string, l)
+    SELECT id, ROUND(({})*1.0/{},2) AS score
+    FROM recipes
+    ORDER BY score desc;
+    '''.format(plus_string, l)
     c.execute(query, tuple(args))
     results = c.fetchall()
-    db.close()
     return results
 
+
+def update_score(c, args_to_ui, lim, weight):
+    '''
+    From ui_input, update score and show the top records
+
+    Inputs:
+        c: sqlite3.Cursor
+        args_to_ui: dict
+        lim: int
+        weight: dictionary
+
+    Outputs:
+        result: list
+    '''
+    score  = {}
+    ui_input = input_verification(args_to_ui)
+    category = ui_input.get('categories', False)
+    level = ui_input.get('level', False)
+    time_params = ui_input.get('time', False)
+    term = ui_input.get('term', False)
+    title = ui_input.get('title', False)
+    nutrition = ui_input.get('nutrition', False)
+    if category:
+        result = search_by_categories(c, category)
+        for i, val in result:
+            score[i] = score.get(i, 0) + val * weight.get('categories', 1)
+    if level:
+        result = search_by_level(c, level)
+        for i, val in result:
+            score[i] = score.get(i, 0) + val * weight.get('level', 1)
+    if time_params:
+        result = search_by_time(c, time_params)
+        for i, val in result:
+            if val:
+                score[i] = score.get(i, 0) + val * weight.get('time', 1)
+    if term:
+        result = search_by_term(c, term)
+        for i, val in result:
+            score[i] = score.get(i, 0) + val * weight.get('term', 1)
+    if title:
+        result = search_by_title(c, title)
+        for i, val in result:
+            s = score.get(i, 0) + val*weight.get('title', 10)
+            score[i] = s
+    if nutrition:
+        result = search_by_nutrition(c, nutrition)
+        for i, val in result:
+            s = score.get(i, 0) + val*weight.get('nutrition', 1)
+            score[i] = s
+    final_score = sorted(score.items(), key=lambda item: item[1], reverse=True)
+    last = final_score[lim][1]
+    result = takewhile(lambda x: x[1]>=last, final_score)
+    return result
+
+
+def get_one_dish(c, recipe_id):
+    '''
+    Get the dish by id
+    
+    Inputs:
+        c: sqlite3.Cursor
+        id: int
+
+    Outputs:
+        result: tuple
+    '''
+    query = '''
+    SELECT *
+    FROM recipes
+    WHERE id = ?
+    '''
+    params = (recipe_id, )
+    c.execute(query, params)
+    result = c.fetchall()[0]
+    return result
+
+
+def get_default_sort(ui_input):
+    '''
+    Inputs:
+        ui_input: dictinoary
+
+    Outputs:
+        sort_list: list of string
+        order: list of boolean
+    '''
+    sort_list = ['score']
+    order = [False]
+    nut = ui_input.get('nutrition', None)
+    if nut is not None:
+        for k, v in nut.items():
+            sort_list.append(k)
+            if v == 1:
+                order.append(False)
+            else:
+                order.append(True)
+    sort_list.append('level')
+    order.append(True)
+    return sort_list, order
+
+
+def get_dishes(args_to_ui, lim=10, weight={}, debug=False):
+    '''
+    Get all dishes.
+
+    Inputs:
+        ui_input: dictionary
+        lim: int
+        weight: dict
+        debug: boolean
+
+    Outputs:
+        [columns: list, dishes: list of tuples ]
+    '''
+    if not args_to_ui:
+        return [[],[]]
+
+    db = sqlite3.connect(DATABASE_FILENAME)
+    c = db.cursor()
+    score_ranking = update_score(c, args_to_ui, lim, weight)
+    dishes = []
+    scores = []
+    for recipe_id, score in score_ranking:
+        dish = get_one_dish(c, recipe_id)
+        dishes.append(dish)
+        scores.append(score)
+    db.close()
+
+    if debug:
+        df = pd.DataFrame(dishes, columns=COLUMNS)
+        df['score'] = scores
+        sort_list, order = get_default_sort(ipt)
+        print(df.sort_values(sort_list, ascending=order)[:lim])
+    else:
+        return [COLUMNS, dishes]
 
 
 ###########
