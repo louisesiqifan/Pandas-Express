@@ -16,7 +16,7 @@ def input_verification(ui_input):
         val = ui_input.get(key, None)
         if val is not None:
             if type(val) != typ:
-                raise ValueError(f"input type for {key} should be {typ}")
+                raise ValueError("input type for {} should be {}".format(key, typ))
             if key == 'categories':
                 args = [x.title() for x in val]
                 ui_input['categories'] = args
@@ -47,5 +47,5 @@ def input_verification(ui_input):
                                  'potassium']:
                         raise ValueError("nutrition value not supported")
                     if v != 1 and v != 0-1:
-                        raise ValueError(f"side for {k} should be 1 or -1")
+                        raise ValueError("side for {} should be 1 or -1".format(k))
     return ui_input
