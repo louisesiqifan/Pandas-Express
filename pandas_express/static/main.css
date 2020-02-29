@@ -1,21 +1,29 @@
-
 html, body {
     margin: 0;
     padding: 0;
-    font-family: Verdana;
+    font-family: Helvetica;
 }
 
 div#header {
-    background: rgb(189, 252, 200);
+/*    background: rgb(189, 252, 200);*/
     margin: 0;
-    padding: 12px;
+    padding-right: 100px;
+    padding-left: 100px;
+    padding-top: 150px;
+    padding-bottom: 150px;
+    background-size: cover;
+    background-position: 50% 35%;
+    background-repeat: no-repeat;
+    background-image: url("https://images2.alphacoders.com/460/thumb-1920-460144.jpg");
+    width: 100%;
+    height: 100%;
 }
 
 div#header h1 {
-    font-size: 64px;
-    color: #000000;
-    margin: 12px;
-    padding: 12px;
+    font-size: 100px;
+    color: #ffffff;
+    margin: 0px;
+    padding: 0px;
 }
 
 div.frame {
@@ -40,7 +48,7 @@ div.error {
 fieldset {
     padding: 3px;
     margin: 1px;
-    border: 1px solid #ddd;
+    border: 2px solid #ddd;
 }
 
 fieldset legend {
@@ -58,59 +66,63 @@ label {
 
 p.num_results {
     margin-left: 5px;
-    font-size: 32px;
+    font-size: 20px;
 }
 
 table.form {
     text-align: left;
-    font-size: 32px;
+    font-size: 44px;
 }
+
 
 table.form tr td,
 table.form tr th {
     vertical-align: top;
+    font-size: 44px;
+    padding-bottom: 44px;
 }
 
 table.form input {
-    margin-right: 5px;
+    margin-right: 10px;
+    margin-left: 20px;
+/*    margin-bottom: 10px*/
     font-size: 32px;
 }
 
-table.form input#id_query {
+/*table.form input#id_query {
     font-size: 32px;
-}
-
-table.form ul#id_days {
-    margin: 0px;
+    margin: 10px;
     padding: 0px;
-    font-size: 32px;
+}
+*/
+
+
+table.form ul#id_level {
+    list-style-type: none;
+    margin: 0px;
+    padding: 6px;
+    font-size: 18px;
 }
 
-table.form ul#id_days li {
-    display: block;
-    float: left;
-    margin: 0px;
-    padding: 0px;
-    font-size: 32px;
-}
 
 table.recipes {
-    border: 1px solid #ddd;
-    padding: 0px;
+    border: 2px solid #ddd;
+    padding: 20px;
     margin: 0px;
+    border-radius: 25px
 }
 
-table.courses tr th {
+table.recipes tr th {
     text-align: left;
 }
 
-table.courses tr td,
-table.courses tr th {
-    padding: 3px;
-    font-size: 32px;
+table.recipes tr td,
+table.recipes tr th {
+    padding: 8px;
+    font-size: 20px;
 }
 
-table.courses tr:nth-child(even) {
+table.recipes tr:nth-child(even) {
     background: #eee;
 }
 
@@ -118,17 +130,32 @@ ul.errorlist {
     margin: 0px;
     padding: 0px;
     padding-top: 5px;
-
 }
 
 ul.errorlist li {
-    font-size: 32px;
+    font-size: 12px;
     color: red;
     margin: 0px;
     padding: 0px;
 }
 
 span.helptext {
-    font-size: 32px;
+    font-size: 20px;
     color: gray;
+    padding-left: 20px;
+}
+
+
+input.button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 32px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 10px
 }

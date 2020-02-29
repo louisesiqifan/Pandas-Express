@@ -76,8 +76,8 @@ class SearchForm(forms.Form):
                                       choices=LEVEL_CHOICES,
                                       widget=forms.CheckboxSelectMultiple,
                                       required=False)
-    show_args = forms.BooleanField(label='Show args_to_ui',
-                                   required=False)
+    # show_args = forms.BooleanField(label='Show args_to_ui',
+    #                                required=False)
 
 
 def home(request):
@@ -101,8 +101,8 @@ def home(request):
             if time_and_mode:
                 args['time'] = tuple(time_and_mode)
 
-            if form.cleaned_data['show_args']:
-                context['args'] = 'args_to_ui= ' + str(args)
+            # if form.cleaned_data['show_args']:
+            #     context['args'] = 'args_to_ui= ' + str(args)
 
             try:
                 res = get_dishes(args)

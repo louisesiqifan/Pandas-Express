@@ -341,7 +341,7 @@ def get_dishes(args_to_ui, lim=10, weight={}, debug=False):
     if debug:
         print(df)
 
-    cols = ['id', 'name', 'level', 'time_total']
+    cols = ['name', 'level', 'time_total']
     df = df[cols]
     tuples = [tuple(x) for x in df.to_numpy()]
     return [cols, tuples]
