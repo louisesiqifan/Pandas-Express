@@ -83,7 +83,7 @@ def home(request):
         # print("Error:", form.errors)
 
         if form.is_valid():
-            print(form.cleaned_data)
+            # print(form.cleaned_data)
 
             args = {}
             if form.cleaned_data['query']:

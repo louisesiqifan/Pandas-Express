@@ -258,31 +258,6 @@ def update_score(c, args_to_ui, lim, weight):
     return result
 
 
-def get_one_dish(c, recipe_id):
-    '''
-    Get the dish by id
-    
-    Inputs:
-        c: sqlite3.Cursor
-        id: int
-
-    Outputs:
-        result: tuple
-    '''
-    query = '''
-    SELECT *
-    FROM recipes
-    WHERE id = ?
-    '''
-    params = (recipe_id, )
-    c.execute(query, params)
-    result = list(c.fetchall()[0])
-    for i, e in enumerate(result):
-        if isinstance(e, float):
-            result[i] = round(e, 2)
-    return tuple(result)
-
-
 def get_default_sort(ui_input):
     '''
     Inputs:
@@ -307,6 +282,31 @@ def get_default_sort(ui_input):
     return sort_list, order
 
 
+def get_dish(c, recipe_id):
+    '''
+    Get a dish by id.
+    
+    Inputs:
+        c: sqlite3.Cursor
+        recipe_id: int
+
+    Outputs:
+        result: tuple
+    '''
+    query = '''
+    SELECT *
+    FROM recipes
+    WHERE id = ?
+    '''
+    params = (recipe_id, )
+    c.execute(query, params)
+    result = list(c.fetchall()[0])
+    for i, e in enumerate(result):
+        if isinstance(e, float):
+            result[i] = round(e, 2)
+    return tuple(result)
+
+
 def get_dishes(args_to_ui, lim=10, weight={}, debug=False):
     '''
     Get all dishes.
@@ -329,7 +329,7 @@ def get_dishes(args_to_ui, lim=10, weight={}, debug=False):
     dishes = []
     scores = []
     for recipe_id, score in score_ranking:
-        dish = get_one_dish(c, recipe_id)
+        dish = get_dish(c, recipe_id)
         dishes.append(dish)
         scores.append(score)
     db.close()    
