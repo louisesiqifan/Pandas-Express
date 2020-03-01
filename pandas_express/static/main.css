@@ -18,9 +18,11 @@ div#header {
     padding-top: 100px;
     padding-bottom: 100px;
     background-size: cover;
-    background-position: 50% 35%;
+/*    background-position: 50% 35%;*/
+    background-position: 50% 45%;
     background-repeat: no-repeat;
-    background-image: url("https://images2.alphacoders.com/460/thumb-1920-460144.jpg");
+/*    background-image: url("https://images2.alphacoders.com/460/thumb-1920-460144.jpg");
+*/    background-image: url("https://img.peapix.com/18313178659351803842.jpg");
     width: 100%;
     height: 100%;
 }
