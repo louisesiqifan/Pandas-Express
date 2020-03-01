@@ -5,15 +5,10 @@ import os
 
 from functools import reduce
 from operator import and_
-
 from django.shortcuts import render
 from django import forms
-
 from score_assignment import get_dishes
 
-# EXAMPLE_0 = {'level': 'easy',
-#              'time': (30, 'total'), 'title': 'fried chicken',
-#              'nutrition': {'calories': -1, 'protein': 1}}
 
 TIME_CHOICES = [("total", "Total"), ("active", "Active")]
 
@@ -81,11 +76,11 @@ def home(request):
     context = {}
     res = None
     if request.method == 'GET':
-        print("request get:", request.GET)
         form = SearchForm(request.GET)
-        print("Input:", form.data)
-        print("Valid:", form.is_valid())
-        print("Error:", form.errors)
+        # print("request get:", request.GET)
+        # print("Input:", form.data)
+        # print("Valid:", form.is_valid())
+        # print("Error:", form.errors)
 
         if form.is_valid():
             print(form.cleaned_data)
