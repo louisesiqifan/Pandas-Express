@@ -52,11 +52,8 @@ class Cooking_Time(forms.MultiValueField):
     def compress(self, data_list):
         if len(data_list) == 2:
             if data_list[0] is None or not data_list[1]:
-                raise forms.ValidationError(
-                    str(data_list))
-            if data_list[0] < 0:
-                raise forms.ValidationError(
-                    'Big Brother is watching you bro.')
+                return None
+
         return data_list
 
 
@@ -84,11 +81,15 @@ def home(request):
     context = {}
     res = None
     if request.method == 'GET':
-        # create a form instance and populate it with data from the request:
+        print("request get:", request.GET)
         form = SearchForm(request.GET)
-        # check whether it's valid:
+        print("Input:", form.data)
+        print("Valid:", form.is_valid())
+        print("Error:", form.errors)
+
         if form.is_valid():
-            # Convert form data to an args dictionary for find_courses
+            print(form.cleaned_data)
+
             args = {}
             if form.cleaned_data['query']:
                 args['title'] = form.cleaned_data['query']
@@ -105,7 +106,9 @@ def home(request):
             #     context['args'] = 'args_to_ui= ' + str(args)
 
             try:
+                print(args)
                 res = get_dishes(args)
+                print("result:", res)
             except Exception as e:
                 print('Exception caught')
                 bt = traceback.format_exception(*sys.exc_info()[:3])
