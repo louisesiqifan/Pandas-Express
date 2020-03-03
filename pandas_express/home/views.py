@@ -153,40 +153,9 @@ def get_detail(request):
     result=request.GET
     recipe_id = list(result.keys())[0]
     recipe = get_dish(int(recipe_id))
-    html = '''
-    <html>
-        <link rel="stylesheet" type="text/css" href="../static/detail.css">
-        <link href="https://fonts.googleapis.com/css?family=Quicksand:300,500" rel="stylesheet">
-        <meta name="viewport" content="width=device-width, initial-scale=0.67">
-        <head>
-            <title>{0}</title>
-        </head>
-        <body>
-            <div id="header">
-                <h1>{0}</h1>
-            </div>
-
-            <div id="time">
-                <p>Total time: {1} min</p>
-            </div>
-
-            <div id="ingredient">
-
-            </div>
-
-            <div id="direction">
-                <h3> Direction: </h3>
-                    <p> {2} </p>
-            </div>
-
-            <form method="get" action="{{ % url 'home'% }}">
-            <input type="back" class="button" value="Back to search"/>
-            </form>
-
-            <div id="footer">
-                 <h2>Presented by Team AttributeError</h2>
-            </div>
-        </body>
-    </html>
-    '''.format(recipe[1], recipe[3], recipe[-1])
-    return HttpResponse(html)
+    context = dict()
+    context['name'] = recipe[1]
+    context['time'] = recipe[3]
+    context['direction'] = recipe[-1]
+    print(context)
+    return render(request, 'get_detail.html', context)
