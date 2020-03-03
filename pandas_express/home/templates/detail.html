@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <link rel="stylesheet" type="text/css" href="../static/detail.css">
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:300,500" rel="stylesheet">
+    <link rel="shortcut icon" href="{% static '../static/favicon.ico' %}" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.67">
+    <head>
+        <title>{{name}}</title>
+    </head>
+    <body>
+        <div id="header">
+            <h1>{{name}}</h1>
+        </div>
+
+        <div id="time">
+            <p>Total time: {{time}} min</p>
+        </div>
+
+        <div id="ingredient">
+
+        </div>
+
+        <div id="direction">
+            <h3> Direction: </h3>
+                <p> {{direction}} </p>
+        </div>
+
+        <button type="button" onclick="location.href='/';">Back to search</button>
+
+        <div id="footer">
+             <h2>Presented by Team AttributeError</h2>
+        </div>
+    </body>
+</html>
