@@ -204,7 +204,7 @@ def search_by_nutrition(c, arg_dict):
     return results
 
 
-def update_score(c, args_to_ui, lim, weight):
+def update_score(args_to_ui, lim, weight):
     '''
     From ui_input, update score and show the top records
 
@@ -217,6 +217,8 @@ def update_score(c, args_to_ui, lim, weight):
     Outputs:
         result: list
     '''
+    db = sqlite3.connect(DATABASE_FILENAME)
+    c = db.cursor()
     score  = {}
     ui_input = input_verification(args_to_ui)
     category = ui_input.get('categories', False)
@@ -255,6 +257,7 @@ def update_score(c, args_to_ui, lim, weight):
     final_score = sorted(score.items(), key=lambda item: item[1], reverse=True)
     last = final_score[lim][1]
     result = takewhile(lambda x: x[1]>=last, final_score)
+    db.close()    
     return result
 
 
@@ -282,17 +285,18 @@ def get_default_sort(ui_input):
     return sort_list, order
 
 
-def get_dish(c, recipe_id):
+def get_dish(recipe_id):
     '''
     Get a dish by id.
     
     Inputs:
-        c: sqlite3.Cursor
         recipe_id: int
 
     Outputs:
         result: tuple
     '''
+    db = sqlite3.connect(DATABASE_FILENAME)
+    c = db.cursor()
     query = '''
     SELECT *
     FROM recipes
@@ -304,6 +308,7 @@ def get_dish(c, recipe_id):
     for i, e in enumerate(result):
         if isinstance(e, float):
             result[i] = round(e, 2)
+    db.close()    
     return tuple(result)
 
 
@@ -323,16 +328,13 @@ def get_dishes(args_to_ui, lim=10, weight={}, debug=False):
     if not args_to_ui:
         return [[],[]]
 
-    db = sqlite3.connect(DATABASE_FILENAME)
-    c = db.cursor()
-    score_ranking = update_score(c, args_to_ui, lim, weight)
+    score_ranking = update_score(args_to_ui, lim, weight)
     dishes = []
     scores = []
     for recipe_id, score in score_ranking:
-        dish = get_dish(c, recipe_id)
+        dish = get_dish(recipe_id)
         dishes.append(dish)
         scores.append(score)
-    db.close()    
 
     df = pd.DataFrame(dishes, columns=COLUMNS)
     df['score'] = scores
@@ -341,7 +343,7 @@ def get_dishes(args_to_ui, lim=10, weight={}, debug=False):
     if debug:
         print(df)
 
-    cols = ['name', 'level', 'time_total']
+    cols = ['name', 'level', 'time_total', 'id']
     df = df[cols]
     tuples = [tuple(x) for x in df.to_numpy()]
     return [cols, tuples]

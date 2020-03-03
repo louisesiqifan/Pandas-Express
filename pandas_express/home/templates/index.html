@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html>
     <link href="https://fonts.googleapis.com/css?family=Quicksand:300,500" rel="stylesheet">
+    <link rel="shortcut icon" href="{% static '../static/favicon.ico' %}" />
     <meta name="viewport" content="width=device-width, initial-scale=0.67">
     <head>
         <title>Pandas Express</title>
@@ -40,19 +41,30 @@
                 <table class="recipes">
                     <tr>
                         {% for col in columns %}
-                        <th>{{ col }}</th>
+                            {% if forloop.counter|divisibleby:4 %}
+                            {% else %}
+                                <th>{{ col }}</th>
+                            {% endif %}
                         {% endfor %}
                     </tr>
                     {% for entry in result %}
                     <tr>
                         {% for col in entry %}
-                        <td>{{ col }}</td>
+                            {% if forloop.counter|divisibleby:4 %} 
+                                <td>
+                                    <form method="get" action="{% url 'get_detail'%}">
+                                        <input type="submit" class="button" value="Detail" name="{{col}}"/>
+                                    </form>
+                                </td>
+                            {% else %}
+                                <td>{{col}}</td>
+                            {% endif %}
                         {% endfor %}
                     </tr>
                     {% endfor %}
                 </table>
             </div>
-            <p class="num_results">Results: {{ num_results }}</p>
+            <p class="num_results">Results: {{num_results}}</p>
             <input type="back" class="button" value="Back to top" onclick="location.href='#header';" />
             {% endif %}    
         </div>
