@@ -76,17 +76,17 @@ div#footer h2 {
     padding: 0px;
 }
 
-input.button {
+button {
   background-color: #b8bfc8;
   border: none;
   color: white;
-  padding: 12px 0px;
+  padding: 12px 12px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 22px;
   margin-top: 10px;
-  margin-bottom: 30px;
+  margin-bottom: 50px;
   margin-right: 10px;
   margin-left: 66px;
   cursor: pointer;
@@ -94,6 +94,7 @@ input.button {
   transition: all 0.1s;
 }
 
-input.button.hover{
+
+button: hover{
     background-color: #7f8b9c;
 }
