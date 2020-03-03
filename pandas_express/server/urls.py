@@ -30,6 +30,5 @@ from django.contrib import admin
 
 
 urlpatterns = [
-    path('home/', include("home.urls")),
-    path('detail/', include("detail.urls"))
+    path('', include("home.urls")),
 ]

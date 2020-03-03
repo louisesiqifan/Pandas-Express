@@ -253,6 +253,10 @@ table.recipes input.button {
   margin: 0 auto;
 }
 
+table.recipes input.button:hover{
+    background-color: #7f8b9c;
+}
+
 table.recipes tr td,
 table.recipes tr th {
     padding: 5px;

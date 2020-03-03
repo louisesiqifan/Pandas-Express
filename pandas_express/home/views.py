@@ -57,7 +57,7 @@ class Cooking_Time(forms.MultiValueField):
 
 class SearchForm(forms.Form):
     query = forms.CharField(
-        label='Search terms',
+        label='Search Terms',
         help_text='Try Fried Chicken!',
         required=False)
     time_and_mode = Cooking_Time(
@@ -80,14 +80,7 @@ def home(request):
     res = None
     if request.method == 'GET':
         form = SearchForm(request.GET)
-        # print("request get:", request.GET)
-        # print("Input:", form.data)
-        # print("Valid:", form.is_valid())
-        # print("Error:", form.errors)
-
         if form.is_valid():
-            # print(form.cleaned_data)
-
             args = {}
             if form.cleaned_data['query']:
                 args['title'] = form.cleaned_data['query']
@@ -104,9 +97,7 @@ def home(request):
             #     context['args'] = 'args_to_ui= ' + str(args)
 
             try:
-                print(args)
                 res = get_dishes(args)
-                print("result:", res)
             except Exception as e:
                 print('Exception caught')
                 bt = traceback.format_exception(*sys.exc_info()[:3])
@@ -157,5 +148,4 @@ def get_detail(request):
     context['name'] = recipe[1]
     context['time'] = recipe[3]
     context['direction'] = recipe[-1]
-    print(context)
-    return render(request, 'get_detail.html', context)
+    return render(request, 'detail.html', context)

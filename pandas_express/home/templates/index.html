@@ -19,7 +19,7 @@
                 {{ form }}
                 </table>
                 <input type="submit" class="button" value="Search" onclick="location.href='#section2';"/>
-                <input type="reset" class="button" value="Reset" onclick="location.href='#header';" />
+                <input type="reset" class="button" value="Reset" onclick="location.href='/';" />
             </form>
         </div>
 
@@ -52,7 +52,7 @@
                         {% for col in entry %}
                             {% if forloop.counter|divisibleby:4 %} 
                                 <td>
-                                    <form method="get" action="{% url 'get_detail'%}">
+                                    <form method="get" action="{% url 'detail'%}">
                                         <input type="submit" class="button" value="Detail" name="{{col}}"/>
                                     </form>
                                 </td>
