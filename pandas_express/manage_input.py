@@ -1,10 +1,12 @@
 import configparser
+import re
 
 config = configparser.ConfigParser()
 config.read('../wrapper/constants.ini')
 DATABASE_FILENAME = config['DEFAULT']['DATABASE_FILENAME']
+INDEX_IGNORE = config['DATA']['INDEX_IGNORE']
 UI = {'categories': list, 'level': str, 'title': str,
-      'time': tuple, 'term': str, 'nutrition' : dict}
+      'time': tuple, 'nutrition' : dict}
 
 def input_verification(args_to_ui):
     '''
@@ -14,7 +16,7 @@ def input_verification(args_to_ui):
     for key, typ in UI.items():
         val = ui_input.get(key, None)
         if val is None:
-            continue            
+            continue
         if type(val) != typ:
             raise ValueError("input type for {} should be {}".format(key, typ))
         if key == 'categories':
@@ -35,7 +37,6 @@ def input_verification(args_to_ui):
         if key == 'title':
             args = val.title().split(',')
             ui_input['title'] = args
-        if key == 'term':
             r = re.findall(r'[a-zA-Z]{2,}', val)
             args = list(set([x.lower() for x in r if x.lower() not in INDEX_IGNORE]))
             ui_input['term'] = args

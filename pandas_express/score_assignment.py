@@ -178,7 +178,7 @@ def search_by_nutrition(c, arg_dict):
             val: sides (-1: want lower; 1: want higher)
 
     Return:
-        results: list of (id, score)   
+        results: list of (id, score)
     '''
     args = []
     l = len(arg_dict.keys())
@@ -240,7 +240,7 @@ def update_score(args_to_ui, lim, weight):
         for i, val in result:
             if val:
                 score[i] = score.get(i, 0) + val * weight.get('time', 1)
-    if term:
+    if title:
         result = search_by_term(c, term)
         for i, val in result:
             score[i] = score.get(i, 0) + val * weight.get('term', 1)
@@ -257,7 +257,7 @@ def update_score(args_to_ui, lim, weight):
     final_score = sorted(score.items(), key=lambda item: item[1], reverse=True)
     last = final_score[lim][1]
     result = takewhile(lambda x: x[1]>=last, final_score)
-    db.close()    
+    db.close()
     return result
 
 
@@ -288,7 +288,7 @@ def get_default_sort(ui_input):
 def get_dish(recipe_id):
     '''
     Get a dish by id.
-    
+
     Inputs:
         recipe_id: int
 
@@ -308,7 +308,7 @@ def get_dish(recipe_id):
     for i, e in enumerate(result):
         if isinstance(e, float):
             result[i] = round(e, 2)
-    db.close()    
+    db.close()
     return tuple(result)
 
 
