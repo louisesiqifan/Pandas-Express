@@ -93,13 +93,13 @@ table.form tr th {
 }
 
 
-table.form input#id_query{
+table.form input#id_query_0{
     margin-right: 10px;
     margin-left: 20px;
     padding: 5px 5px;
     font-size: 18px;
     color: #545454;
-    width: 50%;
+    width: 44%;
     box-sizing: border-box;
     border: 2px solid #D7D7D7;
     border-radius: 7px;
@@ -112,11 +112,22 @@ table.form input#id_query{
     display: inline-block;
 }
 
-table.form input#id_query:focus{
+table.form input#id_query_0:focus{
     border: 2px solid lightblue;
-    width: 100%;
+    width: 60%;
     background-color: #F8F8F8;
     transition: width border background 0.4s ease-in-out;    
+}
+
+table.form select#id_query_1{
+    margin-right: 10px;
+    margin-left: 20px;
+    font-size: 16px;
+    color: #545454;
+    border: none;
+    border-radius: 4px;
+    padding: 4px;
+    background-color: #f1f1f1;
 }
 
 
@@ -149,6 +160,18 @@ table.form input#id_time_and_mode_0:focus{
 }
 
 table.form select#id_time_and_mode_1{
+    margin-right: 10px;
+    margin-left: 20px;
+    font-size: 16px;
+    color: #545454;
+    border: none;
+    border-radius: 4px;
+    padding: 4px;
+    background-color: #f1f1f1;
+}
+
+
+table.form select#id_time_and_mode_2{
     margin-right: 10px;
     margin-left: 20px;
     font-size: 16px;
@@ -260,7 +283,7 @@ table.recipes input.button:hover{
 table.recipes tr td,
 table.recipes tr th {
     padding: 5px;
-    font-size: 18px;
+    font-size: 14px;
     color: #3f3f3f;
     align-items: center;
     justify-content:center;
