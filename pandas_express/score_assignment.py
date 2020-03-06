@@ -1,5 +1,6 @@
 import sqlite3
 import os
+import sys
 import re
 import numpy as np
 import pandas as pd
@@ -12,16 +13,16 @@ config = configparser.ConfigParser()
 config.read('../wrapper/constants.ini')
 DATABASE_FILENAME = config['DEFAULT']['DATABASE_FILENAME']
 INDEX_IGNORE = config['DATA']['INDEX_IGNORE']
-NUTRITION_CUT = {'calories': [1.10, 45.3, 1.39],
-                 'total_fat':[0.89, 5.06, 13.94],
-                 'saturated_fat': [0.16, 1.29, 5.02],
-                 'cholesterol': [0.1, 2.45, 50.25],
-                 'sodium':[20.41, 121.44, 365.03],
-                 'total_carbohydrate': [3.96, 14.88, 34.31],
-                 'dietary_fiber': [0.26, 1.22, 2.98],
-                 'sugars': [0.58,2.71,8.68],
-                 'protein': [1.68, 6.13, 16.43],
-                 'potassium': [85.53, 252.0, 463.24]}
+NUTRITION_CUT = {'calories': [4.2224346717654555, 15.087066375307291],
+ 'total_fat': [0.2175, 2.283333333333333],
+ 'saturated_fat': [0.04428571428571428, 0.7488888888888889],
+ 'cholesterol': [0.0, 6.658333333333334],
+ 'sodium': [6.243333333333333, 64.02222222222223],
+ 'total_carbohydrate': [0.8729166666666667, 5.825],
+ 'dietary_fiber': [0.0625, 0.535],
+ 'sugars': [0.13, 1.4400000000000002],
+ 'protein': [0.36000000000000004, 2.648888888888889],
+ 'potassium': [19.033333333333335, 85.02399999999999]}
 
 COLUMNS = ['id', 'name', 'level', 'time_active', 'time_total',
            'serving_size', 'calories', 'total_fat', 'saturated_fat',
@@ -184,7 +185,7 @@ def search_by_nutrition(c, arg_dict):
     l = len(arg_dict.keys())
     for item, side in arg_dict.items():
         cuts = NUTRITION_CUT[item]
-        arg = [item, cuts[2], side, item, cuts[0], 0-side]
+        arg = [item, cuts[1], side, item, cuts[0], 0-side]
         args = args + arg
     case = '''
     CASE
@@ -244,7 +245,6 @@ def update_score(args_to_ui, lim, weight):
         result = search_by_term(c, term)
         for i, val in result:
             score[i] = score.get(i, 0) + val * weight.get('term', 1)
-    if title:
         result = search_by_title(c, title)
         for i, val in result:
             s = score.get(i, 0) + val*weight.get('title', 10)
@@ -257,6 +257,7 @@ def update_score(args_to_ui, lim, weight):
     final_score = sorted(score.items(), key=lambda item: item[1], reverse=True)
     last = final_score[lim][1]
     result = takewhile(lambda x: x[1]>=last, final_score)
+    print(result)
     db.close()
     return result
 
@@ -343,7 +344,14 @@ def get_dishes(args_to_ui, lim=10, weight={}, debug=False):
     if debug:
         print(df)
 
-    cols = ['name', 'level', 'time_total', 'id']
+    #cols = COLUMNS[1:-1] + ['id']
+    #df = df[cols]
+    for key, val in NUTRITION_CUT.items():
+        df[key] = df[key].apply(lambda x: 'low' if x<val[0]
+                                else ('high' if x>val[1] else 'med'))
+    cols = ['name', 'level', 'time_active', 'time_total',
+            'calories', 'total_fat', 'total_carbohydrate',
+            'sugars', 'protein', 'id']
     df = df[cols]
     tuples = [tuple(x) for x in df.to_numpy()]
     return [cols, tuples]

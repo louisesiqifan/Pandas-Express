@@ -45,13 +45,13 @@ def get_quantile(nutrition, quantile, c):
     Inputs:
         nutrition: string
         quantile: float
-        c: cursor 
+        c: cursor
     Outputs:
         result: float
     '''
-    # args = produce_args(nutrition, quantile)       
+    # args = produce_args(nutrition, quantile)
     args = (quantile, )
-    sql_get_quantile = config['DATA']['SQL_Get_Quantile'].format(nutrition)
+    sql_get_quantile = config['DATA']['SQL_GET_QUANTILE'].format(nutrition)
     c.execute(sql_get_quantile, args)
     result = c.fetchall()
     return result[0][0]
@@ -59,7 +59,7 @@ def get_quantile(nutrition, quantile, c):
 
 def get_all_quantile(nut_list=NUTRITION_LIST, quantile_list=[0.33, 0.67]):
     '''
-    Get the 33th quantile value and 66th quantile value for each of the nutrition factor in 
+    Get the 33th quantile value and 66th quantile value for each of the nutrition factor in
     receipe database.
 
     Inputs:
