@@ -86,33 +86,6 @@ def search_by_term(c, terms):
     return results
 
 
-# def search_by_categories(args):
-#     '''
-#     Search dishes by categories
-
-#     Input:
-#         args: list
-#     Return:
-#         results: list
-#     '''
-#     db = sqlite3.connect(DATABASE_FILENAME)
-#     c = db.cursor()
-#     sub_q = ','.join(['?']*len(args))
-#     query = '''
-#     SELECT r.id AS id, ROUND(k.count*1.0/{},2) AS score
-#     FROM recipes AS r
-#     JOIN (SELECT id, COUNT(id) AS count
-#           FROM recipe_categories
-#           WHERE category IN ({})
-#           GROUP BY id) AS k
-#           ON k.id = r.id
-#     '''.format(len(args), sub_q)
-#     c.execute(query, args)
-#     results = c.fetchall()
-#     db.close()
-#     return results
-
-
 def search_by_level(c, level_val):
     '''
     Search recipe by input level
@@ -222,16 +195,10 @@ def update_score(args_to_ui, lim, weight):
     c = db.cursor()
     score  = {}
     ui_input = input_verification(args_to_ui)
-    category = ui_input.get('categories', False)
     level = ui_input.get('level', False)
     time_params = ui_input.get('time', False)
-    term = ui_input.get('term', False)
     title = ui_input.get('title', False)
     nutrition = ui_input.get('nutrition', False)
-    if category:
-        result = search_by_categories(c, category)
-        for i, val in result:
-            score[i] = score.get(i, 0) + val * weight.get('categories', 1)
     if level:
         result = search_by_level(c, level)
         for i, val in result:

@@ -5,7 +5,7 @@ config = configparser.ConfigParser()
 config.read('../wrapper/constants.ini')
 DATABASE_FILENAME = config['DEFAULT']['DATABASE_FILENAME']
 INDEX_IGNORE = config['DATA']['INDEX_IGNORE']
-UI = {'categories': list, 'level': str, 'title': str,
+UI = {'level': str, 'title': str,
       'time': tuple, 'nutrition' : dict}
 
 def input_verification(args_to_ui):
@@ -19,9 +19,6 @@ def input_verification(args_to_ui):
             continue
         if type(val) != typ:
             raise ValueError("input type for {} should be {}".format(key, typ))
-        if key == 'categories':
-            args = [x.title() for x in val]
-            ui_input['categories'] = args
         if key == 'level':
             val = val.capitalize()
             levels = ['Easy', 'Intermediate', 'Advanced']
