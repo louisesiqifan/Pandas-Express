@@ -19,6 +19,9 @@ LEVEL_CHOICES = [("easy", "Easy"),
                  ("intermediate", "Intermediate"),
                  ("advanced", "Advanced")]
 
+IMPORTANCE_CHOICES = [(1, 'Default'), (10, 'Important')]
+TERM_IMPORTANCE_CHOICES = [(10, 'Default'), (50, 'Important')]
+
 COLUMN_NAMES = {"id": 'ID',
                 'name': "Recipe",
                 'level': "Difficulty Level",
@@ -31,7 +34,7 @@ COLUMN_NAMES = {"id": 'ID',
                 'saturated_fat': "Saturated Fat",
                 'cholesterol': "Cholesterol",
                 'sodium': "Sodium",
-                'total_carbohydrate': 'Total Carbohydrate',
+                'total_carbohydrate': 'Total Carb',
                 'dietary_fiber': 'Dietary Fiber',
                 'sugars': 'Sugars',
                 'protein': 'Protein',
@@ -42,8 +45,25 @@ class Cooking_Time(forms.MultiValueField):
     def __init__(self, *args, **kwargs):
         fields = (forms.IntegerField(),
                   forms.ChoiceField(label='Mode', choices=TIME_CHOICES,
+                                    required=False),
+                  forms.ChoiceField(label='Mode', choices=IMPORTANCE_CHOICES,
                                     required=False),)
         super(Cooking_Time, self).__init__(
+            fields=fields,
+            *args, **kwargs)
+
+    def compress(self, data_list):
+        if len(data_list) == 3:
+            if data_list[0] is None or not data_list[1]:
+                return None
+        return data_list
+
+class Text(forms.MultiValueField):
+    def __init__(self, *args, **kwargs):
+        fields = (forms.CharField(),
+                  forms.ChoiceField(label='Mode', choices=TERM_IMPORTANCE_CHOICES,
+                                    required=False),)
+        super(Text, self).__init__(
             fields=fields,
             *args, **kwargs)
 
@@ -51,28 +71,33 @@ class Cooking_Time(forms.MultiValueField):
         if len(data_list) == 2:
             if data_list[0] is None or not data_list[1]:
                 return None
-
         return data_list
 
 
 class SearchForm(forms.Form):
-    query = forms.CharField(
+    query = Text(
         label='Search Terms',
         help_text='Try Fried Chicken!',
-        required=False)
+        required=False,
+        widget=forms.widgets.MultiWidget(
+            widgets=(forms.widgets.TextInput,
+                     forms.widgets.Select(choices=TERM_IMPORTANCE_CHOICES))))
+
     time_and_mode = Cooking_Time(
         label='Cooking Time',
         help_text='30 minutes in total or more?',
         required=False,
         widget=forms.widgets.MultiWidget(
             widgets=(forms.widgets.NumberInput,
-                     forms.widgets.Select(choices=TIME_CHOICES))))
+                     forms.widgets.Select(choices=TIME_CHOICES),
+                     forms.widgets.Select(choices=IMPORTANCE_CHOICES))))
     level = forms.MultipleChoiceField(label='Difficulty Level',
                                       choices=LEVEL_CHOICES,
                                       widget=forms.CheckboxSelectMultiple,
                                       required=False)
-    # show_args = forms.BooleanField(label='Show args_to_ui',
+    #show_args = forms.BooleanField(label='Show args_to_ui',
     #                                required=False)
+
 
 
 def home(request):
@@ -82,8 +107,10 @@ def home(request):
         form = SearchForm(request.GET)
         if form.is_valid():
             args = {}
+            weight = {}
             if form.cleaned_data['query']:
-                args['title'] = form.cleaned_data['query']
+                args['title'] = form.cleaned_data['query'][0]
+                weight['title'] = int(form.cleaned_data['query'][1])
 
             level = form.cleaned_data['level']
             if level:
@@ -91,13 +118,15 @@ def home(request):
 
             time_and_mode = form.cleaned_data['time_and_mode']
             if time_and_mode:
-                args['time'] = tuple(time_and_mode)
+                print(time_and_mode)
+                args['time'] = tuple(time_and_mode[:-1])
+                weight['time'] = int(time_and_mode[-1])
 
-            # if form.cleaned_data['show_args']:
-            #     context['args'] = 'args_to_ui= ' + str(args)
-
+            #if form.cleaned_data['show_args']:
+            #    context['args'] = 'args_to_ui= ' + str(args)
+            #raise ValueError(str(weight))
             try:
-                res = get_dishes(args)
+                res = get_dishes(args, weight=weight)
             except Exception as e:
                 print('Exception caught')
                 bt = traceback.format_exception(*sys.exc_info()[:3])
