@@ -209,7 +209,7 @@ def update_score(args_to_ui, lim, weight):
             if val:
                 score[i] = score.get(i, 0) + val * weight.get('time', 1)
     if title:
-        result = search_by_term(c, term)
+        result = search_by_term(c, title)
         for i, val in result:
             score[i] = score.get(i, 0) + val * weight.get('term', 1)
         result = search_by_title(c, title)
@@ -280,6 +280,17 @@ def get_dish(recipe_id):
     return tuple(result)
 
 
+def feeling_lucky():
+    db = sqlite3.connect(DATABASE_FILENAME)
+    c = db.cursor()
+    query = 'SELECT COUNT(*) FROM recipes'
+    c.execute(query)
+    max_length = c.fetchall()[0]
+    i = int(np.random.randint(1, max_length))
+    db.close()
+    return get_dish(i)
+
+
 def get_dishes(args_to_ui, lim=10, weight={}, debug=False):
     '''
     Get all dishes.
@@ -311,8 +322,6 @@ def get_dishes(args_to_ui, lim=10, weight={}, debug=False):
     if debug:
         print(df)
 
-    #cols = COLUMNS[1:-1] + ['id']
-    #df = df[cols]
     for key, val in NUTRITION_CUT.items():
         df[key] = df[key].apply(lambda x: 'low' if x<val[0]
                                 else ('high' if x>val[1] else 'med'))
