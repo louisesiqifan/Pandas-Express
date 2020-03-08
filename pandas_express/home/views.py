@@ -142,6 +142,7 @@ def home(request):
             #raise ValueError(str(weight))
             try:
                 res = get_dishes(args, weight=weight)
+                print(res)
             except Exception as e:
                 print('Exception caught')
                 bt = traceback.format_exception(*sys.exc_info()[:3])
@@ -183,7 +184,6 @@ def home(request):
 
     return render(request, 'index.html', context)
 
-
 def get_detail(request):
     result=request.GET
     recipe_id = list(result.keys())[0]
@@ -191,5 +191,5 @@ def get_detail(request):
     context = dict()
     context['name'] = recipe[1]
     context['time'] = recipe[3]
-    context['direction'] = recipe[-1]
+    context['direction'] = recipe[-1].splitlines()
     return render(request, 'detail.html', context)
