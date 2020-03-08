@@ -1,8 +1,3 @@
-import traceback
-import sys
-import csv
-import os
-
 from functools import reduce
 from operator import and_
 from django.shortcuts import render
@@ -11,21 +6,14 @@ from django.http import HttpResponse
 from score_assignment import get_dish, get_dishes
 from django.template import Template
 
-
-
 TIME_CHOICES = [("total", "Total"), ("active", "Active")]
-
 LEVEL_CHOICES = [("easy", "Easy"),
                  ("intermediate", "Intermediate"),
                  ("advanced", "Advanced")]
-
 IMPORTANCE_CHOICES = [(1, 'Default'), (10, 'Important')]
 TERM_IMPORTANCE_CHOICES = [(10, 'Default'), (50, 'Important')]
-
-
 ADVANCE_CHOICES = [(1, 'Yes')]
 NUTRITION_CHOICES = [(-1, 'Low'), (1,"High")]
-
 COLUMN_NAMES = {"id": 'ID',
                 'name': "Recipe",
                 'level': "Difficulty Level",
@@ -44,6 +32,7 @@ COLUMN_NAMES = {"id": 'ID',
                 'protein': 'Protein',
                 'potassium': 'Potassium'}
 
+######## FORM CLASSES **********
 
 class Cooking_Time(forms.MultiValueField):
     def __init__(self, *args, **kwargs):
@@ -76,6 +65,8 @@ class Text(forms.MultiValueField):
         return data_list
 
 
+########## SEARCH PAGE ##########
+
 class SearchForm(forms.Form):
     query = Text(
         label='Search Terms',
@@ -104,15 +95,11 @@ class SearchForm(forms.Form):
     #show_args = forms.BooleanField(label='Show args_to_ui',
     #                                required=False)
 
-####### SEARCH #######
-
 def search(request):
     context = {}
     res = None
     if request.method == 'GET':
-        print(request.GET)
         form = SearchForm(request.GET)
-        print(form)
         if form.is_valid():
             args = {}
             weight = {}
@@ -135,37 +122,18 @@ def search(request):
             #raise ValueError(str(weight))
 
             try:
-                res = get_dishes(args, weight=weight)
+                res = get_dishes(args, weight=weight, )
                 print(res)
             except Exception as e:
                 print('Exception caught')
-                bt = traceback.format_exception(*sys.exc_info()[:3])
-                context['err'] = """
-                An exception was thrown in get_dishes:
-                <pre>{}
-{}</pre>
-                """.format(e, '\n'.join(bt))
-
                 res = None
     else:
         form = SearchForm()
 
-    # Handle different responses of res
-    # elif isinstance(res, str):
-    #     context['result'] = None
-    #     context['err'] = res
-    #     result = None
-    # elif not _valid_result(res):
-    #     context['result'] = None
-    #     context['err'] = ('Return of find_courses has the wrong data type. '
-    #                       'Should be a tuple of length 4 with one string and '
-    #                       'three lists.')
-    # else:
     if res is None:
         context['result'] = None
     else:
         columns, result = res
-        # Wrap in tuple if result is not already
         if result and isinstance(result[0], str):
             result = [(r,) for r in result]
 
@@ -230,7 +198,6 @@ class AdvanceForm(forms.Form):
                                     widget=forms.CheckboxSelectMultiple,
                                     required=False)
 
-
     # show_args = forms.BooleanField(label='Show args_to_ui',
     #                                required=False)
 
@@ -257,21 +224,10 @@ def advance(request):
                 args['time'] = tuple(time_and_mode[:-1])
                 weight['time'] = int(time_and_mode[-1])
 
-            #if form.cleaned_data['show_args']:
-            #    context['args'] = 'args_to_ui= ' + str(args)
-            #raise ValueError(str(weight))
-
             try:
-                res = get_dishes(args, weight=weight)
+                res = get_dishes(args, weight=weight, nutrient=True)
             except Exception as e:
                 print('Exception caught')
-                bt = traceback.format_exception(*sys.exc_info()[:3])
-                context['err'] = """
-                An exception was thrown in get_dishes:
-                <pre>{}
-{}</pre>
-                """.format(e, '\n'.join(bt))
-
                 res = None
     else:
         form = AdvanceForm()
@@ -280,7 +236,6 @@ def advance(request):
         context['result'] = None
     else:
         columns, result = res
-        # Wrap in tuple if result is not already
         if result and isinstance(result[0], str):
             result = [(r,) for r in result]
 
@@ -291,6 +246,8 @@ def advance(request):
 
     return render(request, 'advance.html', context)
 
+
+########## DETAIL PAGE ##########
 
 def get_detail(request):
     result=request.GET
