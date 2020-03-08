@@ -5,6 +5,7 @@ from django import forms
 from django.http import HttpResponse
 from score_assignment import get_dish, get_dishes
 from django.template import Template
+from plotter import plot_one_nutrition, plot_two_nutrition
 
 TIME_CHOICES = [("total", "Total"), ("active", "Active")]
 LEVEL_CHOICES = [("easy", "Easy"),
@@ -122,7 +123,7 @@ def search(request):
             #raise ValueError(str(weight))
 
             try:
-                res = get_dishes(args, weight=weight, )
+                res = get_dishes(args, weight=weight)
                 print(res)
             except Exception as e:
                 print('Exception caught')
@@ -184,19 +185,19 @@ class AdvanceForm(forms.Form):
                                     required=False)
 
     carb = forms.MultipleChoiceField(label='Total Carbohydrate',
-                                         choices=NUTRITION_CHOICES,
-                                         widget=forms.CheckboxSelectMultiple,
-                                         required=False)
+                                     choices=NUTRITION_CHOICES,
+                                     widget=forms.CheckboxSelectMultiple,
+                                     required=False)
 
     protein = forms.MultipleChoiceField(label='Protein',
-                                         choices=NUTRITION_CHOICES,
-                                         widget=forms.CheckboxSelectMultiple,
-                                         required=False)
+                                        choices=NUTRITION_CHOICES,
+                                        widget=forms.CheckboxSelectMultiple,
+                                        required=False)
 
     sugars = forms.MultipleChoiceField(label='Sugars',
-                                    choices=NUTRITION_CHOICES,
-                                    widget=forms.CheckboxSelectMultiple,
-                                    required=False)
+                                       choices=NUTRITION_CHOICES,
+                                       widget=forms.CheckboxSelectMultiple,
+                                       required=False)
 
     # show_args = forms.BooleanField(label='Show args_to_ui',
     #                                required=False)
@@ -253,8 +254,11 @@ def get_detail(request):
     result=request.GET
     recipe_id = list(result.keys())[0]
     recipe = get_dish(int(recipe_id))
+    output = plot_two_nutrition(recipe_id, "calories", "total_fat")
+    print(output)
     context = dict()
     context['name'] = recipe[1]
     context['time'] = recipe[3]
     context['direction'] = recipe[-1].splitlines()
+    context['img'] = output
     return render(request, 'detail.html', context)
