@@ -184,29 +184,30 @@ def get_nutrient (ingredient, serving_size=1.0):
     return
 
 
-#def get_nutrient(ingredients, serving_size=1):
-#    '''
-#    From ingredients, get ingredients
-#    '''
-#    item_list = []
-#    nutrient = np.array([0]*10)
-#    for item in ingredients:
-#        try:
-#            d = nutritionix.get_nutrient(item)['foods'][0]
-#        except:
-#            continue
-#        name = d.get('food_name', None)
-#        item_list.append(name)
-#        for i, key in enumerate(INGREDIENTS):
-#            k = 'nf_' + key
-#            val = d.get(k, 0)
-#            try:
-#                nutrient[i] += val
-#            except:
-#                pass
-#    nutrient[0] = nutrient[0]/4.184
-#    return item_list, list(nutrient/serving_size)
-
+def get_ingredients_details():
+    '''
+    '''
+    dish = util.read_json(name_json)
+    keys = dish.keys()   #123, abc, ..
+    sql_create_recipe_detail = config['DATA']['SQL_CREATE_INGREDIENTS_DETAIL']
+    db = sqlite3.connect(name_db)
+    c = db.cursor()
+    create_table(c, sql_create_recipe_detail, 'ingredient_details')
+    db.commit()
+    id_tracker = 1
+    for k in keys:
+        for course in dish[k]:
+            ingredients = course.get('ingredients', [])
+            for ing in ingredients:
+                write_to_table(c, 'ingredient_details',
+                               ('id', 'ingredient'),
+                               (id_tracker, ing))
+                db.commit()
+            print(id_tracker)
+            id_tracker += 1
+    db.close()
+    print('Finished Creating Ingredients :)')
+    return
 
 def main():
     # Initialize files and strings
@@ -319,3 +320,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    get_ingredients_details()
