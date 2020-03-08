@@ -30,5 +30,6 @@ from django.contrib import admin
 
 
 urlpatterns = [
-    path('', include("home.urls")),
+    path('search/', include("home.urls")),
+    path('', include("login.urls"))
 ]

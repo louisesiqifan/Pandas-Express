@@ -19,8 +19,8 @@
                 {{ form }}
                 </table>
                 <input type="submit" class="button" value="Search" onclick="location.href='#section2';"/>
-                <input type="reset" class="button" value="Reset" onclick="location.href='/';" />
-                <input type="reset" class="button" value="Advanced Search" onclick="location.href='/advance';" />
+                <input type="reset" class="button" value="Reset" onclick="location.href='/search';" />
+                <input type="reset" class="button" value="Advanced Search" onclick="location.href='/search/advance';" />
             </form>
                 
         </div>
@@ -43,7 +43,7 @@
                 <table class="recipes">
                     <tr>
                         {% for col in columns %}
-                            {% if forloop.counter|divisibleby:10 %}
+                            {% if forloop.counter|divisibleby:5 %}
                             {% else %}
                                 <th>{{ col }}</th>
                             {% endif %}
@@ -52,7 +52,7 @@
                     {% for entry in result %}
                     <tr>
                         {% for col in entry %}
-                            {% if forloop.counter|divisibleby:10 %} 
+                            {% if forloop.counter|divisibleby:5 %} 
                                 <td>
                                     <form method="get" action="{% url 'detail'%}">
                                         <input type="submit" class="button" value="Detail" name="{{col}}"/>

@@ -292,7 +292,7 @@ def feeling_lucky():
     return get_dish(i)
 
 
-def get_dishes(args_to_ui, lim=10, weight={}, debug=False):
+def get_dishes(args_to_ui, lim=10, weight={}, debug=False, nutrient=False):
     '''
     Get all dishes.
 
@@ -326,9 +326,12 @@ def get_dishes(args_to_ui, lim=10, weight={}, debug=False):
     for key, val in NUTRITION_CUT.items():
         df[key] = df[key].apply(lambda x: 'low' if x<val[0]
                                 else ('high' if x>val[1] else 'med'))
-    cols = ['name', 'level', 'time_active', 'time_total',
-            'calories', 'total_fat', 'total_carbohydrate',
-            'sugars', 'protein', 'id']
+
+    cols = ['name', 'level', 'time_active', 'time_total', 'id']
+    if nutrient:
+        cols = ['name', 'level', 'time_active', 'time_total',
+                'calories', 'total_fat', 'total_carbohydrate',
+                'sugars', 'protein', 'id']
     df = df[cols]
     tuples = [tuple(x) for x in df.to_numpy()]
     return [cols, tuples]
