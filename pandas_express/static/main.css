@@ -35,7 +35,6 @@ div#header h1 {
     padding: 0px;
 }
 
-
 div.frame {
     margin: 66px;
 }
@@ -77,13 +76,10 @@ label {
     padding: 1px;
 }
 
-
-
 table.form {
     text-align: left;
     font-size: 22px;
 }
-
 
 table.form tr td,
 table.form tr th {
@@ -91,7 +87,6 @@ table.form tr th {
     font-size: 22px;
     padding-bottom: 22px;
 }
-
 
 table.form input#id_query_0{
     margin-right: 10px;
@@ -129,7 +124,6 @@ table.form select#id_query_1{
     padding: 4px;
     background-color: #f1f1f1;
 }
-
 
 table.form input#id_time_and_mode_0{
     margin-right: 10px;
@@ -169,7 +163,6 @@ table.form select#id_time_and_mode_1{
     padding: 4px;
     background-color: #f1f1f1;
 }
-
 
 table.form select#id_time_and_mode_2{
     margin-right: 10px;
@@ -223,8 +216,6 @@ input[type=submit]:hover{
     background-color: #45a049;
 }
 
-
-
 input[type=reset].button {
   background-color: tomato;
   border: none;
@@ -246,7 +237,6 @@ input[type=reset].button {
 input[type=reset]:hover{
     background-color: #ff4747;
 }
-
 
 table.recipes {
     border: 2px solid #ddd;
@@ -296,7 +286,6 @@ table.recipes a{
     font-size: 18px;
     color: #0B3861;
 }
-
 
 table.recipes tr:nth-child(even) {
     background: #eee;
@@ -348,7 +337,6 @@ input[type=back].button {
 input[type=back]:hover{
     background-color: #7f8b9c;
 }
-
 
 div#footer {
     background: #7cb57c;
