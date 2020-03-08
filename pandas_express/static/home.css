@@ -111,7 +111,7 @@ table.form input#id_query_0:focus{
     border: 2px solid lightblue;
     width: 60%;
     background-color: #F8F8F8;
-    transition: width border background 0.4s ease-in-out;    
+    transition: width border background 0.4s ease-in-out;
 }
 
 table.form select#id_query_1{
@@ -189,17 +189,6 @@ table.form ul#id_level li {
     padding: 0px;
 }
 
-/*table.form label[for=id_level_0]{
-    font-size: 18px;
-}
-
-table.form label[for=id_level_1]{
-    font-size: 18px;
-}
-
-table.form label[for=id_level_2]{
-    font-size: 18px;
-}*/
 
 input[type=submit].button {
   background-color: #4CAF50;
@@ -245,10 +234,33 @@ input[type=reset]:hover{
     background-color: #ff4747;
 }
 
+input[value="Advanced Search"].button {
+  background-color: #008CBA;
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 22px;
+  margin-top: 20px;
+  margin-bottom: 0px;
+  margin-right: 10px;
+  margin-left: 10px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.1s;
+}
+
+input[value="Advanced Search"]:hover{
+    background-color: #123456;
+}
+
+
 table.recipes {
     border: 2px solid #ddd;
     padding:10px;
-    margin-top: 0px;
+    margin-top: 10px;
     margin-bottom: 0px;
     margin-right: 10px;
     margin-left: 10px;
@@ -280,7 +292,7 @@ table.recipes input.button:hover{
 table.recipes tr td,
 table.recipes tr th {
     padding: 5px;
-    font-size: 14px;
+    font-size: 18px;
     color: #3f3f3f;
     align-items: center;
     justify-content:center;

@@ -43,7 +43,7 @@
                 <table class="recipes">
                     <tr>
                         {% for col in columns %}
-                            {% if forloop.counter|divisibleby:10 %}
+                            {% if forloop.counter|divisibleby:5 %}
                             {% else %}
                                 <th>{{ col }}</th>
                             {% endif %}
@@ -52,7 +52,7 @@
                     {% for entry in result %}
                     <tr>
                         {% for col in entry %}
-                            {% if forloop.counter|divisibleby:10 %} 
+                            {% if forloop.counter|divisibleby:5 %} 
                                 <td>
                                     <form method="get" action="{% url 'detail'%}">
                                         <input type="submit" class="button" value="Detail" name="{{col}}"/>
