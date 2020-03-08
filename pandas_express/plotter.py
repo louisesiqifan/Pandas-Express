@@ -52,15 +52,19 @@ def get_dish_nutrition(id, *args):
 def one_nutrition(id, nutritions):
     df = get_all_nutrition(nutritions)
     dish_nutrition = get_dish_nutrition(id, nutritions)
-    with sns.axes_style("white"):
-        sns.distplot(x=df)
-        plt.axvline(x=dish_nutrition)
+    sns.distplot(x=df)
+    plt.axvline(x=dish_nutrition)
     return
 
 
 def two_nutrition(id, nutrition1, nutrition2):
     '''
     Plot for two nutritions
+
+    Input:
+        id(int): recipe id
+        nutrition1(str)
+        nutrition2(str)
     '''
     dish_nutrition1, dish_nutrition2 = get_dish_nutrition(id, nutrition1, nutrition2)
     df1 = get_all_nutrition(nutrition1)
@@ -75,5 +79,7 @@ def two_nutrition(id, nutrition1, nutrition2):
         dish_nutrition2 += 0.0001
     a.ax_joint.plot([np.log(dish_nutrition1)], [np.log(dish_nutrition2)],
                     'ro', color='lightcoral')
+    a.title("{} vs {}".format(nutrition1, nutrition2))
+    a.set(xlabel=nutrition1, ylabel=nutrition2)
     a.savefig("static/plot.png")
     return
