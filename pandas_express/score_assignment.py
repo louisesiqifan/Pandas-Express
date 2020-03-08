@@ -297,7 +297,10 @@ def get_dish_ingredient (recipe_id):
     c.execute(query, params)    
     result = c.fetchall()
     db.close()
-    return result
+    ing_list = []
+    for sentence in result:
+        ing_list.append(sentence[0])
+    return ing_list
 #%%
 
 def feeling_lucky():

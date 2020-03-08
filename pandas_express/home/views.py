@@ -3,7 +3,7 @@ from operator import and_
 from django.shortcuts import render
 from django import forms
 from django.http import HttpResponse
-from score_assignment import get_dish, get_dishes
+from score_assignment import get_dish, get_dishes, get_dish_ingredient
 from django.template import Template
 
 TIME_CHOICES = [("total", "Total"), ("active", "Active")]
@@ -253,8 +253,10 @@ def get_detail(request):
     result=request.GET
     recipe_id = list(result.keys())[0]
     recipe = get_dish(int(recipe_id))
+    recipe_ingredient = get_dish_ingredient(int(recipe_id))
     context = dict()
     context['name'] = recipe[1]
     context['time'] = recipe[3]
     context['direction'] = recipe[-1].splitlines()
+    context['ingredient'] = recipe_ingredient.splitlines()
     return render(request, 'detail.html', context)
