@@ -22,6 +22,10 @@ LEVEL_CHOICES = [("easy", "Easy"),
 IMPORTANCE_CHOICES = [(1, 'Default'), (10, 'Important')]
 TERM_IMPORTANCE_CHOICES = [(10, 'Default'), (50, 'Important')]
 
+
+ADVANCE_CHOICES = [(1, 'Yes')]
+NUTRITION_CHOICES = [(-1, 'Low'), (1,"High")]
+
 COLUMN_NAMES = {"id": 'ID',
                 'name': "Recipe",
                 'level': "Difficulty Level",
@@ -63,9 +67,7 @@ class Text(forms.MultiValueField):
         fields = (forms.CharField(),
                   forms.ChoiceField(label='Mode', choices=TERM_IMPORTANCE_CHOICES,
                                     required=False),)
-        super(Text, self).__init__(
-            fields=fields,
-            *args, **kwargs)
+        super(Text, self).__init__(fields=fields, *args, **kwargs)
 
     def compress(self, data_list):
         if len(data_list) == 2:
@@ -73,21 +75,6 @@ class Text(forms.MultiValueField):
                 return None
         return data_list
 
-
-class Nutrition(forms.MultiValueField):
-    def __init__(self, *args, **kwargs):
-        fields = (forms.CharField(),
-                  forms.ChoiceField(label='Mode', choices=TERM_IMPORTANCE_CHOICES,
-                                    required=False),)
-        super(Text, self).__init__(
-            fields=fields,
-            *args, **kwargs)
-
-    def compress(self, data_list):
-        if len(data_list) == 2:
-            if data_list[0] is None or not data_list[1]:
-                return None
-        return data_list
 
 class SearchForm(forms.Form):
     query = Text(
@@ -96,7 +83,8 @@ class SearchForm(forms.Form):
         required=False,
         widget=forms.widgets.MultiWidget(
             widgets=(forms.widgets.TextInput,
-                     forms.widgets.Select(choices=TERM_IMPORTANCE_CHOICES))))
+                     forms.widgets.Select(choices=TERM_IMPORTANCE_CHOICES)))
+        )
 
     time_and_mode = Cooking_Time(
         label='Cooking Time',
@@ -105,21 +93,26 @@ class SearchForm(forms.Form):
         widget=forms.widgets.MultiWidget(
             widgets=(forms.widgets.NumberInput,
                      forms.widgets.Select(choices=TIME_CHOICES),
-                     forms.widgets.Select(choices=IMPORTANCE_CHOICES))))
+                     forms.widgets.Select(choices=IMPORTANCE_CHOICES)))
+        )
+
     level = forms.MultipleChoiceField(label='Difficulty Level',
                                       choices=LEVEL_CHOICES,
                                       widget=forms.CheckboxSelectMultiple,
                                       required=False)
+
     #show_args = forms.BooleanField(label='Show args_to_ui',
     #                                required=False)
 
+####### SEARCH #######
 
-
-def home(request):
+def search(request):
     context = {}
     res = None
     if request.method == 'GET':
+        print(request.GET)
         form = SearchForm(request.GET)
+        print(form)
         if form.is_valid():
             args = {}
             weight = {}
@@ -140,6 +133,7 @@ def home(request):
             #if form.cleaned_data['show_args']:
             #    context['args'] = 'args_to_ui= ' + str(args)
             #raise ValueError(str(weight))
+
             try:
                 res = get_dishes(args, weight=weight)
             except Exception as e:
@@ -156,8 +150,6 @@ def home(request):
         form = SearchForm()
 
     # Handle different responses of res
-    # if res is None:
-    #     context['result'] = None
     # elif isinstance(res, str):
     #     context['result'] = None
     #     context['err'] = res
@@ -181,7 +173,123 @@ def home(request):
         context['columns'] = [COLUMN_NAMES.get(col, col) for col in columns]
         context['form'] = form
 
-    return render(request, 'index.html', context)
+    return render(request, 'home.html', context)
+
+
+####### AdvanceForm #######
+
+class AdvanceForm(forms.Form):
+
+    query = Text(
+        label='Search Terms',
+        help_text='Try Fried Chicken!',
+        required=False,
+        widget=forms.widgets.MultiWidget(
+            widgets=(forms.widgets.TextInput,
+                     forms.widgets.Select(choices=TERM_IMPORTANCE_CHOICES)))
+        )
+
+    time_and_mode = Cooking_Time(
+        label='Cooking Time',
+        help_text='30 minutes in total or more?',
+        required=False,
+        widget=forms.widgets.MultiWidget(
+            widgets=(forms.widgets.NumberInput,
+                     forms.widgets.Select(choices=TIME_CHOICES),
+                     forms.widgets.Select(choices=IMPORTANCE_CHOICES)))
+        )
+
+    level = forms.MultipleChoiceField(label='Difficulty Level',
+                                      choices=LEVEL_CHOICES,
+                                      widget=forms.CheckboxSelectMultiple,
+                                      required=False)
+
+    calories = forms.MultipleChoiceField(label='Calories',
+                                         choices=NUTRITION_CHOICES,
+                                         widget=forms.CheckboxSelectMultiple,
+                                         required=False)
+
+    fat = forms.MultipleChoiceField(label='Total Fat',
+                                    choices=NUTRITION_CHOICES,
+                                    widget=forms.CheckboxSelectMultiple,
+                                    required=False)
+
+    carb = forms.MultipleChoiceField(label='Total Carbohydrate',
+                                         choices=NUTRITION_CHOICES,
+                                         widget=forms.CheckboxSelectMultiple,
+                                         required=False)
+
+    protein = forms.MultipleChoiceField(label='Protein',
+                                         choices=NUTRITION_CHOICES,
+                                         widget=forms.CheckboxSelectMultiple,
+                                         required=False)
+
+    sugars = forms.MultipleChoiceField(label='Sugars',
+                                    choices=NUTRITION_CHOICES,
+                                    widget=forms.CheckboxSelectMultiple,
+                                    required=False)
+
+
+    # show_args = forms.BooleanField(label='Show args_to_ui',
+    #                                required=False)
+
+
+def advance(request):
+    context = {}
+    res = None
+    if request.method == 'GET':
+        form = AdvanceForm(request.GET)
+        if form.is_valid():
+            args = {}
+            weight = {}
+            if form.cleaned_data['query']:
+                args['title'] = form.cleaned_data['query'][0]
+                weight['title'] = int(form.cleaned_data['query'][1])
+
+            level = form.cleaned_data['level']
+            if level:
+                args['level'] = level[0]
+
+            time_and_mode = form.cleaned_data['time_and_mode']
+            if time_and_mode:
+                print(time_and_mode)
+                args['time'] = tuple(time_and_mode[:-1])
+                weight['time'] = int(time_and_mode[-1])
+
+            #if form.cleaned_data['show_args']:
+            #    context['args'] = 'args_to_ui= ' + str(args)
+            #raise ValueError(str(weight))
+
+            try:
+                res = get_dishes(args, weight=weight)
+            except Exception as e:
+                print('Exception caught')
+                bt = traceback.format_exception(*sys.exc_info()[:3])
+                context['err'] = """
+                An exception was thrown in get_dishes:
+                <pre>{}
+{}</pre>
+                """.format(e, '\n'.join(bt))
+
+                res = None
+    else:
+        form = AdvanceForm()
+
+    if res is None:
+        context['result'] = None
+    else:
+        columns, result = res
+        # Wrap in tuple if result is not already
+        if result and isinstance(result[0], str):
+            result = [(r,) for r in result]
+
+        context['result'] = result
+        context['num_results'] = len(result)
+        context['columns'] = [COLUMN_NAMES.get(col, col) for col in columns]
+        context['form'] = form
+
+    return render(request, 'advance.html', context)
+
 
 
 def get_detail(request):
