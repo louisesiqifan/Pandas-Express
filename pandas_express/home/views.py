@@ -74,6 +74,21 @@ class Text(forms.MultiValueField):
         return data_list
 
 
+class Nutrition(forms.MultiValueField):
+    def __init__(self, *args, **kwargs):
+        fields = (forms.CharField(),
+                  forms.ChoiceField(label='Mode', choices=TERM_IMPORTANCE_CHOICES,
+                                    required=False),)
+        super(Text, self).__init__(
+            fields=fields,
+            *args, **kwargs)
+
+    def compress(self, data_list):
+        if len(data_list) == 2:
+            if data_list[0] is None or not data_list[1]:
+                return None
+        return data_list
+
 class SearchForm(forms.Form):
     query = Text(
         label='Search Terms',
