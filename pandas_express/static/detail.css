@@ -39,6 +39,18 @@ div#time {
     padding-bottom: 5px;
 }
 
+
+div#ingredient {
+    padding-right: 66px;
+    padding-left: 66px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+div#ingredient h3{
+    font-size: 22px;
+}
+
 div#direction {
     padding-right: 66px;
     padding-left: 66px;
@@ -50,9 +62,7 @@ div#direction h3{
     font-size: 22px;
 }
 
-div#direction p{
-    padding-bottom: 40px;  
-}
+
 
 div#footer {
     background: #7cb57c;

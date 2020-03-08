@@ -17,8 +17,13 @@
             <p>Total time: {{time}} min</p>
         </div>
 
-        <div id="ingredient">
-
+        <div id="direction">
+            <h3> Ingredients: </h3>
+            <ul>
+                {% for i in ingredient %}
+                <li>{{ i }}</li>
+                {% endfor %}
+            </ul>
         </div>
 
         <div id="direction">
@@ -29,6 +34,11 @@
             {% endfor %}
             </ul>
         </div>
+
+        <figure>
+            <img src=../{{img}} style="width:25%">
+        </figure>
+
         <button type="button" onclick="location.href='/search';">Back to search</button>
         
         <div id="footer">

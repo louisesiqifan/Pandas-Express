@@ -49,18 +49,20 @@ def get_dish_nutrition(id, *args):
     return nutritions
 
 
-def one_nutrition(id, nutritions):
-    df = get_all_nutrition(nutritions)
+def plot_one_nutrition(recipe_id, nutrition):
+    df = get_all_nutrition(nutrition)
     df = df[df != 0]
-    dish_nutrition = get_dish_nutrition(id, nutritions)
+    dish_nutrition = get_dish_nutrition(recipe_id, nutrition)
     if dish_nutrition == 0:
         dish_nutrition += 0.0001
     a = sns.distplot(np.log(df), color="seagreen", bins=20, hist_kws=dict(alpha=0.2))
     a.axvline(x=dish_nutrition, color="lightcoral")
-    a.set_title(nutritions.capitalize())
-    return
+    a.set_title(nutrition.capitalize())
+    output = "static/{}-{}.png".format(recipe_id, nutrition)
+    a.savefig(output)
+    return output
 
-def two_nutrition(id, nutrition1, nutrition2):
+def plot_two_nutrition(id, nutrition1, nutrition2):
     '''
     Plot for two nutritions
 
@@ -82,5 +84,6 @@ def two_nutrition(id, nutrition1, nutrition2):
         dish_nutrition2 += 0.0001
     a.ax_joint.plot([np.log(dish_nutrition1)], [np.log(dish_nutrition2)],
                     'ro', color='lightcoral')
-    a.savefig("static/plot.png")
-    return
+    output = "static/{}-{}.png".format(nutrition1, nutrition2)
+    a.savefig(output)
+    return output
