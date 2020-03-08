@@ -1,3 +1,4 @@
+#%%
 import sqlite3
 import os
 import sys
@@ -280,6 +281,24 @@ def get_dish(recipe_id):
     db.close()
     return tuple(result)
 
+
+def get_dish_ingredient (recipe_id):
+    '''
+    Get dish ingredient by id
+    '''
+    db = sqlite3.connect(DATABASE_FILENAME)
+    c = db.cursor()
+    query = '''
+    SELECT ingredient 
+    FROM ingredient_details 
+    WHERE id = ?
+    '''
+    params = (recipe_id, )
+    c.execute(query, params)    
+    result = c.fetchall()
+    db.close()
+    return result
+#%%
 
 def feeling_lucky():
     db = sqlite3.connect(DATABASE_FILENAME)
