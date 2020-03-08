@@ -23,7 +23,11 @@
 
         <div id="direction">
             <h3> Direction: </h3>
-                <p> {{direction}} </p>
+            <ul>
+            {% for i in direction %}
+            <li> {{ i }} </li>
+            {% endfor %}
+            </ul>
         </div>
 
         <button type="button" onclick="location.href='/';">Back to search</button>
