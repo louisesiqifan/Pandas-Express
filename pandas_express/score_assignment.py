@@ -198,6 +198,7 @@ def update_score(args_to_ui, lim, weight):
     level = ui_input.get('level', False)
     time_params = ui_input.get('time', False)
     title = ui_input.get('title', False)
+    terms = ui_input.get('term', False)
     nutrition = ui_input.get('nutrition', False)
     if level:
         result = search_by_level(c, level)
@@ -209,7 +210,7 @@ def update_score(args_to_ui, lim, weight):
             if val:
                 score[i] = score.get(i, 0) + val * weight.get('time', 1)
     if title:
-        result = search_by_term(c, title)
+        result = search_by_term(c, terms)
         for i, val in result:
             score[i] = score.get(i, 0) + val * weight.get('term', 1)
         result = search_by_title(c, title)
