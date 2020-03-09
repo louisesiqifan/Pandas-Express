@@ -5,6 +5,7 @@
     <link href="https://fonts.googleapis.com/css?family=Quicksand:300,500" rel="stylesheet">
     <link rel="shortcut icon" href="{% static '../static/favicon.ico' %}" />
     <meta name="viewport" content="width=device-width, initial-scale=0.67">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <head>
         <title>{{name}}</title>
     </head>
@@ -14,11 +15,13 @@
         </div>
 
         <div id="time">
-            <p>Total time: {{time}} min</p>
+            <p><i class="fas fa-clock"></i> Total time: {{time}} min</p>
         </div>
+        
 
+        
         <div id="direction">
-            <h3> Ingredients: </h3>
+            <h3>  <i class="fas fa-utensils"></i>  Ingredients: </h3>
             <ul>
                 {% for i in ingredient %}
                 <li>{{ i }}</li>
@@ -27,7 +30,7 @@
         </div>
 
         <div id="direction">
-            <h3> Direction: </h3>
+            <h3>  <i class="fas fa-book"></i> Direction: </h3>
             <ul>
             {% for i in direction %}
             <li> {{ i }} </li>
