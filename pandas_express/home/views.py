@@ -247,6 +247,29 @@ def advance(request):
 
     return render(request, 'advance.html', context)
 
+########## SAVE FEATURE ##########
+CURRENT_ID = None
+class Save(Forms.Form):
+    template_name = 'detail.html'
+
+    def get_object(self, *args, **kwargs):
+        slug = self.kwargs.get('slug')
+        return get_object_or_404(Product, slug=slug)
+
+    def post(self, request, *args, **kwargs):
+        name = request.POST.get("pk")
+        product = Product.objects.get(pk=pk)
+
+        if "buy-now" in request.POST:
+            #Do something to buy.
+            print('buy now ' + product.name)
+        elif "add-to-cart" in request.POST:
+            #Add to cart.
+            print('add to cart ' + product.name)
+
+        return redirect('home')
+
+
 
 ########## DETAIL PAGE ##########
 
@@ -254,7 +277,7 @@ def get_detail(request):
     result=request.GET
     recipe_id = int(list(result.keys())[0])
     recipe = get_dish(recipe_id)
-    fig1 = plot_one_nutrition(recipe_id, "calories") 
+    fig1 = plot_one_nutrition(recipe_id, "calories")
     fig2 = plot_two_nutrition(recipe_id, "calories", "total_fat")
     ingredient = get_dish_ingredient(recipe_id)
     context = dict()
