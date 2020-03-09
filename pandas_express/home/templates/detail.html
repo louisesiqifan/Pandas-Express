@@ -17,7 +17,7 @@
         <div id="time">
             <p><i class="fas fa-clock"></i> Total time: {{time}} min</p>
         </div>
-                
+
         <div id="direction">
             <h3>  <i class="fas fa-utensils"></i> Ingredients: </h3>
             <ul>
@@ -39,14 +39,33 @@
         <div id="direction">
 
             <h3> <i class="fab fa-nutritionix"></i> Nutrition: </h3>
+
+            <form method="get">
+                {% csrf_token %}
+                <table class="form">
+                {{ form }}
+                </table>
+                <input type="submit" class="button" value="Search" onclick="location.href='#section2';"/>
+            </form>
+            
             <figure>
-                <img src=../{{fig1}} style="width:25%">
-                <img src=../{{fig2}} style="width:25%">
+                <img src=../{{fig1}} style="width:50%">
+                <img src=../{{fig2}} style="width:50%">
             </figure>
 
         </div>
+
+        <div class="frame" id="section1">
+            <form class='Add-to-fav' method='post'>
+                {% csrf_token %}
+                <input name="add-to-fav" hidden>
+                <input name="id" value="{{ object.pk }}" hidden>
+                <button type="submit" class="btn">Add to Favorite</button>
+            </form>
+        </div>
+
         <button type="button" onclick="location.href='/search';">Back to search</button>
-        
+
         <div id="footer">
              <h2>Presented by Team AttributeError</h2>
         </div>
