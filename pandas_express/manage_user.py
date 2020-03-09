@@ -28,13 +28,16 @@ def create_tables():
     create_table(SQL_CREATE_LEAST_FAV)
 
 
-def find(c, user):
+def find_user(user):
     s = '''
     SELECT * FROM user
     WHERE name = ?
     '''
+    db = sqlite3.connect(DATABASE_FILENAME)
+    c = db.cursor()
     c.execute(s, (user,))
     result = c.fetchall()
+    db.close()
     if len(result) > 0:
         return True
     return False
@@ -47,10 +50,6 @@ def create_new_user(name):
     create_tables()
     db = sqlite3.connect(DATABASE_FILENAME)
     c = db.cursor()
-    exist = find(c, name)
-    if exist:
-        db.close()
-        return 'User already exists, please change a user name.'
     s = '''
     INSERT INTO user (name)
     VALUES (?)
@@ -58,7 +57,7 @@ def create_new_user(name):
     c.execute(s, (name,))
     db.commit()
     db.close()
-    return 'Save Success!'
+    return 'User Created!'
 
 
 def delete_user(name):
@@ -67,10 +66,6 @@ def delete_user(name):
     '''
     db = sqlite3.connect(DATABASE_FILENAME)
     c = db.cursor()
-    exist = find(c, name)
-    if not exist:
-        db.close()
-        return 'User does not exist, are you sure you entered the right name?'
     for tbl in ['user', 'user_fav', 'user_least_fav']:
         if tbl == 'user':
             col = 'name'

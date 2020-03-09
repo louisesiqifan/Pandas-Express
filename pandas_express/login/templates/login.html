@@ -10,7 +10,18 @@
     </head>
     <body>
         <div id="header">
-            <h1>Log in</h1>
+            <h1>Pandas Express</h1>
+        </div>
+        <div class="frame" id="section1">
+            <form method="GET">
+                {% csrf_token %}
+                <table class="form">
+                {{ form }}
+                </table>
+                <input type="reset" class="button" value="START SEARCHING" onclick="location.href='/search';" />
+                <input type="reset" class="button" value="ADVANCED SEARCHING" onclick="location.href='/search/advance';" />
+            </form>
+
         </div>
     </body>
 </html>
