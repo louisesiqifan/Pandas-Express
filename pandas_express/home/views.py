@@ -254,7 +254,7 @@ def advance(request):
 
 ########## SAVE FEATURE ##########
 CURRENT_ID = None
-class Save(Forms.Form):
+class Save(forms.Form):
     template_name = 'detail.html'
 
     def get_object(self, *args, **kwargs):
@@ -306,14 +306,14 @@ def get_detail(request):
     if request.method == 'POST':
         nutrient1 = request.POST.get("nutrient1", "")
         nutrient2 = request.POST.get("nutrient2", "")
-        if nutrient1 is not None:
+        if nutrient1 != "":
             print(recipe_id)
             print(nutrient1)
             fig1 = plot_one_nutrition(recipe_id, nutrient1)
+            print(fig1)
             context["fig1"] = fig1
-        if nutrient2 is not None:
+        if nutrient2 != "":
             fig2 = plot_two_nutrition(recipe_id, nutrient1, nutrient2)
             context["fig2"] = fig2
 
     return render(request, 'detail.html', context)
-

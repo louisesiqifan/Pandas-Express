@@ -52,7 +52,7 @@ def get_dish_nutrition(id, *args):
 def plot_one_nutrition(recipe_id, nutrition):
     df = get_all_nutrition(nutrition)
     df = df[df != 0]
-    dish_nutrition = get_dish_nutrition(recipe_id, nutrition)
+    dish_nutrition = get_dish_nutrition(recipe_id, nutrition)[0]
     if dish_nutrition == 0:
         dish_nutrition += 0.0001
     a = plt.figure()
