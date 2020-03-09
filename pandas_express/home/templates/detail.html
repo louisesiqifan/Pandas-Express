@@ -17,11 +17,9 @@
         <div id="time">
             <p><i class="fas fa-clock"></i> Total time: {{time}} min</p>
         </div>
-        
-
-        
+                
         <div id="direction">
-            <h3>  <i class="fas fa-utensils"></i>  Ingredients: </h3>
+            <h3>  <i class="fas fa-utensils"></i> Ingredients: </h3>
             <ul>
                 {% for i in ingredient %}
                 <li>{{ i }}</li>
@@ -38,10 +36,15 @@
             </ul>
         </div>
 
-        <figure>
-            <img src=../{{img}} style="width:25%">
-        </figure>
+        <div id="direction">
 
+            <h3> <i class="fab fa-nutritionix"></i> Nutrition: </h3>
+            <figure>
+                <img src=../{{fig1}} style="width:25%">
+                <img src=../{{fig2}} style="width:25%">
+            </figure>
+
+        </div>
         <button type="button" onclick="location.href='/search';">Back to search</button>
         
         <div id="footer">

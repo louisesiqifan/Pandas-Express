@@ -254,12 +254,14 @@ def get_detail(request):
     result=request.GET
     recipe_id = int(list(result.keys())[0])
     recipe = get_dish(recipe_id)
-    output = plot_two_nutrition(recipe_id, "calories", "total_fat")
+    fig1 = plot_one_nutrition(recipe_id, "calories") 
+    fig2 = plot_two_nutrition(recipe_id, "calories", "total_fat")
     ingredient = get_dish_ingredient(recipe_id)
     context = dict()
     context['name'] = recipe[1]
     context['time'] = recipe[3]
     context['ingredient'] = ingredient
     context['direction'] = recipe[-1].splitlines()
-    context['img'] = output
+    context['fig1'] = fig1
+    context['fig2'] = fig2
     return render(request, 'detail.html', context)
