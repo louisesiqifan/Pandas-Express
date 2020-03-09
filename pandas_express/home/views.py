@@ -32,8 +32,28 @@ COLUMN_NAMES = {"id": 'ID',
                 'sugars': 'Sugars',
                 'protein': 'Protein',
                 'potassium': 'Potassium'}
+NUTRITION_PLOT_CHOICE = [('calories', "Calories"),
+                         ('total_fat', "Total Fat"),
+                         ('total_carbohydrate', 'Total Carb'),
+                         ('sugars', 'Sugars'),
+                         ('protein', 'Protein'),
+                         ('potassium', 'Potassium')]
 
 ######## FORM CLASSES **********
+
+class Text(forms.MultiValueField):
+    def __init__(self, *args, **kwargs):
+        fields = (forms.CharField(),
+                  forms.ChoiceField(label='Mode', choices=TERM_IMPORTANCE_CHOICES,
+                                    required=False),)
+        super(Text, self).__init__(fields=fields, *args, **kwargs)
+
+    def compress(self, data_list):
+        if len(data_list) == 2:
+            if data_list[0] is None or not data_list[1]:
+                return None
+        return data_list
+
 
 class Cooking_Time(forms.MultiValueField):
     def __init__(self, *args, **kwargs):
@@ -48,19 +68,6 @@ class Cooking_Time(forms.MultiValueField):
 
     def compress(self, data_list):
         if len(data_list) == 3:
-            if data_list[0] is None or not data_list[1]:
-                return None
-        return data_list
-
-class Text(forms.MultiValueField):
-    def __init__(self, *args, **kwargs):
-        fields = (forms.CharField(),
-                  forms.ChoiceField(label='Mode', choices=TERM_IMPORTANCE_CHOICES,
-                                    required=False),)
-        super(Text, self).__init__(fields=fields, *args, **kwargs)
-
-    def compress(self, data_list):
-        if len(data_list) == 2:
             if data_list[0] is None or not data_list[1]:
                 return None
         return data_list
@@ -250,18 +257,35 @@ def advance(request):
 
 ########## DETAIL PAGE ##########
 
+class NutrientPlot(forms.Form):
+
+    nutrient1 = forms.MultipleChoiceField(label='Nutrient 1',
+                                          choices=NUTRITION_PLOT_CHOICE,
+                                          widget=forms.CheckboxSelectMultiple,
+                                          required=False)
+
+    nutrient2 =  forms.MultipleChoiceField(label='Nutrient 2',
+                                           choices=NUTRITION_PLOT_CHOICE,
+                                           widget=forms.CheckboxSelectMultiple,
+                                           required=False)
+
 def get_detail(request):
     result=request.GET
     recipe_id = int(list(result.keys())[0])
     recipe = get_dish(recipe_id)
-    fig1 = plot_one_nutrition(recipe_id, "calories") 
-    fig2 = plot_two_nutrition(recipe_id, "calories", "total_fat")
     ingredient = get_dish_ingredient(recipe_id)
     context = dict()
     context['name'] = recipe[1]
     context['time'] = recipe[3]
     context['ingredient'] = ingredient
     context['direction'] = recipe[-1].splitlines()
-    context['fig1'] = fig1
-    context['fig2'] = fig2
+    # if request.method == 'GET':
+    #     form = NutrientPlot(request.GET)
+    #     if form.is_valid():
+    #         fig1 = plot_one_nutrition(recipe_id, "calories") 
+    #         fig2 = plot_two_nutrition(recipe_id, "calories", "total_fat")
+    #         context['fig1'] = fig1
+    #         context['fig2'] = fig2
+
+    # context["form"] = form
     return render(request, 'detail.html', context)
