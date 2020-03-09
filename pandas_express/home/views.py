@@ -254,31 +254,6 @@ def advance(request):
 
     return render(request, 'advance.html', context)
 
-<<<<<<< HEAD
-=======
-########## SAVE FEATURE ##########
-CURRENT_ID = None
-class Save(forms.Form):
-    template_name = 'detail.html'
-
-    def get_object(self, *args, **kwargs):
-        slug = self.kwargs.get('slug')
-        return get_object_or_404(Product, slug=slug)
-
-    def post(self, request, *args, **kwargs):
-        name = request.POST.get("pk")
-        product = Product.objects.get(pk=pk)
-
-        if "buy-now" in request.POST:
-            #Do something to buy.
-            print('buy now ' + product.name)
-        elif "add-to-cart" in request.POST:
-            #Add to cart.
-            print('add to cart ' + product.name)
-
-        return redirect('home')
-
->>>>>>> a533702e4993805ee72725b8150d94b3b0c926db
 
 
 ########## DETAIL PAGE ##########
@@ -297,21 +272,24 @@ class NutrientPlot(forms.Form):
 
 def get_detail(request):
     result=request.GET
-    #if(result.get('save')):
-    #    recipe_id = current_dish()
-    #    save(recipe_id)
-    recipe_id = int(list(result.keys())[0])
-    save_current_dish(recipe_id)
-    CURRENT_ID = recipe_id
-    recipe = get_dish(recipe_id)
-    ingredient = get_dish_ingredient(recipe_id)
-    context = dict()
-    context['name'] = recipe[1]
-    context['time'] = recipe[3]
-    context['ingredient'] = ingredient
-    context['direction'] = recipe[-1].splitlines()
-    form = NutrientPlot()
-    context["form"] = form
+    try:
+        recipe_id = int(list(result.keys())[0])
+    except:
+        recipe_id = current_dish()
+        save(recipe_id)
+
+    if request.method == 'GET':
+        save_current_dish(recipe_id)
+        CURRENT_ID = recipe_id
+        recipe = get_dish(recipe_id)
+        ingredient = get_dish_ingredient(recipe_id)
+        context = dict()
+        context['name'] = recipe[1]
+        context['time'] = recipe[3]
+        context['ingredient'] = ingredient
+        context['direction'] = recipe[-1].splitlines()
+        form = NutrientPlot()
+        context["form"] = form
     if request.method == 'POST':
         nutrient1 = request.POST.get("nutrient1", "")
         nutrient2 = request.POST.get("nutrient2", "")

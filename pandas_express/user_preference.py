@@ -18,6 +18,19 @@ def current_user(c):
     return result[0]
 
 
+def current_dish():
+    db = sqlite3.connect(DATABASE_FILENAME)
+    c = db.cursor()
+    s = '''
+    SELECT * FROM current_dish
+    '''
+    c.execute(s)
+    result = c.fetchall()
+    db.close()
+    print('resualhda', result)
+    return result[0][0]
+
+
 def find(c, tbl, id, user):
     s = '''
     SELECT * FROM {}

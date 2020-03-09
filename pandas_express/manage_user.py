@@ -51,15 +51,15 @@ def save_current_dish(id):
     db = sqlite3.connect(DATABASE_FILENAME)
     c = db.cursor()
     s = '''
-    DELETE FROM current_user;
+    DELETE FROM current_dish;
     '''
     c.execute(s)
     db.commit()
     s = '''
-    INSERT INTO current_user (name)
+    INSERT INTO current_dish (name)
     VALUES (?)
     '''
-    c.execute(s, (name,))
+    c.execute(s, (id,))
     db.commit()
     db.close()
 
