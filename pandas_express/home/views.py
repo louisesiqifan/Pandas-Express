@@ -295,12 +295,8 @@ class NutrientPlot(forms.Form):
 def get_detail(request):
     result=request.GET
     recipe_id = int(list(result.keys())[0])
+    CURRENT_ID = recipe_id
     recipe = get_dish(recipe_id)
-<<<<<<< HEAD
-    fig1 = plot_one_nutrition(recipe_id, "calories")
-    fig2 = plot_two_nutrition(recipe_id, "calories", "total_fat")
-=======
->>>>>>> 5bf488a3f547946ea853c8005edda39b139c35c7
     ingredient = get_dish_ingredient(recipe_id)
     context = dict()
     context['name'] = recipe[1]
@@ -310,7 +306,7 @@ def get_detail(request):
     # if request.method == 'GET':
     #     form = NutrientPlot(request.GET)
     #     if form.is_valid():
-    #         fig1 = plot_one_nutrition(recipe_id, "calories") 
+    #         fig1 = plot_one_nutrition(recipe_id, "calories")
     #         fig2 = plot_two_nutrition(recipe_id, "calories", "total_fat")
     #         context['fig1'] = fig1
     #         context['fig2'] = fig2
