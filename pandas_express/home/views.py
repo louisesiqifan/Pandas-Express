@@ -254,32 +254,6 @@ def advance(request):
 
     return render(request, 'advance.html', context)
 
-<<<<<<< HEAD
-=======
-########## SAVE FEATURE ##########
-CURRENT_ID = None
-class Save(forms.Form):
-    template_name = 'detail.html'
-
-    def get_object(self, *args, **kwargs):
-        slug = self.kwargs.get('slug')
-        return get_object_or_404(Product, slug=slug)
-
-    def post(self, request, *args, **kwargs):
-        name = request.POST.get("pk")
-        product = Product.objects.get(pk=pk)
-
-        if "buy-now" in request.POST:
-            #Do something to buy.
-            print('buy now ' + product.name)
-        elif "add-to-cart" in request.POST:
-            #Add to cart.
-            print('add to cart ' + product.name)
-
-        return redirect('home')
-
->>>>>>> a533702e4993805ee72725b8150d94b3b0c926db
-
 
 ########## DETAIL PAGE ##########
 
