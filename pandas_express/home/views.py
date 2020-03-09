@@ -6,6 +6,8 @@ from django.http import HttpResponse
 from score_assignment import get_dish, get_dishes, get_dish_ingredient
 from django.template import Template
 from plotter import plot_one_nutrition, plot_two_nutrition
+from manage_user import save_current_dish
+from user_preference import save, current_dish
 
 TIME_CHOICES = [("total", "Total"), ("active", "Active")]
 LEVEL_CHOICES = [("easy", "Easy"),
@@ -252,28 +254,6 @@ def advance(request):
 
     return render(request, 'advance.html', context)
 
-########## SAVE FEATURE ##########
-CURRENT_ID = None
-class Save(Forms.Form):
-    template_name = 'detail.html'
-
-    def get_object(self, *args, **kwargs):
-        slug = self.kwargs.get('slug')
-        return get_object_or_404(Product, slug=slug)
-
-    def post(self, request, *args, **kwargs):
-        name = request.POST.get("pk")
-        product = Product.objects.get(pk=pk)
-
-        if "buy-now" in request.POST:
-            #Do something to buy.
-            print('buy now ' + product.name)
-        elif "add-to-cart" in request.POST:
-            #Add to cart.
-            print('add to cart ' + product.name)
-
-        return redirect('home')
-
 
 
 ########## DETAIL PAGE ##########
@@ -292,7 +272,11 @@ class NutrientPlot(forms.Form):
 
 def get_detail(request):
     result=request.GET
+    #if(result.get('save')):
+    #    recipe_id = current_dish()
+    #    save(recipe_id)
     recipe_id = int(list(result.keys())[0])
+    save_current_dish(recipe_id)
     CURRENT_ID = recipe_id
     recipe = get_dish(recipe_id)
     ingredient = get_dish_ingredient(recipe_id)
@@ -316,4 +300,3 @@ def get_detail(request):
             context["fig2"] = fig2
 
     return render(request, 'detail.html', context)
-
