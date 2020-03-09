@@ -254,6 +254,31 @@ def advance(request):
 
     return render(request, 'advance.html', context)
 
+<<<<<<< HEAD
+=======
+########## SAVE FEATURE ##########
+CURRENT_ID = None
+class Save(forms.Form):
+    template_name = 'detail.html'
+
+    def get_object(self, *args, **kwargs):
+        slug = self.kwargs.get('slug')
+        return get_object_or_404(Product, slug=slug)
+
+    def post(self, request, *args, **kwargs):
+        name = request.POST.get("pk")
+        product = Product.objects.get(pk=pk)
+
+        if "buy-now" in request.POST:
+            #Do something to buy.
+            print('buy now ' + product.name)
+        elif "add-to-cart" in request.POST:
+            #Add to cart.
+            print('add to cart ' + product.name)
+
+        return redirect('home')
+
+>>>>>>> a533702e4993805ee72725b8150d94b3b0c926db
 
 
 ########## DETAIL PAGE ##########
@@ -290,12 +315,13 @@ def get_detail(request):
     if request.method == 'POST':
         nutrient1 = request.POST.get("nutrient1", "")
         nutrient2 = request.POST.get("nutrient2", "")
-        if nutrient1 is not None:
+        if nutrient1 != "":
             print(recipe_id)
             print(nutrient1)
             fig1 = plot_one_nutrition(recipe_id, nutrient1)
+            print(fig1)
             context["fig1"] = fig1
-        if nutrient2 is not None:
+        if nutrient2 != "":
             fig2 = plot_two_nutrition(recipe_id, nutrient1, nutrient2)
             context["fig2"] = fig2
 

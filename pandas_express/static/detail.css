@@ -55,6 +55,27 @@ div#direction h3{
 }
 
 
+table.form tr td,
+table.form tr th {
+    font-size: 22px;
+    padding-bottom: 22px;
+}
+
+table.form ul {
+    list-style-type: none;
+    margin-left: 12px;
+    padding: 0px;
+    font-size: 0px;
+}
+
+table.form ul li {
+    display: block;
+    float: left;
+    margin: 5px;
+    padding: 0px;
+    font-size: 18px;
+}
+
 div#footer {
     background: #7cb57c;
     margin: 0;
