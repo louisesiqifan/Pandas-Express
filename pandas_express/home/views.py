@@ -271,21 +271,24 @@ class NutrientPlot(forms.Form):
 
 def get_detail(request):
     result=request.GET
-    #if(result.get('save')):
-    #    recipe_id = current_dish()
-    #    save(recipe_id)
-    recipe_id = int(list(result.keys())[0])
-    save_current_dish(recipe_id)
-    CURRENT_ID = recipe_id
-    recipe = get_dish(recipe_id)
-    ingredient = get_dish_ingredient(recipe_id)
-    context = dict()
-    context['name'] = recipe[1]
-    context['time'] = recipe[3]
-    context['ingredient'] = ingredient
-    context['direction'] = recipe[-1].splitlines()
-    form = NutrientPlot()
-    context["form"] = form
+    try:
+        recipe_id = int(list(result.keys())[0])
+    except:
+        recipe_id = current_dish()
+        save(recipe_id)
+
+    if request.method == 'GET':
+        save_current_dish(recipe_id)
+        CURRENT_ID = recipe_id
+        recipe = get_dish(recipe_id)
+        ingredient = get_dish_ingredient(recipe_id)
+        context = dict()
+        context['name'] = recipe[1]
+        context['time'] = recipe[3]
+        context['ingredient'] = ingredient
+        context['direction'] = recipe[-1].splitlines()
+        form = NutrientPlot()
+        context["form"] = form
     if request.method == 'POST':
         nutrient1 = request.POST.get("nutrient1", "")
         nutrient2 = request.POST.get("nutrient2", "")
