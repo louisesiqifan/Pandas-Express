@@ -19,7 +19,7 @@ def fetch_all_users():
     c.execute(s)
     result = c.fetchall()
     db.close()
-    return result[0]
+    return result
 
 
 def reset_db():
@@ -27,7 +27,7 @@ def reset_db():
     create_tables()
     users = fetch_all_users()
     for user in users:
-        delete_user(user)
+        delete_user(user[0])
     create_new_user('default_user')
     save_current_user('default_user')
     save_current_dish(0)
