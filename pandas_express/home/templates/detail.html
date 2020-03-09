@@ -40,18 +40,25 @@
 
             <h3> <i class="fab fa-nutritionix"></i> Nutrition: </h3>
 
-            <form method="get">
+            <form method="post">
                 {% csrf_token %}
                 <table class="form">
                 {{ form }}
                 </table>
-                <input type="submit" class="button" value="Search" onclick="location.href='#section2';"/>
+                <input type="submit" class="button" value="Search"/>
             </form>
-            
+
+            {% if fig1 != None %}
             <figure>
                 <img src=../{{fig1}} style="width:50%">
+            </figure>
+            {% endif %}
+
+            {% if fig2 != None %}
+            <figure>
                 <img src=../{{fig2}} style="width:50%">
             </figure>
+            {% endif %}
 
         </div>
 

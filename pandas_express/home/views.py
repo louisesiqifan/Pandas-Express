@@ -121,7 +121,6 @@ def search(request):
 
             time_and_mode = form.cleaned_data['time_and_mode']
             if time_and_mode:
-                print(time_and_mode)
                 args['time'] = tuple(time_and_mode[:-1])
                 weight['time'] = int(time_and_mode[-1])
 
@@ -228,7 +227,6 @@ def advance(request):
 
             time_and_mode = form.cleaned_data['time_and_mode']
             if time_and_mode:
-                print(time_and_mode)
                 args['time'] = tuple(time_and_mode[:-1])
                 weight['time'] = int(time_and_mode[-1])
 
@@ -303,13 +301,19 @@ def get_detail(request):
     context['time'] = recipe[3]
     context['ingredient'] = ingredient
     context['direction'] = recipe[-1].splitlines()
-    # if request.method == 'GET':
-    #     form = NutrientPlot(request.GET)
-    #     if form.is_valid():
-    #         fig1 = plot_one_nutrition(recipe_id, "calories")
-    #         fig2 = plot_two_nutrition(recipe_id, "calories", "total_fat")
-    #         context['fig1'] = fig1
-    #         context['fig2'] = fig2
+    form = NutrientPlot()
+    context["form"] = form
+    if request.method == 'POST':
+        nutrient1 = request.POST.get("nutrient1", "")
+        nutrient2 = request.POST.get("nutrient2", "")
+        if nutrient1 is not None:
+            print(recipe_id)
+            print(nutrient1)
+            fig1 = plot_one_nutrition(recipe_id, nutrient1)
+            context["fig1"] = fig1
+        if nutrient2 is not None:
+            fig2 = plot_two_nutrition(recipe_id, nutrient1, nutrient2)
+            context["fig2"] = fig2
 
-    # context["form"] = form
     return render(request, 'detail.html', context)
+
