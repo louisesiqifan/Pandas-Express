@@ -7,8 +7,8 @@ html, body {
 }
 
 div {
-  resize: both;
-  overflow: auto;
+/*  resize: both;
+*/  overflow: auto;
 }
 
 div#header {
@@ -345,7 +345,7 @@ input[type=back].button {
   display: inline-block;
   font-size: 22px;
   margin-top: 10px;
-  margin-bottom: 0px;
+  margin-bottom: 50px;
   margin-right: 10px;
   margin-left: 10px;
   cursor: pointer;
@@ -365,7 +365,9 @@ div#footer {
     padding-top: 5px;
     padding-bottom: 5px;
     width: 100%;
-    height: 100%;
+    position: fixed;
+    left: 0;
+    bottom: 0;
 }
 
 div#footer h2 {

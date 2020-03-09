@@ -13,11 +13,13 @@
         <div id="header">
             <h1>{{name}}</h1>
         </div>
-
+<!--         <div class="sidenav">
+            <a href="#direction">Direction</a>
+            <a href="#nutrition">Nutrition</a>
+        </div> -->
         <div id="time">
             <p><i class="fas fa-clock"></i> Total time: {{time}} min</p>
         </div>
-
         <div id="direction">
             <h3>  <i class="fas fa-utensils"></i> Ingredients: </h3>
             <ul>
@@ -26,58 +28,74 @@
                 {% endfor %}
             </ul>
         </div>
-
         <div id="direction">
-            <h3>  <i class="fas fa-book"></i> Direction: </h3>
+            <h3> <i class="fas fa-book"></i> Direction: </h3>
             <ul>
             {% for i in direction %}
             <li> {{ i }} </li>
             {% endfor %}
             </ul>
         </div>
-
-        <div id="direction">
-          <form action="#" method="get">
-              <input type="submit" class="btn" value="Add To Favorite" name="save">
-         </form>
-
+        <div id="nutrition">
             <h3> <i class="fab fa-nutritionix"></i> Nutrition: </h3>
-
             <form method="post">
                 {% csrf_token %}
                 <table class="form">
-                {{ form }}
+                    {{ form }}
                 </table>
-                <input type="submit" class="button" value="Search"/>
+                <input type="submit" class="button" value="Plot" onclick="location.href='#nutrition';"/>
             </form>
-
+        </div>
+        <div class="row">
+            <div class="column">
             {% if fig1 != None %}
-            <figure>
-                <img src=../{{fig1}} style="width:50%">
-            </figure>
+                <img src=../{{fig1}} style="width:90%">
             {% endif %}
-
+            </div>
+            <div class="column">
             {% if fig2 != None %}
-            <figure>
-                <img src=../{{fig2}} style="width:50%">
-            </figure>
+                <img src=../{{fig2}} style="width:63%">
             {% endif %}
-
+            </div>
         </div>
 
-        <div class="frame" id="section1">
-            <form class='Add-to-fav' method='post'>
-                {% csrf_token %}
-                <input name="add-to-fav" hidden>
-                <input name="id" value="{{ object.pk }}" hidden>
-                <button type="submit" class="btn">Add to Favorite</button>
-            </form>
-        </div>
+        <button onclick="topFunction()" id="top" title="Go to top">Back to top</button>
+        <button onclick="location.href='/search';" id="search" title="Go to search">Back to search</button>
 
-        <button type="button" onclick="location.href='/search';">Back to search</button>
+<!--         <form action="#" method="get">
+            <input type="submit" class="btn" value="Add To Favorite" name="save">
+        </form> -->
 
+        <form action="#" method="get">
+            <button type="submit" class="btn" id="favorite" name="save">Add to favorite</button>
+        </form>
+        <br style = “line-height:100px;”>
+        <br style = “line-height:100px;”>
+        <br style = “line-height:100px;”>
+        <br style = “line-height:100px;”>
         <div id="footer">
              <h2>Presented by Team AttributeError</h2>
         </div>
+        <script>
+            var mybutton_top = document.getElementById("top");
+            var mybutton_search = document.getElementById("search");
+            var mybutton_fav = document.getElementById("favorite");
+            window.onscroll = function() {scrollFunction()};
+            function scrollFunction() {
+                if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                    mybutton_top.style.display = "block";
+                    mybutton_search.style.display = "block";
+                    mybutton_fav.style.display = "block";
+                } else {
+                    mybutton_top.style.display = "none";
+                    mybutton_search.style.display = "none";
+                    mybutton_fav.style.display = "none";
+                }
+            }
+            function topFunction() {
+                document.body.scrollTop = 0;
+                document.documentElement.scrollTop = 0;
+            }
+        </script>
     </body>
 </html>

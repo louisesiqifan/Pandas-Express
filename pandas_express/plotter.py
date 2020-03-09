@@ -5,6 +5,7 @@ import seaborn as sns
 import configparser
 import matplotlib.pyplot as plt
 from score_assignment import get_dish
+plt.switch_backend('Agg')
 
 config = configparser.ConfigParser()
 config.read('../wrapper/constants.ini')

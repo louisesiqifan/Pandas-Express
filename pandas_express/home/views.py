@@ -102,8 +102,6 @@ class SearchForm(forms.Form):
                                       widget=forms.CheckboxSelectMultiple,
                                       required=False)
 
-    #show_args = forms.BooleanField(label='Show args_to_ui',
-    #                                required=False)
 
 def search(request):
     context = {}
@@ -113,26 +111,19 @@ def search(request):
         if form.is_valid():
             args = {}
             weight = {}
-            if form.cleaned_data['query']:
-                args['title'] = form.cleaned_data['query'][0]
-                weight['title'] = int(form.cleaned_data['query'][1])
-
+            query = form.cleaned_data['query']
+            if query:
+                args['title'] = query[0]
+                weight['title'] = int(query[1])
             level = form.cleaned_data['level']
             if level:
                 args['level'] = level[0]
-
             time_and_mode = form.cleaned_data['time_and_mode']
             if time_and_mode:
                 args['time'] = tuple(time_and_mode[:-1])
                 weight['time'] = int(time_and_mode[-1])
-
-            #if form.cleaned_data['show_args']:
-            #    context['args'] = 'args_to_ui= ' + str(args)
-            #raise ValueError(str(weight))
-
             try:
                 res = get_dishes(args, weight=weight)
-                print(res)
             except Exception as e:
                 print('Exception caught')
                 res = None
@@ -145,7 +136,6 @@ def search(request):
         columns, result = res
         if result and isinstance(result[0], str):
             result = [(r,) for r in result]
-
         context['result'] = result
         context['num_results'] = len(result)
         context['columns'] = [COLUMN_NAMES.get(col, col) for col in columns]
@@ -154,10 +144,9 @@ def search(request):
     return render(request, 'home.html', context)
 
 
-####### AdvanceForm #######
+######### Advance Search Page ##########
 
 class AdvanceForm(forms.Form):
-
     query = Text(
         label='Search Terms',
         help_text='Try Fried Chicken!',
@@ -207,9 +196,6 @@ class AdvanceForm(forms.Form):
                                        widget=forms.CheckboxSelectMultiple,
                                        required=False)
 
-    # show_args = forms.BooleanField(label='Show args_to_ui',
-    #                                required=False)
-
 
 def advance(request):
     context = {}
@@ -219,19 +205,17 @@ def advance(request):
         if form.is_valid():
             args = {}
             weight = {}
-            if form.cleaned_data['query']:
-                args['title'] = form.cleaned_data['query'][0]
-                weight['title'] = int(form.cleaned_data['query'][1])
-
+            query = form.cleaned_data['query']
+            if query:
+                args['title'] = query[0]
+                weight['title'] = int(query[1])
             level = form.cleaned_data['level']
             if level:
                 args['level'] = level[0]
-
             time_and_mode = form.cleaned_data['time_and_mode']
             if time_and_mode:
                 args['time'] = tuple(time_and_mode[:-1])
                 weight['time'] = int(time_and_mode[-1])
-
             try:
                 res = get_dishes(args, weight=weight, nutrient=True)
             except Exception as e:
@@ -246,7 +230,6 @@ def advance(request):
         columns, result = res
         if result and isinstance(result[0], str):
             result = [(r,) for r in result]
-
         context['result'] = result
         context['num_results'] = len(result)
         context['columns'] = [COLUMN_NAMES.get(col, col) for col in columns]
@@ -258,7 +241,6 @@ def advance(request):
 ########## DETAIL PAGE ##########
 
 class NutrientPlot(forms.Form):
-
     nutrient1 = forms.MultipleChoiceField(label='Nutrient 1',
                                           choices=NUTRITION_PLOT_CHOICE,
                                           widget=forms.CheckboxSelectMultiple,
@@ -269,8 +251,9 @@ class NutrientPlot(forms.Form):
                                            widget=forms.CheckboxSelectMultiple,
                                            required=False)
 
+
 def get_detail(request):
-    result=request.GET
+    result = request.GET
     try:
         recipe_id = int(list(result.keys())[0])
     except:
@@ -302,14 +285,10 @@ def get_detail(request):
         nutrient1 = request.POST.get("nutrient1", "")
         nutrient2 = request.POST.get("nutrient2", "")
         if nutrient1 != "":
-            print(recipe_id)
-            print(nutrient1)
             fig1 = plot_one_nutrition(recipe_id, nutrient1)
-            print(fig1)
             context["fig1"] = fig1
         if nutrient2 != "":
             fig2 = plot_two_nutrition(recipe_id, nutrient1, nutrient2)
             context["fig2"] = fig2
-
 
     return render(request, 'detail.html', context)

@@ -7,7 +7,7 @@ html, body {
 }
 
 div {
-  resize: both;
+  /*resize: both;*/
   overflow: auto;
 }
 
@@ -41,7 +41,6 @@ div#time {
     padding-bottom: 5px;
 }
 
-
 div#direction {
     padding-right: 400px;
     padding-left: 100px;
@@ -54,16 +53,28 @@ div#direction h3{
     color: #383838;
 }
 
+div#nutrition {
+    padding-right: 400px;
+    padding-left: 100px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+div#nutrition h3{
+    font-size: 22px;
+    color: #383838;
+}
 
 table.form tr td,
 table.form tr th {
-    font-size: 22px;
+    vertical-align: top;
+    font-size: 16px;
     padding-bottom: 22px;
 }
 
 table.form ul {
     list-style-type: none;
-    margin-left: 12px;
+    margin-left: 10px;
     padding: 0px;
     font-size: 0px;
 }
@@ -71,10 +82,38 @@ table.form ul {
 table.form ul li {
     display: block;
     float: left;
-    margin: 5px;
+    margin-left: 5px;
     padding: 0px;
-    font-size: 18px;
+    font-size: 16px;
 }
+
+table.form label{
+    font-size: 16px;
+}
+
+input[value="Plot"].button{
+  background-color: #b8bfc8;
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 22px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  margin-left: 5px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.1s;
+}
+
+input[value="Plot"].button:hover{
+    background-color: #7f8b9c;
+}
+
+
 
 div#footer {
     background: #7cb57c;
@@ -83,11 +122,10 @@ div#footer {
     padding-left: 66px;
     padding-top: 5px;
     padding-bottom: 5px;
-/*    position:fixed;
-*/    bottom:0;
-    left:0;
-    right:0;
-    height:20px
+    width: 100%;
+    position: fixed;
+    left: 0;
+    bottom: 0;
 }
 
 div#footer h2 {
@@ -108,7 +146,7 @@ button {
   display: inline-block;
   font-size: 22px;
   margin-top: 10px;
-  margin-bottom: 50px;
+  margin-bottom: 10px;
   margin-right: 10px;
   margin-left: 100px;
   cursor: pointer;
@@ -121,8 +159,121 @@ button:hover{
     background-color: #7f8b9c;
 }
 
+#top {
+  display: none;
+  position: fixed;
+  bottom: 230px;
+  right: 60px;
+  z-index: 99;
+  font-size: 18px;
+  border: none;
+  outline: none;
+  background-color: #b8bfc8;
+  color: white;
+  cursor: pointer;
+  padding: 15px 29px;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+#top:hover {
+  background-color: #7f8b9c;
+}
+
+#search {
+  display: none;
+  position: fixed;
+  bottom: 160px;
+  right: 60px;
+  z-index: 99;
+  font-size: 18px;
+  border: none;
+  outline: none;
+  background-color: #b8bfc8;
+  color: white;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+#search:hover {
+  background-color: #7f8b9c;
+}
+
+#favorite {
+  display: none;
+  position: fixed;
+  bottom: 90px;
+  right: 60px;
+  z-index: 99;
+  font-size: 18px;
+  border: none;
+  outline: none;
+  background-color: #b8bfc8;
+  color: white;
+  cursor: pointer;
+  padding: 15px 16px;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+#favorite:hover {
+  background-color: #7f8b9c;
+}
+
 img{
-    padding-right: 400px;
-    padding-left: 100px;
+    padding-right: 0px;
+    padding-left: 50px;
     white-space: nowrap;
 }
+
+ /* Three image containers (use 25% for four, and 50% for two, etc) */
+.column {
+  float: left;
+  width: 45%;
+  padding: 5px;
+}
+
+/* Clear floats after image containers */
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+} 
+
+.sidenav {
+  height: 100%;
+  width: 160px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+.sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+}
+
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+.main {
+  margin-left: 160px; /* Same as the width of the sidenav */
+  font-size: 28px; /* Increased text to enable scrolling */
+  padding: 0px 10px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+
