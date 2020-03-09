@@ -15,9 +15,9 @@ div#header {
     margin: 0;
     padding-right: 400px;
     padding-left: 100px;
-    padding-top: 80px;
-    padding-bottom: 80px;
-    background: #484d5c;
+    padding-top: 70px;
+    padding-bottom: 70px;
+    background: #32302c;
 /*    background-size: cover;
     background-position: 50% 45%;
     background-repeat: no-repeat;
@@ -27,30 +27,64 @@ div#header {
 div#header h1 {
     font-size: 48px;
     font-weight: 800;
-    color: #ffce00;
+    color: #efc050;
     margin: 0px;
     padding: 0px;
 }
 
 div#time {
-    font-size: 22px;
-    color: #383838;
+    font-size: 24px;
+    color: #4b4842;
     padding-right: 400px;
     padding-left: 100px;
     padding-top: 5px;
     padding-bottom: 5px;
+    background-color: #e2d9c6;
+}
+
+div#time h3{
+    font-size: 24px;
+}
+
+div#ingredient {
+    padding-right: 400px;
+    padding-left: 100px;
+    padding-top: 5px;
+    padding-bottom: 20px;
+    background-color: #fefbf4;
+    color: #32302c;
+}
+
+div#ingredient h3{
+    font-size: 24px;
+    color: #4b4842;
+}
+
+div#ingredient li{
+    font-size: 18px;
+    padding-top: 5px;
+    padding-left: 5px;
+    color: #4b4842;
 }
 
 div#direction {
     padding-right: 400px;
     padding-left: 100px;
     padding-top: 5px;
-    padding-bottom: 5px;
+    padding-bottom: 20px;
+    background-color: #fefdfb
 }
 
 div#direction h3{
-    font-size: 22px;
-    color: #383838;
+    font-size: 24px;
+    color: #4b4842;
+}
+
+div#direction li{
+    font-size: 18px;
+    padding-top: 5px;
+    padding-left: 5px;
+    color: #4b4842;
 }
 
 div#nutrition {
@@ -58,18 +92,33 @@ div#nutrition {
     padding-left: 100px;
     padding-top: 5px;
     padding-bottom: 5px;
+    background-color: white
 }
 
 div#nutrition h3{
-    font-size: 22px;
-    color: #383838;
+    font-size: 24px;
+    color: #4b4842;
+}
+
+div#nutrition h3{
+    font-size: 24px;
+    color: #4b4842;
+}
+
+div#plot{
+    padding-right: 0px;
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: white
 }
 
 table.form tr td,
 table.form tr th {
     vertical-align: top;
-    font-size: 16px;
+    font-size: 18px;
     padding-bottom: 22px;
+    color: #4b4842
 }
 
 table.form ul {
@@ -79,30 +128,33 @@ table.form ul {
     font-size: 0px;
 }
 
-table.form ul li {
+table.form li {
     display: block;
     float: left;
     margin-left: 5px;
     padding: 0px;
-    font-size: 16px;
+    font-size: 18px;
+    color: #4b4842;
 }
 
 table.form label{
-    font-size: 16px;
+    font-size: 18px;
+    color: #4b4842;
 }
 
 input[value="Plot"].button{
-  background-color: #b8bfc8;
+  background-color: #b0a99a;
   border: none;
   color: white;
   padding: 12px 24px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 22px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  margin-right: 10px;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 20px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-right: 5px;
   margin-left: 5px;
   cursor: pointer;
   border-radius: 8px;
@@ -110,34 +162,33 @@ input[value="Plot"].button{
 }
 
 input[value="Plot"].button:hover{
-    background-color: #7f8b9c;
+    background-color: #979184;
 }
 
 
-
 div#footer {
-    background: #7cb57c;
+    background: #7e796e;
     margin: 0;
     padding-right: 66px;
     padding-left: 66px;
     padding-top: 5px;
     padding-bottom: 5px;
     width: 100%;
-    position: fixed;
+/*    position: fixed;
     left: 0;
-    bottom: 0;
+    bottom: 0;*/
 }
 
 div#footer h2 {
     font-size: 18px;
     font-weight: 500;
-    color: #ffffff;
+    color: #fefbf4;
     margin: 0px;
     padding: 0px;
 }
 
 button {
-  background-color: #b8bfc8;
+  background-color: #b0a99a;
   border: none;
   color: white;
   padding: 12px 12px;
@@ -156,76 +207,108 @@ button {
 
 
 button:hover{
-    background-color: #7f8b9c;
+    background-color: #979184;
+}
+
+.sidenav {
+  display: none;
+  width: 150px;
+  position: fixed;
+  z-index: 1;
+  bottom: 320px;
+  right: 61px;
+  overflow-x: hidden;
+  padding: 10px 0;
+  border-radius: 8px;
+  background-color: #c9c1b0
+}
+
+.sidenav a {
+  padding: 5px 7px 5px 7px;
+  text-decoration: none;
+  font-size: 20px;
+  color: white;
+  display: block;
+  text-align: center;
+}
+
+.sidenav a:hover {
+  font-weight: bold;
 }
 
 #top {
   display: none;
   position: fixed;
   bottom: 230px;
-  right: 60px;
+  right: 50px;
   z-index: 99;
   font-size: 18px;
   border: none;
   outline: none;
-  background-color: #b8bfc8;
+  font-family: 'Quicksand', sans-serif;
+  background-color: #b0a99a;
   color: white;
   cursor: pointer;
-  padding: 15px 29px;
+  padding: 15px 27px;
   border-radius: 8px;
   transition: all 0.2s;
 }
 
 #top:hover {
-  background-color: #7f8b9c;
+  background-color: #979184;
 }
 
 #search {
   display: none;
   position: fixed;
   bottom: 160px;
-  right: 60px;
+  right: 50px;
   z-index: 99;
   font-size: 18px;
   border: none;
   outline: none;
-  background-color: #b8bfc8;
+  font-family: 'Quicksand', sans-serif;
+  background-color: #b0a99a;
   color: white;
   cursor: pointer;
-  padding: 15px;
+  padding: 15px 13px;
   border-radius: 8px;
   transition: all 0.2s;
 }
 
 #search:hover {
-  background-color: #7f8b9c;
+  background-color: #979184;
 }
 
 #favorite {
   display: none;
   position: fixed;
   bottom: 90px;
-  right: 60px;
+  right: 50px;
   z-index: 99;
   font-size: 18px;
   border: none;
   outline: none;
-  background-color: #b8bfc8;
+  font-family: 'Quicksand', sans-serif;
+  background-color: #7e796e;
   color: white;
   cursor: pointer;
-  padding: 15px 16px;
+  padding: 15px 12px;
   border-radius: 8px;
   transition: all 0.2s;
 }
 
 #favorite:hover {
-  background-color: #7f8b9c;
+  background-color: #646058;
 }
+
+
 
 img{
     padding-right: 0px;
     padding-left: 50px;
     white-space: nowrap;
+    background-color: white;
 }
 
  /* Three image containers (use 25% for four, and 50% for two, etc) */
@@ -242,38 +325,8 @@ img{
   display: table;
 } 
 
-.sidenav {
-  height: 100%;
-  width: 160px;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  background-color: #111;
-  overflow-x: hidden;
-  padding-top: 20px;
-}
-
-.sidenav a {
-  padding: 6px 8px 6px 16px;
-  text-decoration: none;
-  font-size: 25px;
-  color: #818181;
-  display: block;
-}
-
-.sidenav a:hover {
-  color: #f1f1f1;
-}
-
-.main {
-  margin-left: 160px; /* Same as the width of the sidenav */
-  font-size: 28px; /* Increased text to enable scrolling */
-  padding: 0px 10px;
-}
 
 @media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
 }
-

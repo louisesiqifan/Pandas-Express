@@ -41,8 +41,8 @@ NUTRITION_PLOT_CHOICE = [('calories', "Calories"),
                          ('protein', 'Protein'),
                          ('potassium', 'Potassium')]
 
-# FORM CLASSES **********
 
+########## FORM CLASSES ##########
 
 class Text(forms.MultiValueField):
     def __init__(self, *args, **kwargs):
@@ -242,15 +242,15 @@ def advance(request):
 ########## DETAIL PAGE ##########
 
 class NutrientPlot(forms.Form):
-    nutrient1 = forms.MultipleChoiceField(label='Nutrient 1',
-                                          choices=NUTRITION_PLOT_CHOICE,
-                                          widget=forms.CheckboxSelectMultiple,
-                                          required=False)
+    nutrient1 = forms.ChoiceField(label='Nutrient 1',
+                                  choices=NUTRITION_PLOT_CHOICE,
+                                  widget=forms.RadioSelect,
+                                  required=False)
 
-    nutrient2 = forms.MultipleChoiceField(label='Nutrient 2',
-                                          choices=NUTRITION_PLOT_CHOICE,
-                                          widget=forms.CheckboxSelectMultiple,
-                                          required=False)
+    nutrient2 = forms.ChoiceField(label='Nutrient 2',
+                                  choices=NUTRITION_PLOT_CHOICE,
+                                  widget=forms.RadioSelect,
+                                  required=False)
 
 
 def get_detail(request):
@@ -277,10 +277,15 @@ def get_detail(request):
     if request.method == 'POST':
         nutrient1 = request.POST.get("nutrient1", "")
         nutrient2 = request.POST.get("nutrient2", "")
-        if nutrient1 != "":
+        if nutrient1 != "" and nutrient2 == "":
             fig1 = plot_one_nutrition(recipe_id, nutrient1)
             context["fig1"] = fig1
-        if nutrient2 != "":
+        if nutrient2 != "" and nutrient1 == "":
+            fig1 = plot_one_nutrition(recipe_id, nutrient2)
+            context["fig1"] = fig1
+        if nutrient1 != "" and nutrient2 != "":
+            fig1 = plot_one_nutrition(recipe_id, nutrient1)
+            context["fig1"] = fig1
             fig2 = plot_two_nutrition(recipe_id, nutrient1, nutrient2)
             context["fig2"] = fig2
 

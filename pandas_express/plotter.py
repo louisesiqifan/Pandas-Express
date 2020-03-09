@@ -62,7 +62,7 @@ def plot_one_nutrition(recipe_id, nutrition):
                      bins=20, hist_kws=dict(alpha=0.2))
     a.axvline(x=np.log(dish_nutrition), color="lightcoral")
     a.set_title(nutrition.capitalize())
-    output = "static/{}.png".format(nutrition)
+    output = "static/fig1.png"
     fig = a.get_figure()
     fig.savefig(output)
     return output
@@ -92,6 +92,6 @@ def plot_two_nutrition(recipe_id, nutrition1, nutrition2):
         dish_nutrition2 += 0.0001
     a.ax_joint.plot([np.log(dish_nutrition1)], [np.log(dish_nutrition2)],
                     'ro', color='lightcoral')
-    output = "static/{}-{}.png".format(nutrition1, nutrition2)
+    output = "static/fig2.png"
     a.savefig(output)
     return output

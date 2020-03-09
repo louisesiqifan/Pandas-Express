@@ -335,11 +335,11 @@ p.num_results {
     color: #7f8b9c;
 }
 
-input[type=back].button {
+input[value="Back to top"].button {
   background-color: #b8bfc8;
   border: none;
   color: white;
-  padding: 12px 0px;
+  padding: 12px 12px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -353,7 +353,7 @@ input[type=back].button {
   transition: all 0.1s;
 }
 
-input[type=back]:hover{
+input[value="Back to top"]:hover{
     background-color: #7f8b9c;
 }
 
