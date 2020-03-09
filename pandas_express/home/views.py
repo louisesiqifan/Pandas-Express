@@ -290,6 +290,15 @@ def get_detail(request):
         form = NutrientPlot()
         context["form"] = form
     if request.method == 'POST':
+        recipe = get_dish(recipe_id)
+        ingredient = get_dish_ingredient(recipe_id)
+        context = dict()
+        context['name'] = recipe[1]
+        context['time'] = recipe[3]
+        context['ingredient'] = ingredient
+        context['direction'] = recipe[-1].splitlines()
+        form = NutrientPlot()
+        context["form"] = form
         nutrient1 = request.POST.get("nutrient1", "")
         nutrient2 = request.POST.get("nutrient2", "")
         if nutrient1 != "":
@@ -301,5 +310,6 @@ def get_detail(request):
         if nutrient2 != "":
             fig2 = plot_two_nutrition(recipe_id, nutrient1, nutrient2)
             context["fig2"] = fig2
+
 
     return render(request, 'detail.html', context)
