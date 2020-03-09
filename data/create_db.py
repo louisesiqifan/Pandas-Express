@@ -35,15 +35,19 @@ Database Tables:
 
 import json
 import re
+import sys
 import util
 import sqlite3
 import numpy as np
 import pandas as pd
 from statistics import mean
 from sqlite3 import Error
+sys.path.append('../pandas_express')
+
 import clean_json
 import configparser
 import nutritionix
+from manage_user import create_tables
 
 config = configparser.ConfigParser()
 config.read('../wrapper/constants.ini')
@@ -321,3 +325,4 @@ def main():
 if __name__ == '__main__':
     main()
     get_ingredients_details()
+    create_tables()
