@@ -13,7 +13,7 @@
         <div id="header">
             <h1>{{name}}</h1>
         </div>
-        <div class="sidenav">
+        <div class="sidenav", id='sidenav'>
             <a href="#ingredient">Ingredient</a>
             <a href="#direction">Direction</a>
             <a href="#nutrition">Nutrition</a>
@@ -72,16 +72,19 @@
              <h2>Presented by Team AttributeError</h2>
         </div>
         <script>
+            var mybutton_sidenav = document.getElementById("sidenav");
             var mybutton_top = document.getElementById("top");
             var mybutton_search = document.getElementById("search");
             var mybutton_fav = document.getElementById("favorite");
             window.onscroll = function() {scrollFunction()};
             function scrollFunction() {
                 if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                    mybutton_sidenav.style.display = "block";
                     mybutton_top.style.display = "block";
                     mybutton_search.style.display = "block";
                     mybutton_fav.style.display = "block";
                 } else {
+                    mybutton_sidenav.style.display = "none";
                     mybutton_top.style.display = "none";
                     mybutton_search.style.display = "none";
                     mybutton_fav.style.display = "none";
