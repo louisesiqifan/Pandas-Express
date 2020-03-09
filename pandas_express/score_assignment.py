@@ -1,4 +1,4 @@
-#%%
+# %%
 import sqlite3
 import os
 import sys
@@ -15,15 +15,15 @@ config.read('../wrapper/constants.ini')
 DATABASE_FILENAME = config['DEFAULT']['DATABASE_FILENAME']
 INDEX_IGNORE = config['DATA']['INDEX_IGNORE']
 NUTRITION_CUT = {'calories': [4.2224346717654555, 15.087066375307291],
- 'total_fat': [0.2175, 2.283333333333333],
- 'saturated_fat': [0.04428571428571428, 0.7488888888888889],
- 'cholesterol': [0.0, 6.658333333333334],
- 'sodium': [6.243333333333333, 64.02222222222223],
- 'total_carbohydrate': [0.8729166666666667, 5.825],
- 'dietary_fiber': [0.0625, 0.535],
- 'sugars': [0.13, 1.4400000000000002],
- 'protein': [0.36000000000000004, 2.648888888888889],
- 'potassium': [19.033333333333335, 85.02399999999999]}
+                 'total_fat': [0.2175, 2.283333333333333],
+                 'saturated_fat': [0.04428571428571428, 0.7488888888888889],
+                 'cholesterol': [0.0, 6.658333333333334],
+                 'sodium': [6.243333333333333, 64.02222222222223],
+                 'total_carbohydrate': [0.8729166666666667, 5.825],
+                 'dietary_fiber': [0.0625, 0.535],
+                 'sugars': [0.13, 1.4400000000000002],
+                 'protein': [0.36000000000000004, 2.648888888888889],
+                 'potassium': [19.033333333333335, 85.02399999999999]}
 
 COLUMNS = ['id', 'name', 'level', 'time_active', 'time_total',
            'serving_size', 'calories', 'total_fat', 'saturated_fat',
@@ -194,7 +194,7 @@ def update_score(args_to_ui, lim, weight):
     '''
     db = sqlite3.connect(DATABASE_FILENAME)
     c = db.cursor()
-    score  = {}
+    score = {}
     ui_input = input_verification(args_to_ui)
     level = ui_input.get('level', False)
     time_params = ui_input.get('time', False)
@@ -225,7 +225,7 @@ def update_score(args_to_ui, lim, weight):
             score[i] = s
     final_score = sorted(score.items(), key=lambda item: item[1], reverse=True)
     last = final_score[lim][1]
-    result = takewhile(lambda x: x[1]>=last, final_score)
+    result = takewhile(lambda x: x[1] >= last, final_score)
     print(result)
     db.close()
     return result
@@ -282,7 +282,7 @@ def get_dish(recipe_id):
     return tuple(result)
 
 
-def get_dish_ingredient (recipe_id):
+def get_dish_ingredient(recipe_id):
     '''
     Get dish ingredient by id
     '''
@@ -294,14 +294,14 @@ def get_dish_ingredient (recipe_id):
     WHERE id = ?
     '''
     params = (recipe_id, )
-    c.execute(query, params)    
+    c.execute(query, params)
     result = c.fetchall()
     db.close()
     ing_list = []
     for sentence in result:
         ing_list.append(sentence[0])
     return ing_list
-#%%
+
 
 def feeling_lucky():
     db = sqlite3.connect(DATABASE_FILENAME)
@@ -328,7 +328,7 @@ def get_dishes(args_to_ui, lim=10, weight={}, debug=False, nutrient=False):
         [columns: list, dishes: list of tuples ]
     '''
     if not args_to_ui:
-        return [[],[]]
+        return [[], []]
 
     score_ranking = update_score(args_to_ui, lim, weight)
     dishes = []
@@ -346,8 +346,8 @@ def get_dishes(args_to_ui, lim=10, weight={}, debug=False, nutrient=False):
         print(df)
 
     for key, val in NUTRITION_CUT.items():
-        df[key] = df[key].apply(lambda x: 'low' if x<val[0]
-                                else ('high' if x>val[1] else 'med'))
+        df[key] = df[key].apply(lambda x: 'low' if x < val[0]
+                                else ('high' if x > val[1] else 'med'))
 
     cols = ['name', 'level', 'time_active', 'time_total', 'id']
     if nutrient:

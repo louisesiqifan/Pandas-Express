@@ -15,6 +15,7 @@ COLUMNS = ['id', 'name', 'level', 'time_active', 'time_total',
            'cholesterol', 'sodium', 'total_carbohydrate',
            'dietary_fiber', 'sugars', 'protein', 'potassium', 'directions']
 
+
 def get_all_nutrition(nutrition):
     '''
     Get all nutrition from db
@@ -57,7 +58,8 @@ def plot_one_nutrition(recipe_id, nutrition):
     if dish_nutrition == 0:
         dish_nutrition += 0.0001
     a = plt.figure()
-    a = sns.distplot(np.log(df), color="seagreen", bins=20, hist_kws=dict(alpha=0.2))
+    a = sns.distplot(np.log(df), color="seagreen",
+                     bins=20, hist_kws=dict(alpha=0.2))
     a.axvline(x=np.log(dish_nutrition), color="lightcoral")
     a.set_title(nutrition.capitalize())
     output = "static/{}.png".format(nutrition)
@@ -75,7 +77,8 @@ def plot_two_nutrition(recipe_id, nutrition1, nutrition2):
         nutrition1(str)
         nutrition2(str)
     '''
-    dish_nutrition1, dish_nutrition2 = get_dish_nutrition(recipe_id, nutrition1, nutrition2)
+    dish_nutrition1, dish_nutrition2 = get_dish_nutrition(
+        recipe_id, nutrition1, nutrition2)
     df1 = get_all_nutrition(nutrition1)
     df2 = get_all_nutrition(nutrition2)
     df1 = df1[(df1[nutrition1] != 0) & (df2[nutrition2] != 0)]

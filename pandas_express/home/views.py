@@ -16,7 +16,7 @@ LEVEL_CHOICES = [("easy", "Easy"),
 IMPORTANCE_CHOICES = [(1, 'Default'), (10, 'Important')]
 TERM_IMPORTANCE_CHOICES = [(10, 'Default'), (50, 'Important')]
 ADVANCE_CHOICES = [(1, 'Yes')]
-NUTRITION_CHOICES = [(-1, 'Low'), (1,"High")]
+NUTRITION_CHOICES = [(-1, 'Low'), (1, "High")]
 COLUMN_NAMES = {"id": 'ID',
                 'name': "Recipe",
                 'level': "Difficulty Level",
@@ -41,7 +41,8 @@ NUTRITION_PLOT_CHOICE = [('calories', "Calories"),
                          ('protein', 'Protein'),
                          ('potassium', 'Potassium')]
 
-######## FORM CLASSES **********
+# FORM CLASSES **********
+
 
 class Text(forms.MultiValueField):
     def __init__(self, *args, **kwargs):
@@ -85,7 +86,7 @@ class SearchForm(forms.Form):
         widget=forms.widgets.MultiWidget(
             widgets=(forms.widgets.TextInput,
                      forms.widgets.Select(choices=TERM_IMPORTANCE_CHOICES)))
-        )
+    )
 
     time_and_mode = Cooking_Time(
         label='Cooking Time',
@@ -95,7 +96,7 @@ class SearchForm(forms.Form):
             widgets=(forms.widgets.NumberInput,
                      forms.widgets.Select(choices=TIME_CHOICES),
                      forms.widgets.Select(choices=IMPORTANCE_CHOICES)))
-        )
+    )
 
     level = forms.MultipleChoiceField(label='Difficulty Level',
                                       choices=LEVEL_CHOICES,
@@ -154,7 +155,7 @@ class AdvanceForm(forms.Form):
         widget=forms.widgets.MultiWidget(
             widgets=(forms.widgets.TextInput,
                      forms.widgets.Select(choices=TERM_IMPORTANCE_CHOICES)))
-        )
+    )
 
     time_and_mode = Cooking_Time(
         label='Cooking Time',
@@ -164,7 +165,7 @@ class AdvanceForm(forms.Form):
             widgets=(forms.widgets.NumberInput,
                      forms.widgets.Select(choices=TIME_CHOICES),
                      forms.widgets.Select(choices=IMPORTANCE_CHOICES)))
-        )
+    )
 
     level = forms.MultipleChoiceField(label='Difficulty Level',
                                       choices=LEVEL_CHOICES,
@@ -246,10 +247,10 @@ class NutrientPlot(forms.Form):
                                           widget=forms.CheckboxSelectMultiple,
                                           required=False)
 
-    nutrient2 =  forms.MultipleChoiceField(label='Nutrient 2',
-                                           choices=NUTRITION_PLOT_CHOICE,
-                                           widget=forms.CheckboxSelectMultiple,
-                                           required=False)
+    nutrient2 = forms.MultipleChoiceField(label='Nutrient 2',
+                                          choices=NUTRITION_PLOT_CHOICE,
+                                          widget=forms.CheckboxSelectMultiple,
+                                          required=False)
 
 
 def get_detail(request):
@@ -263,25 +264,17 @@ def get_detail(request):
     if request.method == 'GET':
         save_current_dish(recipe_id)
         CURRENT_ID = recipe_id
-        recipe = get_dish(recipe_id)
-        ingredient = get_dish_ingredient(recipe_id)
-        context = dict()
-        context['name'] = recipe[1]
-        context['time'] = recipe[3]
-        context['ingredient'] = ingredient
-        context['direction'] = recipe[-1].splitlines()
-        form = NutrientPlot()
-        context["form"] = form
+
+    recipe = get_dish(recipe_id)
+    ingredient = get_dish_ingredient(recipe_id)
+    context = {}
+    context['name'] = recipe[1]
+    context['time'] = recipe[3]
+    context['ingredient'] = ingredient
+    context['direction'] = recipe[-1].splitlines()
+    form = NutrientPlot()
+    context["form"] = form
     if request.method == 'POST':
-        recipe = get_dish(recipe_id)
-        ingredient = get_dish_ingredient(recipe_id)
-        context = dict()
-        context['name'] = recipe[1]
-        context['time'] = recipe[3]
-        context['ingredient'] = ingredient
-        context['direction'] = recipe[-1].splitlines()
-        form = NutrientPlot()
-        context["form"] = form
         nutrient1 = request.POST.get("nutrient1", "")
         nutrient2 = request.POST.get("nutrient2", "")
         if nutrient1 != "":

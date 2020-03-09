@@ -6,7 +6,8 @@ config.read('../wrapper/constants.ini')
 DATABASE_FILENAME = config['DEFAULT']['DATABASE_FILENAME']
 INDEX_IGNORE = config['DATA']['INDEX_IGNORE']
 UI = {'level': str, 'title': str,
-      'time': tuple, 'nutrition' : dict}
+      'time': tuple, 'nutrition': dict}
+
 
 def input_verification(args_to_ui):
     '''
@@ -24,7 +25,7 @@ def input_verification(args_to_ui):
             levels = ['Easy', 'Intermediate', 'Advanced']
             assert val in levels, 'incorrect level'
             ind = levels.index(val)
-            val_list = [int(i<=ind) for i,_ in enumerate(levels)]
+            val_list = [int(i <= ind) for i, _ in enumerate(levels)]
             ui_input['level'] = val_list
         if key == 'time':
             upper_bound, mode = val
@@ -35,12 +36,13 @@ def input_verification(args_to_ui):
             args = val.title().split(',')
             ui_input['title'] = args
             r = re.findall(r'[a-zA-Z]{2,}', val)
-            args = list(set([x.lower() for x in r if x.lower() not in INDEX_IGNORE]))
+            args = list(set([x.lower()
+                             for x in r if x.lower() not in INDEX_IGNORE]))
             ui_input['term'] = args
         if key == 'nutrition':
             for k, v in val.items():
                 if k not in ['calories', 'total_fat', 'saturated_fat',
-                             'cholesterol','sodium', 'total_carbohydrate',
+                             'cholesterol', 'sodium', 'total_carbohydrate',
                              'dietary_fiber', 'sugars', 'protein',
                              'potassium']:
                     raise ValueError("nutrition value not supported")
