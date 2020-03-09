@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django import forms
-from manage_user import find_user, create_new_user
+from manage_user import find_user, save_current_user, create_new_user
 
 
 CHOICES = [(1, 'New User'), (0, 'Comeback User')]
@@ -54,6 +54,7 @@ def login(request):
                     raise ValueError('User does not exist, are you sure you entered the right name?')
                 else:
                     user = username
+            save_current_user(username)
     else:
         form = SearchForm()
 

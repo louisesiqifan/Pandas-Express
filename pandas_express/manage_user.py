@@ -9,6 +9,7 @@ DATABASE_FILENAME = config['DEFAULT']['DATABASE_FILENAME']
 SQL_CREATE_USER = config['USER']['SQL_CREATE_USER']
 SQL_CREATE_FAV = config['USER']['SQL_CREATE_FAV']
 SQL_CREATE_LEAST_FAV = config['USER']['SQL_CREATE_LEAST_FAV']
+SQL_CREATE_CURRENT_USER = config['USER']['SQL_CREATE_CURRENT_USER']
 
 
 def create_table(sql_query):
@@ -23,6 +24,7 @@ def create_table(sql_query):
 
 
 def create_tables():
+    create_table(SQL_CREATE_CURRENT_USER)
     create_table(SQL_CREATE_USER)
     create_table(SQL_CREATE_FAV)
     create_table(SQL_CREATE_LEAST_FAV)
@@ -41,6 +43,22 @@ def find_user(user):
     if len(result) > 0:
         return True
     return False
+
+def save_current_user(name):
+    db = sqlite3.connect(DATABASE_FILENAME)
+    c = db.cursor()
+    s = '''
+    DELETE FROM current_user;
+    '''
+    c.execute(s)
+    db.commit()
+    s = '''
+    INSERT INTO current_user (name)
+    VALUES (?)
+    '''
+    c.execute(s, (name,))
+    db.commit()
+    db.close()
 
 
 def create_new_user(name):

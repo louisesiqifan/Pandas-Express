@@ -13,13 +13,16 @@
             <h1>Pandas Express</h1>
         </div>
         <div class="frame" id="section1">
-            <form method="GET">
+            <form method="GET" >
                 {% csrf_token %}
                 <table class="form">
                 {{ form }}
                 </table>
-                <input type="reset" class="button" value="START SEARCHING" onclick="location.href='/search';" />
-                <input type="reset" class="button" value="ADVANCED SEARCHING" onclick="location.href='/search/advance';" />
+                <input type="submit" class="button" value="Save User"/>
+            </form>
+            <form method="get" action="{% url 'home'%}">
+                <input type="submit" class="button" value="Start Searching" name="{{name}}"/>
+                <input type="submit" class="button" value="Advanced Searching" name="{{name}}"/>
             </form>
 
         </div>

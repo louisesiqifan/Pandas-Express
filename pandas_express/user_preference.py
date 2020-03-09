@@ -9,6 +9,15 @@ config.read('../wrapper/constants.ini')
 DATABASE_FILENAME = config['DEFAULT']['DATABASE_FILENAME']
 
 
+def current_user(c):
+    s = '''
+    SELECT * FROM current_user
+    '''
+    c.execute(s)
+    result = c.fetchall()
+    return result[0]
+
+
 def find(c, tbl, id, user):
     s = '''
     SELECT * FROM {}
@@ -21,7 +30,7 @@ def find(c, tbl, id, user):
     return False
 
 
-def save(tbl, id, user):
+def save(id, tbl='user_fav'):
     '''
     Save result to table
     Input:
@@ -31,10 +40,7 @@ def save(tbl, id, user):
     '''
     db = sqlite3.connect(DATABASE_FILENAME)
     c = db.cursor()
-    user_exist = manage_user.find(c, user)
-    if not user_exist:
-        db.close()
-        return 'User does not exist'
+    user = current_user(c)[0]
     exist = find(c, tbl, id, user)
     if exist:
         db.close()
