@@ -39,9 +39,18 @@
         <div id="direction">
 
             <h3> <i class="fab fa-nutritionix"></i> Nutrition: </h3>
+
+            <form method="get">
+                {% csrf_token %}
+                <table class="form">
+                {{ form }}
+                </table>
+                <input type="submit" class="button" value="Search" onclick="location.href='#section2';"/>
+            </form>
+            
             <figure>
-                <img src=../{{fig1}} style="width:25%">
-                <img src=../{{fig2}} style="width:25%">
+                <img src=../{{fig1}} style="width:50%">
+                <img src=../{{fig2}} style="width:50%">
             </figure>
 
         </div>

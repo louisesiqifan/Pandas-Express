@@ -5,3 +5,6 @@ env
 *.ipynb
 *.zip
 *.png
+*.jpg
+*.jpeg
+*.gif
