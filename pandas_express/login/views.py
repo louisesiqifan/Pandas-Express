@@ -36,11 +36,9 @@ def login(request):
     context = {}
     if request.method == 'GET':
         form = SearchForm(request.GET)
-        print(request.GET)
         if form.is_valid():
             username = form.cleaned_data['query'][0]
             create = int(form.cleaned_data['query'][1])
-            print('results:', username, create)
             exist = find_user(username)
 
             if create:
