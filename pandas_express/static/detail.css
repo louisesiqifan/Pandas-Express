@@ -7,7 +7,6 @@ html, body {
 }
 
 div {
-  /*resize: both;*/
   overflow: auto;
 }
 
@@ -18,10 +17,7 @@ div#header {
     padding-top: 70px;
     padding-bottom: 70px;
     background: #32302c;
-/*    background-size: cover;
-    background-position: 50% 45%;
-    background-repeat: no-repeat;
-    background-image: url("https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fvictoriabuzz.com%2Fwp-content%2Fuploads%2F2017%2F02%2F04-traits-ice-cream-chocolate.jpg&f=1&nofb=1");*/
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
 
 div#header h1 {
@@ -40,6 +36,7 @@ div#time {
     padding-top: 5px;
     padding-bottom: 5px;
     background-color: #e2d9c6;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
 
 div#time h3{
@@ -49,10 +46,11 @@ div#time h3{
 div#ingredient {
     padding-right: 400px;
     padding-left: 100px;
-    padding-top: 5px;
-    padding-bottom: 20px;
+    padding-top: 15px;
+    padding-bottom: 30px;
     background-color: #fefbf4;
     color: #32302c;
+    box-shadow: 0 1px 10px 0 rgba(0,0,0,0.2), 0 3px 20px 0 rgba(0,0,0,0.19);
 }
 
 div#ingredient h3{
@@ -70,9 +68,10 @@ div#ingredient li{
 div#direction {
     padding-right: 400px;
     padding-left: 100px;
-    padding-top: 5px;
-    padding-bottom: 20px;
-    background-color: #fefdfb
+    padding-top: 15px;
+    padding-bottom: 30px;
+    background-color: #fefdfb;
+    box-shadow: 0 1px 10px 0 rgba(0,0,0,0.2), 0 3px 20px 0 rgba(0,0,0,0.19);
 }
 
 div#direction h3{
@@ -90,9 +89,10 @@ div#direction li{
 div#nutrition {
     padding-right: 400px;
     padding-left: 100px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    background-color: white
+    padding-top: 12px;
+    padding-bottom: 8px;
+    background-color: white;
+    box-shadow: 0 1px 10px 0 rgba(0,0,0,0.2), 0 3px 20px 0 rgba(0,0,0,0.19);
 }
 
 div#nutrition h3{
@@ -100,10 +100,6 @@ div#nutrition h3{
     color: #4b4842;
 }
 
-div#nutrition h3{
-    font-size: 24px;
-    color: #4b4842;
-}
 
 div#plot{
     padding-right: 0px;
@@ -118,12 +114,14 @@ table.form tr th {
     vertical-align: top;
     font-size: 18px;
     padding-bottom: 22px;
-    color: #4b4842
+    padding-left: 17px;
+    color: #4b4842;
+    text-align: left;
 }
 
 table.form ul {
     list-style-type: none;
-    margin-left: 10px;
+    margin-left: 0px;
     padding: 0px;
     font-size: 0px;
 }
@@ -132,7 +130,7 @@ table.form li {
     display: block;
     float: left;
     margin-left: 5px;
-    padding: 0px;
+    padding: 2px;
     font-size: 18px;
     color: #4b4842;
 }
@@ -140,6 +138,13 @@ table.form li {
 table.form label{
     font-size: 18px;
     color: #4b4842;
+    text-align: left;
+    transition: all 0.1s;
+}
+
+table.form label:hover {
+    font-weight: 1000;
+    text-shadow: 0.5px 0.5px lightgrey
 }
 
 input[value="Plot"].button{
@@ -155,14 +160,16 @@ input[value="Plot"].button{
   margin-top: 5px;
   margin-bottom: 5px;
   margin-right: 5px;
-  margin-left: 5px;
+  margin-left: 17px;
   cursor: pointer;
   border-radius: 8px;
   transition: all 0.1s;
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,0.2), 0 3px 5px 0 rgba(0,0,0,0.19);
 }
 
 input[value="Plot"].button:hover{
     background-color: #979184;
+    box-shadow: 0 1px 6px 0 rgba(0,0,0,0.2), 0 3px 10px 0 rgba(0,0,0,0.19);
 }
 
 
@@ -174,9 +181,7 @@ div#footer {
     padding-top: 5px;
     padding-bottom: 5px;
     width: 100%;
-/*    position: fixed;
-    left: 0;
-    bottom: 0;*/
+    box-shadow: 0 1px 10px 0 rgba(0,0,0,0.2), 0 3px 20px 0 rgba(0,0,0,0.19);
 }
 
 div#footer h2 {
@@ -220,7 +225,12 @@ button:hover{
   overflow-x: hidden;
   padding: 10px 0;
   border-radius: 8px;
-  background-color: #c9c1b0
+  background-color: #c9c1b0;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.sidenav:hover {
+  box-shadow: 0 4px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
 
 .sidenav a {
@@ -252,10 +262,12 @@ button:hover{
   padding: 15px 27px;
   border-radius: 8px;
   transition: all 0.2s;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
 
 #top:hover {
   background-color: #979184;
+  box-shadow: 0 4px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
 
 #search {
@@ -274,6 +286,8 @@ button:hover{
   padding: 15px 13px;
   border-radius: 8px;
   transition: all 0.2s;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  box-shadow: 0 4px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
 
 #search:hover {
@@ -296,13 +310,13 @@ button:hover{
   padding: 15px 12px;
   border-radius: 8px;
   transition: all 0.2s;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  box-shadow: 0 4px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
 
 #favorite:hover {
   background-color: #646058;
 }
-
-
 
 img{
     padding-right: 0px;
@@ -311,20 +325,17 @@ img{
     background-color: white;
 }
 
- /* Three image containers (use 25% for four, and 50% for two, etc) */
 .column {
   float: left;
   width: 45%;
   padding: 5px;
 }
 
-/* Clear floats after image containers */
 .row::after {
   content: "";
   clear: both;
   display: table;
 } 
-
 
 @media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}

@@ -7,8 +7,7 @@ html, body {
 }
 
 div {
-/*  resize: both;
-*/  overflow: auto;
+    overflow: auto;
 }
 
 div#header {
@@ -16,13 +15,11 @@ div#header {
     padding-right: 66px;
     padding-left: 75px;
     padding-top: 100px;
-    padding-bottom: 100px;
+    padding-bottom: 80px;
     background-size: cover;
-/*    background-position: 50% 35%;*/
     background-position: 50% 45%;
     background-repeat: no-repeat;
-/*    background-image: url("https://images2.alphacoders.com/460/thumb-1920-460144.jpg");
-*/    background-image: url("https://img.peapix.com/18313178659351803842.jpg");
+    background-image: url("https://img.peapix.com/18313178659351803842.jpg");
     width: 100%;
     height: 100%;
 }
@@ -36,9 +33,10 @@ div#header h1 {
 }
 
 div.frame {
-    margin: 66px;
+    margin: 0;
+    padding-right: 66px;
+    padding-left: 75px;
 }
-
 
 div.row {
     margin: 66px;
@@ -81,9 +79,15 @@ label {
     color: #0d291a;
 }
 
+label:hover {
+    font-weight: 1000;
+    text-shadow: 0.5px 0.5px lightgrey
+}
+
 table.form {
     text-align: left;
     font-size: 22px;
+    margin-top: 5px;
 }
 
 table.form tr td,
@@ -112,11 +116,17 @@ table.form input#id_query_0{
     display: inline-block;
 }
 
+table.form input#id_query_0:hover{
+    transition: width border background 0.4s ease-in-out;
+    box-shadow: 0 1px 5px 0 rgba(0,0,0,0.2), 0 1px 5px 0 rgba(0,0,0,0.19);
+}
+
 table.form input#id_query_0:focus{
     border: 2px solid #c0dccc;
     width: 60%;
     background-color: #F8F8F8;
-    transition: width border background 0.4s ease-in-out;
+    transition: width border background 0.2s ease-in-out;
+    box-shadow: 0 1px 10px 0 rgba(0,0,0,0.2), 0 1px 10px 0 rgba(0,0,0,0.19);
 }
 
 table.form select#id_query_1{
@@ -128,6 +138,12 @@ table.form select#id_query_1{
     border-radius: 4px;
     padding: 4px;
     background-color: #f1f1f1;
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,0.2), 0 1px 5px 0 rgba(0,0,0,0.19); 
+    transition: 0.2s;
+}
+
+table.form select#id_query_1:hover{
+    box-shadow: 0 1px 8px 0 rgba(0,0,0,0.2), 0 1px 8px 0 rgba(0,0,0,0.19); 
 }
 
 table.form input#id_time_and_mode_0{
@@ -149,13 +165,19 @@ table.form input#id_time_and_mode_0{
     display: inline-block;
 }
 
+table.form input#id_time_and_mode_0:hover{
+    transition: width border background 0.4s ease-in-out;
+    box-shadow: 0 1px 5px 0 rgba(0,0,0,0.2), 0 1px 5px 0 rgba(0,0,0,0.19);
+}
+
 table.form input#id_time_and_mode_0:focus{
     border: 2px solid #c0dccc;
     width: 30%;
     font-size: 18px;
     color: #696969;
     background-color: #F8F8F8;
-    transition: width border background 0.4s ease-in-out;    
+    transition: width border background 0.4s ease-in-out;   
+    box-shadow: 0 1px 10px 0 rgba(0,0,0,0.2), 0 1px 10px 0 rgba(0,0,0,0.19); 
 }
 
 table.form select#id_time_and_mode_1{
@@ -167,6 +189,11 @@ table.form select#id_time_and_mode_1{
     border-radius: 4px;
     padding: 4px;
     background-color: #f1f1f1;
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,0.2), 0 1px 5px 0 rgba(0,0,0,0.19); 
+}
+
+table.form select#id_time_and_mode_1:hover{
+    box-shadow: 0 1px 8px 0 rgba(0,0,0,0.2), 0 1px 8px 0 rgba(0,0,0,0.19); 
 }
 
 table.form select#id_time_and_mode_2{
@@ -178,6 +205,11 @@ table.form select#id_time_and_mode_2{
     border-radius: 4px;
     padding: 4px;
     background-color: #f1f1f1;
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,0.2), 0 1px 5px 0 rgba(0,0,0,0.19); 
+}
+
+table.form select#id_time_and_mode_2:hover{
+    box-shadow: 0 1px 8px 0 rgba(0,0,0,0.2), 0 1px 8px 0 rgba(0,0,0,0.19); 
 }
 
 table.form ul#id_level {
@@ -194,8 +226,7 @@ table.form ul#id_level li {
     padding: 0px;
 }
 
-
-input[type=submit].button {
+input[value="Search"].button {
   background-color: #429667;
   border: none;
   color: white;
@@ -212,10 +243,12 @@ input[type=submit].button {
   cursor: pointer;
   border-radius: 8px;
   transition: all 0.1s;
+  box-shadow: 0 3px 3px 0 rgba(0,0,0,0.2), 0 3px 10px 0 rgba(0,0,0,0.19);
 }
 
-input[type=submit]:hover{
+input[value="Search"]:hover{
     background-color: #2e8b57;
+    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 3px 15px 0 rgba(0,0,0,0.19);
 }
 
 input[type=reset].button {
@@ -235,10 +268,12 @@ input[type=reset].button {
   cursor: pointer;
   border-radius: 8px;
   transition: all 0.1s;
+  box-shadow: 0 3px 3px 0 rgba(0,0,0,0.2), 0 3px 10px 0 rgba(0,0,0,0.19);
 }
 
 input[type=reset]:hover{
     background-color: #8b2e62;
+    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 3px 15px 0 rgba(0,0,0,0.19);
 }
 
 input[value="Advanced Search"].button {
@@ -252,23 +287,26 @@ input[value="Advanced Search"].button {
   display: inline-block;
   font-size: 22px;
   margin-top: 20px;
-  margin-bottom: 0px;
+  margin-bottom: 15px;
   margin-right: 10px;
   margin-left: 10px;
   cursor: pointer;
   border-radius: 8px;
   transition: all 0.1s;
+  box-shadow: 0 3px 3px 0 rgba(0,0,0,0.2), 0 3px 10px 0 rgba(0,0,0,0.19);
 }
 
 input[value="Advanced Search"]:hover{
     background-color: #297d78;
+    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 3px 15px 0 rgba(0,0,0,0.19);
 }
 
 input[value="Feeling Lucky"].button {
   background-color: white;
   color: grey;
-  padding: 15px 5px 5px 10px;
+  padding: 10px 5px 5px 15px;
   font-family: 'Quicksand', sans-serif;
+  font-weight: bold;
   text-align: right;
   text-decoration: none;
   display: inline-block;
@@ -279,27 +317,51 @@ input[value="Feeling Lucky"].button {
   margin-left: 150px;
   cursor: pointer;
   border-radius: 8px;
-  transition: all 0.1s;
   position: sticky;
   border: 0px solid grey; 
 }
 
-input[type=submit]:hover{
+input[value="Feeling Lucky"]:hover{
     text-decoration: underline grey 2px;
+    text-shadow: 1px 1px lightgrey
 }
 
 i {
     color: grey;
 }
 
+.column1 {
+  float: left;
+  width: 64%;
+  padding: 0px;
+}
+
+.column2 {
+  float: right;
+  width: 36%;
+  padding: 0px;
+}
+
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+} 
+
 table.recipes {
     border: 2px solid #ddd;
     padding:10px;
     margin-top: 10px;
-    margin-bottom: 0px;
+    margin-bottom: 20px;
     margin-right: 10px;
     margin-left: 10px;
-    border-radius: 25px
+    border-radius: 25px;
+    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 6px 10px 0 rgba(0,0,0,0.19);
+}
+
+table.recipes:hover{
+    box-shadow: 0 3px 10px 0 rgba(0,0,0,0.2), 0 6px 10px 0 rgba(0,0,0,0.19);
+
 }
 
 table.recipes tr th {
@@ -319,6 +381,7 @@ table.recipes input.button {
   border-radius: 6px;
   display: block;
   margin: 0 auto;
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.2), 0 2px 4px 0 rgba(0,0,0,0.19);
 }
 
 table.recipes input.button:hover{
@@ -332,10 +395,7 @@ table.recipes tr th {
     color: #091b11;
     align-items: center;
     justify-content:center;
-/*    display:flex;
-    flex-grow:2;*/
 }
-
 
 table.recipes tr:nth-child(even) {
     background: #f4f9f6;
@@ -377,16 +437,18 @@ input[value="Back to top"].button {
   display: inline-block;
   font-size: 22px;
   margin-top: 10px;
-  margin-bottom: 30px;
+  margin-bottom: 80px;
   margin-right: 10px;
   margin-left: 10px;
   cursor: pointer;
   border-radius: 8px;
   transition: all 0.1s;
+  box-shadow: 0 3px 3px 0 rgba(0,0,0,0.2), 0 3px 10px 0 rgba(0,0,0,0.19);
 }
 
 input[value="Back to top"]:hover{
     background-color: #7f8b9c;
+    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 3px 15px 0 rgba(0,0,0,0.19);
 }
 
 div#footer {
@@ -400,6 +462,7 @@ div#footer {
     position: fixed;
     left: 0;
     bottom: 0;
+    box-shadow: 0 3px 10px 0 rgba(0,0,0,0.2), 0 3px 20px 0 rgba(0,0,0,0.19);
 }
 
 div#footer h2 {
@@ -409,22 +472,3 @@ div#footer h2 {
     margin: 0px;
     padding: 0px;
 }
-
- /* Three image containers (use 25% for four, and 50% for two, etc) */
-.column1 {
-  float: left;
-  width: 64%;
-  padding: 0px;
-}
-
-.column2 {
-  float: right;
-  width: 36%;
-  padding: 0px;
-}
-
-.row::after {
-  content: "";
-  clear: both;
-  display: table;
-} 

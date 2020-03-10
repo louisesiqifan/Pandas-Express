@@ -110,6 +110,7 @@ def search(request):
     res = None
     dt_time = datetime.datetime.now()
     random_seed =  dt_time.hour * 100 + dt_time.second
+    print(random_seed)
     if request.method == 'GET':
         form = SearchForm(request.GET)
         if form.is_valid():

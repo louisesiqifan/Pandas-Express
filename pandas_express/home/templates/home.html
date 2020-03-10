@@ -16,9 +16,7 @@
             <div class="column1">
                 <form method="get">
                     {% csrf_token %}
-                    <table class="form">
-                        {{ form }}
-                    </table>
+                    <table class="form">{{ form }}</table>
                     <input type="submit" class="button" value="Search" onclick="location.href='#section2';"/>
                     <input type="reset" class="button" value="Advanced Search" onclick="location.href='/search/advance';" />
                     <input type="reset" class="button" value="Reset" onclick="location.href='/search';" />
@@ -31,20 +29,16 @@
                 </form>   
             </div>                   
         </div>
-       
-
         {% if args %}
         <div class="args">
             <pre>{{ args }}</pre>
         </div>
         {% endif %}
-
         {% if err %}
         <div class="error">
             {{ err|safe }}
         </div>
         {% endif %}
-
         <div class="frame" id="section2">
             {% if result != None %}
             <div class="results">
@@ -61,11 +55,11 @@
                     <tr>
                         {% for col in entry %}
                             {% if forloop.counter|divisibleby:5 %} 
-                                <td>
-                                    <form method="get" action="{% url 'detail'%}">
-                                        <input type="submit" class="button" value="Detail" name="{{col}}"/>
-                                    </form>
-                                </td>
+                            <td>
+                                <form method="get" action="{% url 'detail'%}">
+                                    <input type="submit" class="button" value="Detail" name="{{col}}"/>
+                                </form>
+                            </td>
                             {% else %}
                                 <td>{{col}}</td>
                             {% endif %}
@@ -74,7 +68,7 @@
                     {% endfor %}
                 </table>
             </div>
-            <p class="num_results">Results: {{num_results}}</p>
+            <p class="num_results">Results: {{ num_results }}</p>
             <input type="reset" class="button" value="Back to top" onclick="location.href='#header';" />
             {% endif %}
         </div>
@@ -85,4 +79,3 @@
 </html>
 
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-
