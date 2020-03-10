@@ -110,9 +110,14 @@ def search(request):
     res = None
     dt_time = datetime.datetime.now()
     random_seed =  dt_time.hour * 100 + dt_time.second
-    print(random_seed)
     if request.method == 'GET':
-        if request.GET.get('search'):
+        print("get")
+        if request.GET.get('fav'):
+            print("fav")
+            form = SearchForm(request.GET)
+            res = get_dishes({}, fav=True)
+        else:
+            print("search")
             form = SearchForm(request.GET)
             if form.is_valid():
                 args = {}
@@ -135,10 +140,6 @@ def search(request):
                 except Exception as e:
                     print('Exception caught')
                     res = None
-        elif request.GET.get('fav'):
-            print('getting_favs')
-            form = SearchForm(request.GET)
-            res = get_dishes({}, fav=True)
     else:
         form = SearchForm()
 
