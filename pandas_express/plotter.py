@@ -6,6 +6,7 @@ import configparser
 import matplotlib.pyplot as plt
 from score_assignment import get_dish
 plt.switch_backend('Agg')
+plt.rcParams.update({'figure.max_open_warning': 0})
 
 config = configparser.ConfigParser()
 config.read('../wrapper/constants.ini')
@@ -52,19 +53,28 @@ def get_dish_nutrition(id, *args):
 
 
 def plot_one_nutrition(recipe_id, nutrition):
+    '''
+    Plot for one nutrition
+
+    Input:
+        recipe_id(int): recipe id
+        nutrition(str)
+    '''
     df = get_all_nutrition(nutrition)
-    df = df[df != 0]
+    df = df[df != 0].dropna()
     dish_nutrition = get_dish_nutrition(recipe_id, nutrition)[0]
     if dish_nutrition == 0:
         dish_nutrition += 0.0001
     a = plt.figure()
+    plt.cla()
     a = sns.distplot(np.log(df), color="seagreen",
                      bins=20, hist_kws=dict(alpha=0.2))
     a.axvline(x=np.log(dish_nutrition), color="lightcoral")
-    a.set_title(nutrition.capitalize())
+    a.set_title(nutrition.replace("_", " ").capitalize())
     output = "static/fig1.png"
     fig = a.get_figure()
     fig.savefig(output)
+    plt.cla()
     return output
 
 
@@ -73,7 +83,7 @@ def plot_two_nutrition(recipe_id, nutrition1, nutrition2):
     Plot for two nutritions
 
     Input:
-        id(int): recipe id
+        recipe_id(int): recipe id
         nutrition1(str)
         nutrition2(str)
     '''
@@ -81,8 +91,8 @@ def plot_two_nutrition(recipe_id, nutrition1, nutrition2):
         recipe_id, nutrition1, nutrition2)
     df1 = get_all_nutrition(nutrition1)
     df2 = get_all_nutrition(nutrition2)
-    df1 = df1[(df1[nutrition1] != 0) & (df2[nutrition2] != 0)]
-    df2 = df2[(df1[nutrition1] != 0) & (df2[nutrition2] != 0)]
+    df1 = df1[(df1[nutrition1] != 0) & (df2[nutrition2] != 0)].dropna()
+    df2 = df2[(df1[nutrition1] != 0) & (df2[nutrition2] != 0)].dropna()
     a = plt.figure()
     a = sns.jointplot(x=np.log(df1), y=np.log(df2), kind="hex",
                       marginal_kws=dict(bins=20, rug=False), color="seagreen")
@@ -94,4 +104,5 @@ def plot_two_nutrition(recipe_id, nutrition1, nutrition2):
                     'ro', color='lightcoral')
     output = "static/fig2.png"
     a.savefig(output)
+    plt.cla()
     return output
