@@ -8,6 +8,7 @@ from django.template import Template
 from plotter import plot_one_nutrition, plot_two_nutrition
 from manage_user import save_current_dish
 from user_preference import save, current_dish
+import datetime
 
 TIME_CHOICES = [("total", "Total"), ("active", "Active")]
 LEVEL_CHOICES = [("easy", "Easy"),
@@ -107,6 +108,8 @@ class SearchForm(forms.Form):
 def search(request):
     context = {}
     res = None
+    dt_time = datetime.datetime.now()
+    random_seed =  dt_time.hour * 100 + dt_time.second
     if request.method == 'GET':
         form = SearchForm(request.GET)
         if form.is_valid():
@@ -141,6 +144,7 @@ def search(request):
         context['num_results'] = len(result)
         context['columns'] = [COLUMN_NAMES.get(col, col) for col in columns]
         context['form'] = form
+        context['random_seed'] = random_seed
 
     return render(request, 'home.html', context)
 

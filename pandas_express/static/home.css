@@ -14,7 +14,7 @@ div {
 div#header {
     margin: 0;
     padding-right: 66px;
-    padding-left: 66px;
+    padding-left: 75px;
     padding-top: 100px;
     padding-bottom: 100px;
     background-size: cover;
@@ -36,6 +36,11 @@ div#header h1 {
 }
 
 div.frame {
+    margin: 66px;
+}
+
+
+div.row {
     margin: 66px;
 }
 
@@ -71,9 +76,9 @@ input.query {
 
 label {
     font-size: 22px;
-    color: #3f3f3f;
-    margin: 5px;
+    margin: 6px;
     padding: 1px;
+    color: #0d291a;
 }
 
 table.form {
@@ -108,7 +113,7 @@ table.form input#id_query_0{
 }
 
 table.form input#id_query_0:focus{
-    border: 2px solid lightblue;
+    border: 2px solid #c0dccc;
     width: 60%;
     background-color: #F8F8F8;
     transition: width border background 0.4s ease-in-out;
@@ -145,7 +150,7 @@ table.form input#id_time_and_mode_0{
 }
 
 table.form input#id_time_and_mode_0:focus{
-    border: 2px solid lightblue;
+    border: 2px solid #c0dccc;
     width: 30%;
     font-size: 18px;
     color: #696969;
@@ -191,10 +196,11 @@ table.form ul#id_level li {
 
 
 input[type=submit].button {
-  background-color: #4CAF50;
+  background-color: #429667;
   border: none;
   color: white;
   padding: 12px 24px;
+  font-family: 'Quicksand', sans-serif;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -209,14 +215,15 @@ input[type=submit].button {
 }
 
 input[type=submit]:hover{
-    background-color: #45a049;
+    background-color: #2e8b57;
 }
 
 input[type=reset].button {
-  background-color: tomato;
+  background-color: #964271;
   border: none;
   color: white;
   padding: 12px 24px;
+  font-family: 'Quicksand', sans-serif;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -231,14 +238,15 @@ input[type=reset].button {
 }
 
 input[type=reset]:hover{
-    background-color: #ff4747;
+    background-color: #8b2e62;
 }
 
 input[value="Advanced Search"].button {
-  background-color: #008CBA;
+  background-color: #2e8b86;
   border: none;
   color: white;
   padding: 12px 24px;
+  font-family: 'Quicksand', sans-serif;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -253,9 +261,36 @@ input[value="Advanced Search"].button {
 }
 
 input[value="Advanced Search"]:hover{
-    background-color: #123456;
+    background-color: #297d78;
 }
 
+input[value="Feeling Lucky"].button {
+  background-color: white;
+  color: grey;
+  padding: 15px 5px 5px 10px;
+  font-family: 'Quicksand', sans-serif;
+  text-align: right;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 24px;
+  margin-top: 250px;
+  margin-bottom: 0px;
+  margin-right: 0px;
+  margin-left: 150px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.1s;
+  position: sticky;
+  border: 0px solid grey; 
+}
+
+input[type=submit]:hover{
+    text-decoration: underline grey 2px;
+}
+
+i {
+    color: grey;
+}
 
 table.recipes {
     border: 2px solid #ddd;
@@ -272,7 +307,8 @@ table.recipes tr th {
 }
 
 table.recipes input.button {
-  background-color: #b8bfc8;
+  font-family: 'Quicksand', sans-serif;
+  background-color: #abd0ce;
   border: none;
   color: white;
   padding: 6px 10px;
@@ -286,28 +322,23 @@ table.recipes input.button {
 }
 
 table.recipes input.button:hover{
-    background-color: #7f8b9c;
+    background-color: #96c5c2;
 }
 
 table.recipes tr td,
 table.recipes tr th {
     padding: 5px;
     font-size: 18px;
-    color: #3f3f3f;
+    color: #091b11;
     align-items: center;
     justify-content:center;
 /*    display:flex;
     flex-grow:2;*/
 }
 
-table.recipes a{
-    padding: 8px;
-    font-size: 18px;
-    color: #0B3861;
-}
 
 table.recipes tr:nth-child(even) {
-    background: #eee;
+    background: #f4f9f6;
 }
 
 ul.errorlist {
@@ -340,12 +371,13 @@ input[value="Back to top"].button {
   border: none;
   color: white;
   padding: 12px 12px;
+  font-family: 'Quicksand', sans-serif;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 22px;
   margin-top: 10px;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
   margin-right: 10px;
   margin-left: 10px;
   cursor: pointer;
@@ -358,10 +390,10 @@ input[value="Back to top"]:hover{
 }
 
 div#footer {
-    background: #7cb57c;
+    background: #1b5334;
     margin: 0;
     padding-right: 66px;
-    padding-left: 66px;
+    padding-left: 75px;
     padding-top: 5px;
     padding-bottom: 5px;
     width: 100%;
@@ -377,3 +409,22 @@ div#footer h2 {
     margin: 0px;
     padding: 0px;
 }
+
+ /* Three image containers (use 25% for four, and 50% for two, etc) */
+.column1 {
+  float: left;
+  width: 64%;
+  padding: 0px;
+}
+
+.column2 {
+  float: right;
+  width: 36%;
+  padding: 0px;
+}
+
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+} 

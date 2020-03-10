@@ -12,18 +12,26 @@
         <div id="header">
             <h1>Pandas Express</h1>
         </div>
-        <div class="frame" id="section1">
-            <form method="get">
-                {% csrf_token %}
-                <table class="form">
-                {{ form }}
-                </table>
-                <input type="submit" class="button" value="Search" onclick="location.href='#section2';"/>
-                <input type="reset" class="button" value="Reset" onclick="location.href='/search';" />
-                <input type="reset" class="button" value="Advanced Search" onclick="location.href='/search/advance';" />
-            </form>
-                
+        <div class="row" id="section1">
+            <div class="column1">
+                <form method="get">
+                    {% csrf_token %}
+                    <table class="form">
+                        {{ form }}
+                    </table>
+                    <input type="submit" class="button" value="Search" onclick="location.href='#section2';"/>
+                    <input type="reset" class="button" value="Advanced Search" onclick="location.href='/search/advance';" />
+                    <input type="reset" class="button" value="Reset" onclick="location.href='/search';" />
+                </form>  
+            </div>
+            <div class="column2">
+                <form action="{% url 'detail'%}">
+                   <input type="submit" class="button" value="Feeling Lucky" name="{{random_seed}}"/>
+                    <i class="fa fa-arrow-right fa-1x"></i>
+                </form>   
+            </div>                   
         </div>
+       
 
         {% if args %}
         <div class="args">
@@ -75,3 +83,6 @@
         </div>
     </body>
 </html>
+
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
