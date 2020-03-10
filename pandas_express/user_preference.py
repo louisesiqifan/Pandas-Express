@@ -66,3 +66,48 @@ def save(id, tbl='user_fav'):
     db.commit()
     db.close()
     return 'Save Success!'
+
+
+def get_dish(recipe_id):
+    '''
+    Get a dish by id.
+
+    Inputs:
+        recipe_id: int
+
+    Outputs:
+        result: tuple
+    '''
+    db = sqlite3.connect(DATABASE_FILENAME)
+    c = db.cursor()
+    query = '''
+    SELECT *
+    FROM recipes
+    WHERE id = ?
+    '''
+    params = (recipe_id, )
+    c.execute(query, params)
+    result = list(c.fetchall()[0])
+    for i, e in enumerate(result):
+        if isinstance(e, float):
+            result[i] = round(e, 2)
+    db.close()
+    return tuple(result)
+
+
+def get_fav():
+    s = '''
+    SELECT * FROM user_fav
+    WHERE user = ?
+    '''
+    db = sqlite3.connect(DATABASE_FILENAME)
+    c = db.cursor()
+    user = current_user(c)
+    c.execute(s, (user[0],))
+    ids = [item[0] for item in c.fetchall()]
+    db.close()
+    results = []
+    for id in ids:
+        results.append(get_dish(id))
+    scores = [1 for _ in results]
+    return results, scores

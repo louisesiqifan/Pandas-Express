@@ -7,6 +7,7 @@ import pandas as pd
 import configparser
 from itertools import takewhile
 from manage_input import input_verification
+from user_preference import get_fav
 
 
 config = configparser.ConfigParser()
@@ -288,8 +289,8 @@ def get_dish_ingredient(recipe_id):
     db = sqlite3.connect(DATABASE_FILENAME)
     c = db.cursor()
     query = '''
-    SELECT ingredient 
-    FROM ingredient_details 
+    SELECT ingredient
+    FROM ingredient_details
     WHERE id = ?
     '''
     params = (recipe_id, )
@@ -313,7 +314,7 @@ def feeling_lucky():
     return get_dish(i)
 
 
-def get_dishes(args_to_ui, lim=10, weight={}, debug=False, nutrient=False):
+def get_dishes(args_to_ui, lim=10, weight={}, debug=False, nutrient=False, fav=False):
     '''
     Get all dishes.
 
@@ -326,21 +327,24 @@ def get_dishes(args_to_ui, lim=10, weight={}, debug=False, nutrient=False):
     Outputs:
         [columns: list, dishes: list of tuples ]
     '''
-    if not args_to_ui:
-        return [[], []]
+    if fav:
+        dishes, scores = get_fav()
+    else:
+        if not args_to_ui:
+            return [[], []]
 
-    score_ranking = update_score(args_to_ui, lim, weight)
-    dishes = []
-    scores = []
-    for recipe_id, score in score_ranking:
-        dish = get_dish(recipe_id)
-        dishes.append(dish)
-        scores.append(score)
+        score_ranking = update_score(args_to_ui, lim, weight)
+        dishes = []
+        scores = []
+        for recipe_id, score in score_ranking:
+            dish = get_dish(recipe_id)
+            dishes.append(dish)
+            scores.append(score)
 
     df = pd.DataFrame(dishes, columns=COLUMNS)
     df['score'] = scores
     sort_list, order = get_default_sort(args_to_ui)
-    df = df.sort_values(sort_list, ascending=order)[:lim]
+    df = df.sort_values(sort_list, ascending=order)
     if debug:
         print(df)
 

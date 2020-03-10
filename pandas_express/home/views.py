@@ -112,26 +112,33 @@ def search(request):
     random_seed =  dt_time.hour * 100 + dt_time.second
     print(random_seed)
     if request.method == 'GET':
-        form = SearchForm(request.GET)
-        if form.is_valid():
-            args = {}
-            weight = {}
-            query = form.cleaned_data['query']
-            if query:
-                args['title'] = query[0]
-                weight['title'] = int(query[1])
-            level = form.cleaned_data['level']
-            if level:
-                args['level'] = level[0]
-            time_and_mode = form.cleaned_data['time_and_mode']
-            if time_and_mode:
-                args['time'] = tuple(time_and_mode[:-1])
-                weight['time'] = int(time_and_mode[-1])
-            try:
-                res = get_dishes(args, weight=weight)
-            except Exception as e:
-                print('Exception caught')
-                res = None
+        if request.GET.get('search'):
+            form = SearchForm(request.GET)
+            if form.is_valid():
+                args = {}
+                weight = {}
+                query = form.cleaned_data['query']
+                if query:
+                    if query[0] != '':
+                        args['title'] = query[0]
+                        weight['title'] = int(query[1])
+                level = form.cleaned_data['level']
+                if level:
+                    args['level'] = level[0]
+                time_and_mode = form.cleaned_data['time_and_mode']
+                if time_and_mode:
+                    args['time'] = tuple(time_and_mode[:-1])
+                    weight['time'] = int(time_and_mode[-1])
+
+                try:
+                    res = get_dishes(args, weight=weight)
+                except Exception as e:
+                    print('Exception caught')
+                    res = None
+        elif request.GET.get('fav'):
+            print('getting_favs')
+            form = SearchForm(request.GET)
+            res = get_dishes({}, fav=True)
     else:
         form = SearchForm()
 

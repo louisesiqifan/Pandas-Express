@@ -110,7 +110,7 @@ table.form input#id_query_0{
     transition: width 0.4s ease-in-out;
     background-image: url('https://cdn1.iconfinder.com/data/icons/hawcons/32/698627-icon-111-search-128.png');
     background-size: 24px 24px;
-    background-position: 5px 4px; 
+    background-position: 5px 4px;
     background-repeat: no-repeat;
     padding-left: 40px;
     display: inline-block;
@@ -138,12 +138,12 @@ table.form select#id_query_1{
     border-radius: 4px;
     padding: 4px;
     background-color: #f1f1f1;
-    box-shadow: 0 1px 3px 0 rgba(0,0,0,0.2), 0 1px 5px 0 rgba(0,0,0,0.19); 
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,0.2), 0 1px 5px 0 rgba(0,0,0,0.19);
     transition: 0.2s;
 }
 
 table.form select#id_query_1:hover{
-    box-shadow: 0 1px 8px 0 rgba(0,0,0,0.2), 0 1px 8px 0 rgba(0,0,0,0.19); 
+    box-shadow: 0 1px 8px 0 rgba(0,0,0,0.2), 0 1px 8px 0 rgba(0,0,0,0.19);
 }
 
 table.form input#id_time_and_mode_0{
@@ -159,7 +159,7 @@ table.form input#id_time_and_mode_0{
     transition: width 0.4s ease-in-out;
     background-image: url('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.materialui.co%2FmaterialIcons%2Faction%2Falarm_grey_192x192.png&f=1&nofb=1');
     background-size: 22px 22px;
-    background-position: 5px 5px; 
+    background-position: 5px 5px;
     background-repeat: no-repeat;
     padding-left: 40px;
     display: inline-block;
@@ -176,8 +176,8 @@ table.form input#id_time_and_mode_0:focus{
     font-size: 18px;
     color: #696969;
     background-color: #F8F8F8;
-    transition: width border background 0.4s ease-in-out;   
-    box-shadow: 0 1px 10px 0 rgba(0,0,0,0.2), 0 1px 10px 0 rgba(0,0,0,0.19); 
+    transition: width border background 0.4s ease-in-out;
+    box-shadow: 0 1px 10px 0 rgba(0,0,0,0.2), 0 1px 10px 0 rgba(0,0,0,0.19);
 }
 
 table.form select#id_time_and_mode_1{
@@ -189,11 +189,11 @@ table.form select#id_time_and_mode_1{
     border-radius: 4px;
     padding: 4px;
     background-color: #f1f1f1;
-    box-shadow: 0 1px 3px 0 rgba(0,0,0,0.2), 0 1px 5px 0 rgba(0,0,0,0.19); 
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,0.2), 0 1px 5px 0 rgba(0,0,0,0.19);
 }
 
 table.form select#id_time_and_mode_1:hover{
-    box-shadow: 0 1px 8px 0 rgba(0,0,0,0.2), 0 1px 8px 0 rgba(0,0,0,0.19); 
+    box-shadow: 0 1px 8px 0 rgba(0,0,0,0.2), 0 1px 8px 0 rgba(0,0,0,0.19);
 }
 
 table.form select#id_time_and_mode_2{
@@ -205,11 +205,11 @@ table.form select#id_time_and_mode_2{
     border-radius: 4px;
     padding: 4px;
     background-color: #f1f1f1;
-    box-shadow: 0 1px 3px 0 rgba(0,0,0,0.2), 0 1px 5px 0 rgba(0,0,0,0.19); 
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,0.2), 0 1px 5px 0 rgba(0,0,0,0.19);
 }
 
 table.form select#id_time_and_mode_2:hover{
-    box-shadow: 0 1px 8px 0 rgba(0,0,0,0.2), 0 1px 8px 0 rgba(0,0,0,0.19); 
+    box-shadow: 0 1px 8px 0 rgba(0,0,0,0.2), 0 1px 8px 0 rgba(0,0,0,0.19);
 }
 
 table.form ul#id_level {
@@ -301,6 +301,33 @@ input[value="Advanced Search"]:hover{
     box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 3px 15px 0 rgba(0,0,0,0.19);
 }
 
+
+input[value="My Favs"].button {
+  background-color: #a29988;
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  font-family: 'Quicksand', sans-serif;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 22px;
+  margin-top: 20px;
+  margin-bottom: 15px;
+  margin-right: 10px;
+  margin-left: 10px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.1s;
+  box-shadow: 0 3px 3px 0 rgba(0,0,0,0.2), 0 3px 10px 0 rgba(0,0,0,0.19);
+}
+
+input[value="My Favs"]:hover{
+    background-color: #297d78;
+    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 3px 15px 0 rgba(0,0,0,0.19);
+}
+
+
 input[value="Feeling Lucky"].button {
   background-color: white;
   color: grey;
@@ -318,7 +345,7 @@ input[value="Feeling Lucky"].button {
   cursor: pointer;
   border-radius: 8px;
   position: sticky;
-  border: 0px solid grey; 
+  border: 0px solid grey;
 }
 
 input[value="Feeling Lucky"]:hover{
@@ -346,7 +373,7 @@ i {
   content: "";
   clear: both;
   display: table;
-} 
+}
 
 table.recipes {
     border: 2px solid #ddd;
