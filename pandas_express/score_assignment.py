@@ -226,7 +226,6 @@ def update_score(args_to_ui, lim, weight):
     final_score = sorted(score.items(), key=lambda item: item[1], reverse=True)
     last = final_score[lim][1]
     result = takewhile(lambda x: x[1] >= last, final_score)
-    print(result)
     db.close()
     return result
 

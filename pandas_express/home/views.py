@@ -111,7 +111,6 @@ def search(request):
     dt_time = datetime.datetime.now()
     random_seed =  dt_time.hour * 100 + dt_time.second
     if request.method == 'GET':
-        print("get")
         if request.GET.get('fav'):
             form = SearchForm(request.GET)
             res = get_dishes({}, fav=True)
