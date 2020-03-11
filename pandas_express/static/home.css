@@ -251,7 +251,7 @@ input[value="Search"]:hover{
     box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 3px 15px 0 rgba(0,0,0,0.19);
 }
 
-input[type=reset].button {
+input[value="Reset"].button {
   background-color: #964271;
   border: none;
   color: white;
@@ -271,7 +271,7 @@ input[type=reset].button {
   box-shadow: 0 3px 3px 0 rgba(0,0,0,0.2), 0 3px 10px 0 rgba(0,0,0,0.19);
 }
 
-input[type=reset]:hover{
+input[value="Reset"]:hover{
     background-color: #8b2e62;
     box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 3px 15px 0 rgba(0,0,0,0.19);
 }
@@ -474,6 +474,31 @@ input[value="Back to top"].button {
 }
 
 input[value="Back to top"]:hover{
+    background-color: #7f8b9c;
+    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 3px 15px 0 rgba(0,0,0,0.19);
+}
+
+input[value="Back to login"].button {
+  background-color: #b8bfc8;
+  border: none;
+  color: white;
+  padding: 12px 12px;
+  font-family: 'Quicksand', sans-serif;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 22px;
+  margin-top: 10px;
+  margin-bottom: 80px;
+  margin-right: 10px;
+  margin-left: 10px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.1s;
+  box-shadow: 0 3px 3px 0 rgba(0,0,0,0.2), 0 3px 10px 0 rgba(0,0,0,0.19);
+}
+
+input[value="Back to login"]:hover{
     background-color: #7f8b9c;
     box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 3px 15px 0 rgba(0,0,0,0.19);
 }

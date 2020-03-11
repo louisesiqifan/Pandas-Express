@@ -1,8 +1,6 @@
 import sys
 import sqlite3
 import configparser
-
-sys.path.append('../pandas_express')
 from manage_user import create_tables, create_new_user, save_current_user, save_current_dish, delete_user
 
 config = configparser.ConfigParser()

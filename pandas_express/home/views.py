@@ -113,11 +113,9 @@ def search(request):
     if request.method == 'GET':
         print("get")
         if request.GET.get('fav'):
-            print("fav")
             form = SearchForm(request.GET)
             res = get_dishes({}, fav=True)
         else:
-            print("search")
             form = SearchForm(request.GET)
             if form.is_valid():
                 args = {}

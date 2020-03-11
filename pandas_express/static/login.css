@@ -144,7 +144,7 @@ table.form ul li {
 
 
 input[value='Save User'].button {
-  background-color: #4CAF50;
+  background-color: #429667;
   border: none;
   color: white;
   padding: 12px 24px;
@@ -162,11 +162,33 @@ input[value='Save User'].button {
 }
 
 input[value='Save User']:hover{
+    background-color: #2e8b57;
+}
+
+input[value="Delete All Users"].button {
+  background-color: #2e8b86;
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 22px;
+  margin-top: 20px;
+  margin-bottom: 0px;
+  margin-right: 10px;
+  margin-left: 10px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.1s;
+}
+
+input[value="Delete All Users"]:hover{
     background-color: #45a049;
 }
 
 input[value='Start Searching'].button {
-  background-color: tomato;
+  background-color: #964271;
   border: none;
   color: white;
   padding: 12px 24px;
@@ -184,108 +206,9 @@ input[value='Start Searching'].button {
 }
 
 input[value="Start Searching"]:hover{
-    background-color: #ff4747;
+    background-color: #8b2e62;
 }
 
-table.recipes {
-    border: 2px solid #ddd;
-    padding:10px;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    margin-right: 10px;
-    margin-left: 10px;
-    border-radius: 25px
-}
-
-table.recipes tr th {
-    text-align: left;
-}
-
-table.recipes input.button {
-  background-color: #b8bfc8;
-  border: none;
-  color: white;
-  padding: 6px 10px;
-  text-align: center;
-  text-decoration: none;
-  font-size: 12px;
-  cursor: pointer;
-  border-radius: 6px;
-  display: block;
-  margin: 0 auto;
-}
-
-table.recipes input.button:hover{
-    background-color: #7f8b9c;
-}
-
-table.recipes tr td,
-table.recipes tr th {
-    padding: 5px;
-    font-size: 14px;
-    color: #3f3f3f;
-    align-items: center;
-    justify-content:center;
-/*    display:flex;
-    flex-grow:2;*/
-}
-
-table.recipes a{
-    padding: 8px;
-    font-size: 18px;
-    color: #0B3861;
-}
-
-table.recipes tr:nth-child(even) {
-    background: #eee;
-}
-
-ul.errorlist {
-    margin: 0px;
-    padding: 0px;
-    padding-top: 5px;
-}
-
-ul.errorlist li {
-    font-size: 12px;
-    color: red;
-    margin: 0px;
-    padding: 0px;
-}
-
-span.helptext {
-    font-size: 14px;
-    color: gray;
-    padding-left: 20px;
-}
-
-p.num_results {
-    margin-left: 10px;
-    font-size: 18px;
-    color: #7f8b9c;
-}
-
-input[type=back].button {
-  background-color: #b8bfc8;
-  border: none;
-  color: white;
-  padding: 12px 0px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 22px;
-  margin-top: 10px;
-  margin-bottom: 0px;
-  margin-right: 10px;
-  margin-left: 10px;
-  cursor: pointer;
-  border-radius: 8px;
-  transition: all 0.1s;
-}
-
-input[type=back]:hover{
-    background-color: #7f8b9c;
-}
 
 div#footer {
     background: #7cb57c;

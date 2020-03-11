@@ -344,7 +344,7 @@ def get_dishes(args_to_ui, lim=10, weight={}, debug=False, nutrient=False, fav=F
     df = pd.DataFrame(dishes, columns=COLUMNS)
     df['score'] = scores
     sort_list, order = get_default_sort(args_to_ui)
-    df = df.sort_values(sort_list, ascending=order)
+    df = df.sort_values(sort_list, ascending=order)[:lim]
     if debug:
         print(df)
 

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=0.67">
     <head>
         <title>Pandas Express</title>
-        <link rel="stylesheet" type="text/css" href="{% static "/login.css" %}" />
+        <link rel="stylesheet" type="text/css" href="{% static "login.css" %}" />
     </head>
     <body>
         <div id="header">
@@ -18,7 +18,8 @@
                 <table class="form">
                 {{ form }}
                 </table>
-                <input type="submit" class="button" value="Save User"/>
+                <input type="submit" class="button" name='save', value="Save User"/>
+                <input type="submit" class="button" name='delete', value="Delete All Users"/>
             </form>
             <form method="get" action="{% url 'home'%}">
                 <input type="submit" class="button" value="Start Searching" name="{{name}}"/>
