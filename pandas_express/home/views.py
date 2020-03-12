@@ -40,7 +40,8 @@ NUTRITION_PLOT_CHOICE = [('calories', "Calories"),
                          ('sugars', 'Sugars'),
                          ('protein', 'Protein'),
                          ('potassium', 'Potassium')]
-
+NUT_FNC = ['calories', 'total_fat', 'total_carbohydrate', 'sugars', 'protein']
+NUT_OUT = ['calories', 'fat', 'carb', 'sugars', 'protein']
 
 ########## FORM CLASSES ##########
 
@@ -221,6 +222,7 @@ def advance(request):
             if form.is_valid():
                 args = {}
                 weight = {}
+                nutrition = {}
                 query = form.cleaned_data['query']
                 if query:
                     args['title'] = query[0]
@@ -232,6 +234,12 @@ def advance(request):
                 if time_and_mode:
                     args['time'] = tuple(time_and_mode[:-1])
                     weight['time'] = int(time_and_mode[-1])
+                for pair in zip(NUT_FNC, NUT_OUT):
+                    val = request.GET.get(pair[1])
+                    if val:
+                        nutrition[pair[0]] = int(val)
+                if len(nutrition) != 0:
+                    args['nutrition'] = nutrition
                 try:
                     res = get_dishes(args, weight=weight, nutrient=True)
                 except Exception as e:
