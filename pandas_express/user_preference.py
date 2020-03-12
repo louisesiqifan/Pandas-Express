@@ -2,7 +2,6 @@ import sqlite3
 import os
 import re
 import configparser
-import manage_user
 
 config = configparser.ConfigParser()
 config.read('../wrapper/constants.ini')

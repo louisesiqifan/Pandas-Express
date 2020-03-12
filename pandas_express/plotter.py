@@ -26,7 +26,6 @@ def get_all_nutrition(nutrition):
         result(pandas dataframe)
     '''
     db = sqlite3.connect(DATABASE_FILENAME)
-    c = db.cursor()
     query = '''
             SELECT {}
             FROM recipes
