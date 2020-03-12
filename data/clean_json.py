@@ -1,7 +1,6 @@
 #%%
 import json
 import glob
-import pandas as pd
 from sys import platform
 
 class Ingredient:

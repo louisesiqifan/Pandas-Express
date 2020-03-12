@@ -5,7 +5,6 @@ Web crawler for https://www.allrecipes.com/recipes/
 import bs4
 import urllib3
 import certifi
-import string
 import util
 
 
@@ -46,7 +45,7 @@ def get_recipe_links(pm, url):
 
 def crawl(pm, filename):
     '''
-    Crawl https://www.foodnetwork.com/
+    Crawl https://www.foodnetwork.com/.
 
     Inputs:
         None

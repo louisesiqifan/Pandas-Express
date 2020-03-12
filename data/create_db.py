@@ -55,7 +55,7 @@ name_db = config['DATA']['NAME_DB']
 name_json = config['DATA']['NAME_JSON']
 name_ing = config['DATA']['NAME_ING']
 index_ignore = config['DATA']['INDEX_IGNORE']
-INGREDIENTS = config['DATA']['INGREDIENTS']
+#INGREDIENTS = config['DATA']['INGREDIENTS']
 
 def create_table(c, s, name):
     '''

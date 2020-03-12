@@ -1,6 +1,5 @@
 #%%
 import pandas as pd
-import numpy as np
 import util
 import configparser
 from clean_json import clean_json_files
@@ -31,7 +30,7 @@ def recipe_id_to_ing():
                 if len(result) > 0:
                     ori[result.iloc[0]['cleaned']] = id_tracker
             id_tracker += 1
-            
+
     df = pd.DataFrame.from_dict(ori, orient='index').reset_index()
     df.columns = ["origin", "recipe_id"]
     return df
@@ -39,11 +38,11 @@ def recipe_id_to_ing():
 
 def get_ing_df():
     '''
-    Create an ingredient dataframe
-    
-    Inputs: 
+    Create an ingredient dataframe.
+
+    Inputs:
         result: dictionary
-    
+
     Outputs:
         Pandas Dataframe
     '''
@@ -64,6 +63,6 @@ def recipe_ing_id():
     df = df2.merge(df1, on='origin', how='left')
     df = df[['recipe_id', 'ing_id']]
     return df[df.recipe_id.notna()]
-    
+
 
 # %%

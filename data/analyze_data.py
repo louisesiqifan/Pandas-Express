@@ -28,7 +28,7 @@ NAME_DB = config['DATA']['NAME_DB']
 
 def sql_to_pandas(dbfile='../data/food_map.db'):
     '''
-    Convert SQL to Pandas Dataframe
+    Convert SQL to Pandas Dataframe.
     '''
     con = sqlite3.connect(dbfile)
     myFrames = pd.read_sql_query("SELECT * FROM recipes", con)
@@ -40,7 +40,7 @@ def sql_to_pandas(dbfile='../data/food_map.db'):
 def get_quantile(nutrition, quantile, c):
 
     '''
-    Helper function to get the quantile for given single nutrition input
+    Helper function to get the quantile for given single nutrition input.
 
     Inputs:
         nutrition: string
@@ -59,8 +59,7 @@ def get_quantile(nutrition, quantile, c):
 
 def get_all_quantile(nut_list=NUTRITION_LIST, quantile_list=[0.33, 0.67]):
     '''
-    Get the 33th quantile value and 66th quantile value for each of the nutrition factor in
-    receipe database.
+    Get the quantile values for each of the nutrition factor in receipe database.
 
     Inputs:
         nut_list: list of strings
