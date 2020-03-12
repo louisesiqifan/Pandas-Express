@@ -47,7 +47,7 @@ def get_dish_nutrition(id, *args):
     nutritions = []
     dish = get_dish(id)
     for arg in args:
-        nutritions.append(dish[COLUMNS.index(arg)])
+        nutritions.append(dish[COLUMNS.index(arg)] + 0.001)
     return nutritions
 
 
@@ -93,12 +93,9 @@ def plot_two_nutrition(recipe_id, nutrition1, nutrition2):
     df1 = df1[(df1[nutrition1] != 0) & (df2[nutrition2] != 0)].dropna()
     df2 = df2[(df1[nutrition1] != 0) & (df2[nutrition2] != 0)].dropna()
     a = plt.figure()
-    a = sns.jointplot(x=np.log(df1), y=np.log(df2), kind="hex",
-                      marginal_kws=dict(bins=20, rug=False), color="seagreen")
-    if dish_nutrition1 == 0:
-        dish_nutrition1 += 0.0001
-    if dish_nutrition2 == 0:
-        dish_nutrition2 += 0.0001
+    df = pd.concat([df1,df2], axis=1)
+    a = sns.jointplot(x=nutrition1, y=nutrition2, data=np.log(df+0.0001), kind='hex',
+                          marginal_kws=dict(bins=20, rug=False), color="seagreen")
     a.ax_joint.plot([np.log(dish_nutrition1)], [np.log(dish_nutrition2)],
                     'ro', color='lightcoral')
     output = "static/fig2.png"
