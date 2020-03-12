@@ -75,7 +75,7 @@ class String:
 
     def check_status(self):
         if self.root is None:
-            self.check = true
+            self.check = True
             return
         elif len(self.root.split()) > 4:
             self.check = True

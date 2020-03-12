@@ -33,12 +33,10 @@ Database Tables:
 
 '''
 
-import json
 import re
 import sys
 import util
 import sqlite3
-import numpy as np
 import pandas as pd
 from statistics import mean
 from sqlite3 import Error
@@ -46,7 +44,6 @@ sys.path.append('../pandas_express')
 
 import clean_json
 import configparser
-import nutritionix
 from manage_user import create_tables
 
 config = configparser.ConfigParser()
@@ -173,19 +170,6 @@ def get_serving(course):
         s = 'no result'
     a = re.findall(r'\d+', s)
     return get_mean(a)
-
-
-def get_nutrient (ingredient, serving_size=1.0):
-    '''
-    From ingredients, get nutrient
-
-    Inputs:
-
-    Outputs:
-    '''
-
-    s = 0
-    return
 
 
 def get_ingredients_details():

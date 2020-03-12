@@ -1,4 +1,3 @@
-from functools import reduce
 from operator import and_
 from django.shortcuts import render
 from django import forms
@@ -273,7 +272,6 @@ def get_detail(request):
 
     if request.method == 'GET':
         save_current_dish(recipe_id)
-        CURRENT_ID = recipe_id
 
     recipe = get_dish(recipe_id)
     ingredient = get_dish_ingredient(recipe_id)
