@@ -7,7 +7,6 @@ html, body {
 }
 
 div {
-  resize: both;
   overflow: auto;
 }
 
@@ -21,7 +20,6 @@ div#header {
     background-position: 50% 45%;
     background-repeat: no-repeat;
     background-image: url("http://getwallpapers.com/wallpaper/full/2/7/a/654303.jpg");
-    /*background-image: url("https://img.peapix.com/18313178659351803842.jpg");*/
     width: 100%;
     height: 100%;
 }
@@ -36,6 +34,7 @@ div#header h1 {
 
 div.frame {
     margin: 66px;
+    padding-bottom: 10px;
 }
 
 div.args {
@@ -64,27 +63,33 @@ fieldset legend {
     font-size: 22px;
 }
 
-input.query {
+nput.query {
     font-size: 18px;
 }
 
 label {
-    font-size: 18px;
-    color: #3f3f3f;
-    margin: 5px;
+    font-size: 22px;
+    margin: 6px;
     padding: 1px;
+    color: #0d291a;
+}
+
+label:hover {
+    font-weight: 1000;
+    text-shadow: 0.5px 0.5px lightgrey
 }
 
 table.form {
     text-align: left;
-    font-size: 18px;
+    font-size: 22px;
+    margin-top: 5px;
 }
 
 table.form tr td,
 table.form tr th {
     vertical-align: top;
-    font-size: 18px;
-    padding-bottom: 18px;
+    font-size: 22px;
+    padding-bottom: 22px;
 }
 
 table.form input#id_query_0{
@@ -100,17 +105,23 @@ table.form input#id_query_0{
     transition: width 0.4s ease-in-out;
     background-image: url('https://cdn1.iconfinder.com/data/icons/hawcons/32/698627-icon-111-search-128.png');
     background-size: 24px 24px;
-    background-position: 5px 4px; 
+    background-position: 5px 4px;
     background-repeat: no-repeat;
     padding-left: 40px;
     display: inline-block;
 }
 
+table.form input#id_query_0:hover{
+    transition: width border background 0.4s ease-in-out;
+    box-shadow: 0 1px 5px 0 rgba(0,0,0,0.2), 0 1px 5px 0 rgba(0,0,0,0.19);
+}
+
 table.form input#id_query_0:focus{
-    border: 2px solid lightblue;
+    border: 2px solid #c0dccc;
     width: 60%;
     background-color: #F8F8F8;
-    transition: width border background 0.4s ease-in-out;    
+    transition: width border background 0.2s ease-in-out;
+    box-shadow: 0 1px 10px 0 rgba(0,0,0,0.2), 0 1px 10px 0 rgba(0,0,0,0.19);
 }
 
 table.form select#id_query_1{
@@ -122,6 +133,12 @@ table.form select#id_query_1{
     border-radius: 4px;
     padding: 4px;
     background-color: #f1f1f1;
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,0.2), 0 1px 5px 0 rgba(0,0,0,0.19);
+    transition: 0.2s;
+}
+
+table.form select#id_query_1:hover{
+    box-shadow: 0 1px 8px 0 rgba(0,0,0,0.2), 0 1px 8px 0 rgba(0,0,0,0.19);
 }
 
 table.form input#id_time_and_mode_0{
@@ -137,19 +154,25 @@ table.form input#id_time_and_mode_0{
     transition: width 0.4s ease-in-out;
     background-image: url('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.materialui.co%2FmaterialIcons%2Faction%2Falarm_grey_192x192.png&f=1&nofb=1');
     background-size: 22px 22px;
-    background-position: 5px 5px; 
+    background-position: 5px 5px;
     background-repeat: no-repeat;
     padding-left: 40px;
     display: inline-block;
 }
 
+table.form input#id_time_and_mode_0:hover{
+    transition: width border background 0.4s ease-in-out;
+    box-shadow: 0 1px 5px 0 rgba(0,0,0,0.2), 0 1px 5px 0 rgba(0,0,0,0.19);
+}
+
 table.form input#id_time_and_mode_0:focus{
-    border: 2px solid lightblue;
+    border: 2px solid #c0dccc;
     width: 30%;
     font-size: 18px;
     color: #696969;
     background-color: #F8F8F8;
-    transition: width border background 0.4s ease-in-out;    
+    transition: width border background 0.4s ease-in-out;
+    box-shadow: 0 1px 10px 0 rgba(0,0,0,0.2), 0 1px 10px 0 rgba(0,0,0,0.19);
 }
 
 table.form select#id_time_and_mode_1{
@@ -161,6 +184,11 @@ table.form select#id_time_and_mode_1{
     border-radius: 4px;
     padding: 4px;
     background-color: #f1f1f1;
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,0.2), 0 1px 5px 0 rgba(0,0,0,0.19);
+}
+
+table.form select#id_time_and_mode_1:hover{
+    box-shadow: 0 1px 8px 0 rgba(0,0,0,0.2), 0 1px 8px 0 rgba(0,0,0,0.19);
 }
 
 table.form select#id_time_and_mode_2{
@@ -172,6 +200,25 @@ table.form select#id_time_and_mode_2{
     border-radius: 4px;
     padding: 4px;
     background-color: #f1f1f1;
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,0.2), 0 1px 5px 0 rgba(0,0,0,0.19);
+}
+
+table.form select#id_time_and_mode_2:hover{
+    box-shadow: 0 1px 8px 0 rgba(0,0,0,0.2), 0 1px 8px 0 rgba(0,0,0,0.19);
+}
+
+table.form ul#id_level {
+    list-style-type: none;
+    margin-left: 12px;
+    padding: 0px;
+    font-size: 0px;
+}
+
+table.form ul#id_level li {
+    display: block;
+    float: left;
+    margin: 0px;
+    padding: 0px;
 }
 
 table.form ul {
@@ -189,11 +236,12 @@ table.form ul li {
 }
 
 
-input[type=submit].button {
-  background-color: #4CAF50;
+input[value="Search"].button {
+  background-color: #429667;
   border: none;
   color: white;
   padding: 12px 24px;
+  font-family: 'Quicksand', sans-serif;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -205,17 +253,20 @@ input[type=submit].button {
   cursor: pointer;
   border-radius: 8px;
   transition: all 0.1s;
+  box-shadow: 0 3px 3px 0 rgba(0,0,0,0.2), 0 3px 10px 0 rgba(0,0,0,0.19);
 }
 
-input[type=submit]:hover{
-    background-color: #45a049;
+input[value="Search"]:hover{
+    background-color: #2e8b57;
+    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 3px 15px 0 rgba(0,0,0,0.19);
 }
 
-input[type=reset].button {
-  background-color: tomato;
+input[value="Reset"].button {
+  background-color: #964271;
   border: none;
   color: white;
   padding: 12px 24px;
+  font-family: 'Quicksand', sans-serif;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -227,20 +278,28 @@ input[type=reset].button {
   cursor: pointer;
   border-radius: 8px;
   transition: all 0.1s;
+  box-shadow: 0 3px 3px 0 rgba(0,0,0,0.2), 0 3px 10px 0 rgba(0,0,0,0.19);
 }
 
-input[type=reset]:hover{
-    background-color: #ff4747;
+input[value="Reset"]:hover{
+    background-color: #8b2e62;
+    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 3px 15px 0 rgba(0,0,0,0.19);
 }
 
 table.recipes {
     border: 2px solid #ddd;
     padding:10px;
-    margin-top: 0px;
-    margin-bottom: 0px;
+    margin-top: 10px;
+    margin-bottom: 20px;
     margin-right: 10px;
     margin-left: 10px;
-    border-radius: 25px
+    border-radius: 25px;
+    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 6px 10px 0 rgba(0,0,0,0.19);
+}
+
+table.recipes:hover{
+    box-shadow: 0 3px 10px 0 rgba(0,0,0,0.2), 0 6px 10px 0 rgba(0,0,0,0.19);
+
 }
 
 table.recipes tr th {
@@ -248,7 +307,8 @@ table.recipes tr th {
 }
 
 table.recipes input.button {
-  background-color: #b8bfc8;
+  font-family: 'Quicksand', sans-serif;
+  background-color: #abd0ce;
   border: none;
   color: white;
   padding: 6px 10px;
@@ -259,31 +319,24 @@ table.recipes input.button {
   border-radius: 6px;
   display: block;
   margin: 0 auto;
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.2), 0 2px 4px 0 rgba(0,0,0,0.19);
 }
 
 table.recipes input.button:hover{
-    background-color: #7f8b9c;
+    background-color: #96c5c2;
 }
 
 table.recipes tr td,
 table.recipes tr th {
     padding: 5px;
-    font-size: 14px;
-    color: #3f3f3f;
+    font-size: 18px;
+    color: #091b11;
     align-items: center;
     justify-content:center;
-/*    display:flex;
-    flex-grow:2;*/
-}
-
-table.recipes a{
-    padding: 8px;
-    font-size: 18px;
-    color: #0B3861;
 }
 
 table.recipes tr:nth-child(even) {
-    background: #eee;
+    background: #f4f9f6;
 }
 
 ul.errorlist {
@@ -311,37 +364,68 @@ p.num_results {
     color: #7f8b9c;
 }
 
-input[type=back].button {
+input[value="Back to top"].button {
   background-color: #b8bfc8;
   border: none;
   color: white;
-  padding: 12px 0px;
+  padding: 12px 12px;
+  font-family: 'Quicksand', sans-serif;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 22px;
   margin-top: 10px;
-  margin-bottom: 0px;
+  margin-bottom: 80px;
   margin-right: 10px;
   margin-left: 10px;
   cursor: pointer;
   border-radius: 8px;
   transition: all 0.1s;
+  box-shadow: 0 3px 3px 0 rgba(0,0,0,0.2), 0 3px 10px 0 rgba(0,0,0,0.19);
 }
 
-input[type=back]:hover{
+input[value="Back to top"]:hover{
     background-color: #7f8b9c;
+    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 3px 15px 0 rgba(0,0,0,0.19);
+}
+
+input[value="Back to login"].button {
+  background-color: #b8bfc8;
+  border: none;
+  color: white;
+  padding: 12px 12px;
+  font-family: 'Quicksand', sans-serif;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 22px;
+  margin-top: 10px;
+  margin-bottom: 80px;
+  margin-right: 10px;
+  margin-left: 10px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.1s;
+  box-shadow: 0 3px 3px 0 rgba(0,0,0,0.2), 0 3px 10px 0 rgba(0,0,0,0.19);
+}
+
+input[value="Back to login"]:hover{
+    background-color: #7f8b9c;
+    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 3px 15px 0 rgba(0,0,0,0.19);
 }
 
 div#footer {
-    background: #7cb57c;
+    background: #1b5334;
     margin: 0;
     padding-right: 66px;
-    padding-left: 66px;
+    padding-left: 75px;
     padding-top: 5px;
     padding-bottom: 5px;
     width: 100%;
-    height: 100%;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    box-shadow: 0 3px 10px 0 rgba(0,0,0,0.2), 0 3px 20px 0 rgba(0,0,0,0.19);
 }
 
 div#footer h2 {
