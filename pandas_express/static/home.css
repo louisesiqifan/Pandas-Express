@@ -328,7 +328,7 @@ input[value="My Favs"]:hover{
 }
 
 
-input[value="Feeling Lucky"].button {
+input[value="I'm Feeling Lucky"].button {
   background-color: white;
   color: grey;
   padding: 10px 5px 5px 15px;
