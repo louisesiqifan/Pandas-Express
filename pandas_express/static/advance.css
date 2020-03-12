@@ -13,9 +13,9 @@ div {
 div#header {
     margin: 0;
     padding-right: 80px;
-    padding-left: 80px;
+    padding-left: 66px;
     padding-top: 50px;
-    padding-bottom: 70px;
+    padding-bottom: 60px;
     background-size: cover;
     background-position: 50% 45%;
     background-repeat: no-repeat;
@@ -25,7 +25,7 @@ div#header {
 }
 
 div#header h1 {
-    font-size: 54px;
+    font-size: 44px;
     font-weight: 1500;
     color: #ffffff;
     margin: 0px;
@@ -33,7 +33,8 @@ div#header h1 {
 }
 
 div.frame {
-    margin: 66px;
+    margin: 20px;
+    margin-left: 66px;
     padding-bottom: 10px;
 }
 
@@ -60,16 +61,16 @@ fieldset {
 
 fieldset legend {
     font-weight: bold;
-    font-size: 22px;
+    font-size: 26px;
 }
 
 input.query {
-    font-size: 18px;
+    font-size: 16px;
 }
 
 label {
-    font-size: 22px;
-    margin: 6px;
+    font-size: 16px;
+    margin: 1px;
     padding: 1px;
     color: #0d291a;
 }
@@ -81,21 +82,21 @@ label:hover {
 
 table.form {
     text-align: left;
-    font-size: 22px;
-    margin-top: 5px;
+    font-size: 16px;
+    margin-top: 10px;
 }
 
 table.form tr td,
 table.form tr th {
     vertical-align: top;
-    font-size: 22px;
-    padding-bottom: 22px;
+    font-size: 16px;
+    padding-bottom: 16px;
 }
 
 table.form input#id_query_0{
     margin-right: 10px;
     margin-left: 20px;
-    padding: 5px 5px;
+    padding: 3px 3px;
     font-size: 18px;
     color: #545454;
     width: 44%;
@@ -104,7 +105,7 @@ table.form input#id_query_0{
     border-radius: 7px;
     transition: width 0.4s ease-in-out;
     background-image: url('https://cdn1.iconfinder.com/data/icons/hawcons/32/698627-icon-111-search-128.png');
-    background-size: 24px 24px;
+    background-size: 20px 20px;
     background-position: 5px 4px;
     background-repeat: no-repeat;
     padding-left: 40px;
@@ -120,7 +121,7 @@ input[value="Feeling Lucky"].button {
     text-align: right;
     text-decoration: none;
     display: inline-block;
-    font-size: 24px;
+    font-size: 22px;
     margin-top: 250px;
     margin-bottom: 0px;
     margin-right: 0px;
@@ -145,7 +146,7 @@ input[value="My Favs"].button {
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 22px;
+    font-size: 16px;
     margin-top: 20px;
     margin-bottom: 15px;
     margin-right: 10px;
@@ -194,8 +195,8 @@ table.form select#id_query_1:hover{
 table.form input#id_time_and_mode_0{
     margin-right: 10px;
     margin-left: 20px;
-    padding: 5px 5px;
-    font-size: 18px;
+    padding: 3px 3px;
+    font-size: 16px;
     color: #545454;
     width: 25%;
     box-sizing: border-box;
@@ -203,8 +204,8 @@ table.form input#id_time_and_mode_0{
     border-radius: 7px;
     transition: width 0.4s ease-in-out;
     background-image: url('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.materialui.co%2FmaterialIcons%2Faction%2Falarm_grey_192x192.png&f=1&nofb=1');
-    background-size: 22px 22px;
-    background-position: 5px 5px;
+    background-size: 18px 18px;
+    background-position: 5px 4px;
     background-repeat: no-repeat;
     padding-left: 40px;
     display: inline-block;
@@ -218,7 +219,6 @@ table.form input#id_time_and_mode_0:hover{
 table.form input#id_time_and_mode_0:focus{
     border: 2px solid #c0dccc;
     width: 30%;
-    font-size: 18px;
     color: #696969;
     background-color: #F8F8F8;
     transition: width border background 0.4s ease-in-out;
@@ -295,11 +295,11 @@ input[value="Search"].button {
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 22px;
+  font-size: 18px;
   margin-top: 20px;
   margin-bottom: 0px;
   margin-right: 10px;
-  margin-left: 10px;
+  margin-left: 5px;
   cursor: pointer;
   border-radius: 8px;
   transition: all 0.1s;
@@ -320,7 +320,7 @@ input[value="Reset"].button {
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 22px;
+  font-size: 18px;
   margin-top: 20px;
   margin-bottom: 0px;
   margin-right: 10px;
@@ -379,7 +379,7 @@ table.recipes input.button:hover{
 table.recipes tr td,
 table.recipes tr th {
     padding: 5px;
-    font-size: 18px;
+    font-size: 16px;
     color: #091b11;
     align-items: center;
     justify-content:center;
