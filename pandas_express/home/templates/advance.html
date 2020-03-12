@@ -20,29 +20,32 @@
                 </table>
                 <input type="submit" class="button" value="Search" onclick="location.href='#section2';"/>
                 <input type="reset" class="button" value="Reset" onclick="location.href='/';" />
+                <input type="submit" class="button" name='fav' value="My Favs" onclick="location.href='#section2';" />
             </form>
-
-        </div>
+            <div>
+                <form action="{% url 'detail'%}">
+                <input type="submit" class="button" value="Feeling Lucky" name="{{random_seed}}"/>
+                    <i class="fa fa-arrow-right fa-1x"></i>
+                </form>
+            </div>
 
         {% if args %}
         <div class="args">
             <pre>{{ args }}</pre>
         </div>
         {% endif %}
-
         {% if err %}
         <div class="error">
             {{ err|safe }}
         </div>
         {% endif %}
-
         <div class="frame" id="section2">
             {% if result != None %}
             <div class="results">
                 <table class="recipes">
                     <tr>
                         {% for col in columns %}
-                            {% if forloop.counter|divisibleby:10 %}
+                            {% if forloop.counter|divisibleby:5 %}
                             {% else %}
                                 <th>{{ col }}</th>
                             {% endif %}
@@ -51,12 +54,12 @@
                     {% for entry in result %}
                     <tr>
                         {% for col in entry %}
-                            {% if forloop.counter|divisibleby:10 %} 
-                                <td>
-                                    <form method="get" action="{% url 'detail'%}">
-                                        <input type="submit" class="button" value="Detail" name="{{col}}"/>
-                                    </form>
-                                </td>
+                            {% if forloop.counter|divisibleby:5 %}
+                            <td>
+                                <form method="get" action="{% url 'detail'%}">
+                                    <input type="submit" class="button" value="Detail" name="{{col}}"/>
+                                </form>
+                            </td>
                             {% else %}
                                 <td>{{col}}</td>
                             {% endif %}
@@ -65,8 +68,9 @@
                     {% endfor %}
                 </table>
             </div>
-            <p class="num_results">Results: {{num_results}}</p>
-            <input type="back" class="button" value="Back to top" onclick="location.href='#header';" />
+            <p class="num_results">Results: {{ num_results }}</p>
+            <input type="reset" class="button" value="Back to top" onclick="location.href='#header';" />
+            <input type="reset" class="button" value="Back to login" onclick="location.href='{% url 'login' %}'" />
             {% endif %}
         </div>
         <div id="footer">

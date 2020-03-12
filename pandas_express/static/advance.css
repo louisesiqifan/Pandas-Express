@@ -111,6 +111,56 @@ table.form input#id_query_0{
     display: inline-block;
 }
 
+input[value="Feeling Lucky"].button {
+    background-color: white;
+    color: grey;
+    padding: 10px 5px 5px 15px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: bold;
+    text-align: right;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 24px;
+    margin-top: 250px;
+    margin-bottom: 0px;
+    margin-right: 0px;
+    margin-left: 150px;
+    cursor: pointer;
+    border-radius: 8px;
+    position: sticky;
+    border: 0px solid grey;
+  }
+  
+  input[value="Feeling Lucky"]:hover{
+      text-decoration: underline grey 2px;
+      text-shadow: 1px 1px lightgrey
+  }
+
+  input[value="My Favs"].button {
+    background-color: #a29988;
+    border: none;
+    color: white;
+    padding: 12px 24px;
+    font-family: 'Quicksand', sans-serif;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 22px;
+    margin-top: 20px;
+    margin-bottom: 15px;
+    margin-right: 10px;
+    margin-left: 10px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.1s;
+    box-shadow: 0 3px 3px 0 rgba(0,0,0,0.2), 0 3px 10px 0 rgba(0,0,0,0.19);
+  }
+  
+  input[value="My Favs"]:hover{
+      background-color: #297d78;
+      box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 3px 15px 0 rgba(0,0,0,0.19);
+  }
+
 table.form input#id_query_0:hover{
     transition: width border background 0.4s ease-in-out;
     box-shadow: 0 1px 5px 0 rgba(0,0,0,0.2), 0 1px 5px 0 rgba(0,0,0,0.19);

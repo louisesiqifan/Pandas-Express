@@ -23,12 +23,10 @@
                     <input type="submit" class="button" name='fav' value="My Favs" onclick="location.href='#section2';" />
                 </form>
             </div>
-            <div class="column2">
                 <form action="{% url 'detail'%}">
                    <input type="submit" class="button" value="Feeling Lucky" name="{{random_seed}}"/>
                     <i class="fa fa-arrow-right fa-1x"></i>
                 </form>
-            </div>
         </div>
         {% if args %}
         <div class="args">

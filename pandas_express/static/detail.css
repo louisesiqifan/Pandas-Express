@@ -166,6 +166,7 @@ input[value="Plot"].button{
   box-shadow: 0 1px 3px 0 rgba(0,0,0,0.2), 0 3px 5px 0 rgba(0,0,0,0.19);
 }
 
+
 input[value="Plot"].button:hover{
     background-color: #979184;
     box-shadow: 0 1px 6px 0 rgba(0,0,0,0.2), 0 3px 10px 0 rgba(0,0,0,0.19);
