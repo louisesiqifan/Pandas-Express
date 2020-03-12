@@ -63,7 +63,7 @@ fieldset legend {
     font-size: 22px;
 }
 
-nput.query {
+input.query {
     font-size: 18px;
 }
 
@@ -131,12 +131,12 @@ input[value="Feeling Lucky"].button {
     border: 0px solid grey;
   }
   
-  input[value="Feeling Lucky"]:hover{
+input[value="Feeling Lucky"]:hover{
       text-decoration: underline grey 2px;
       text-shadow: 1px 1px lightgrey
-  }
+}
 
-  input[value="My Favs"].button {
+input[value="My Favs"].button {
     background-color: #a29988;
     border: none;
     color: white;
@@ -154,12 +154,12 @@ input[value="Feeling Lucky"].button {
     border-radius: 8px;
     transition: all 0.1s;
     box-shadow: 0 3px 3px 0 rgba(0,0,0,0.2), 0 3px 10px 0 rgba(0,0,0,0.19);
-  }
+}
   
-  input[value="My Favs"]:hover{
+input[value="My Favs"]:hover{
       background-color: #297d78;
       box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 3px 15px 0 rgba(0,0,0,0.19);
-  }
+}
 
 table.form input#id_query_0:hover{
     transition: width border background 0.4s ease-in-out;
