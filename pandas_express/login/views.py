@@ -63,6 +63,3 @@ def login(request):
     context['form'] = form
 
     return render(request, 'login.html', context)
-
-
-# Create your views here.
