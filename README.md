@@ -35,7 +35,12 @@ Allows the user to save recipe they are in favor of and access this list of favo
 
 ## Usage
 
-To use the app, type:
+Install required package::
+~~~
+pip install -r requirements.txt
+~~~
+
+Use the app:
 ~~~
 ./run.sh
 ~~~
