@@ -15,21 +15,21 @@ Pandas Express is an interactive recipe platform that allows users to obtain per
 
 ## User Direction
 
-#Log-in Page
+###Log-in Page###
 New Users should register themselves through inputting a user name.
 
 Returning users should identify themselves with the user them they register before
 
-#Home
+###Home###
 A search page where the user can input terms of recipe they want to see, cooking time (active time means the time that needs for them to pay close attention to cook the cuisine; total time means the time that needs for the entire duration of cooking) and the level of cooking difficulty (set by those who upload the original recipe)
 
-#Advance Search
+###Advance Search###
 A more complicated search function that allows user to not only input their search term, cooking time and cooking difficulty, but also allows the user to input their preference for the quantile of one or more nutritional factors.
 
-#Recipe Detail
+###Recipe Detail###
 Allows the user to see the detailed cooking time, recipe ingredient as well as the step-by-step direction for the cooking.  We also include a data visualization piece in which user can see how the dish's one/two nutritional factors compared to all recipes included.
 
-#Favorite
+###Favorite###
 Allows the user to save recipe they are in favor of and access this list of favorite recipes at any given time.
 
 
