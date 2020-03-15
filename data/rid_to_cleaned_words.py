@@ -63,6 +63,3 @@ def recipe_ing_id():
     df = df2.merge(df1, on='origin', how='left')
     df = df[['recipe_id', 'ing_id']]
     return df[df.recipe_id.notna()]
-
-
-# %%
