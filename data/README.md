@@ -1,5 +1,7 @@
 ## Data Logic
 
+Note: We deleted most of the files on git, and you can find the csv and json files on the vm.
+
 
 #### Data Acquisition
 
