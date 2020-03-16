@@ -3,7 +3,7 @@
 Presented by Team AttributeError
 
 
-## Pandas Express
+## Pandas Express Project Overview
 
 Pandas Express is an interactive recipe platform that allows users to obtain personalized food recipes recommendations with nutritional information. Our searching function is designed so that users can include nutritional preference. Additionally, we incorporate a data visualization for the single dish’s nutritional data to all recipes stored in our database.
 
