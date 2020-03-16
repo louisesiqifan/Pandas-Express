@@ -8,5 +8,4 @@ env
 *.jpg
 *.jpeg
 *.gif
-*.csv
 data/food_map.db
