@@ -1,5 +1,5 @@
 beautifulsoup4==4.8.1
-certifi==2019.11.28
+certifi==2022.12.7
 configparser==4.0.2
 Django==2.2.4
 fraction==1.1.0
